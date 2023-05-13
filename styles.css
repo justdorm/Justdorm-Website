@@ -120,7 +120,8 @@ header {
 }
 
 #motion-reel:hover, #motion-reel:active {
-    box-shadow: 0px 0px 20px 10px #0ff;
+    box-shadow: 0px 0px 10px 2px #c0f0ff,
+     0px 0px 15px 10px #0ff;
     padding: .5rem;
 }
 
