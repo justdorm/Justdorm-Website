@@ -125,6 +125,10 @@ header {
     padding: .5rem;
 }
 
+a:hover {
+    color: #e74d83;
+}
+
 button:hover {
     text-shadow:
     0 0 2px #ffffff,
