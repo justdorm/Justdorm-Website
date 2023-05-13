@@ -79,9 +79,9 @@ h3 {
     margin-bottom: 1rem;
 }
 
-/* .grid-item:hover {
+.grid-item img:hover {
     filter: hue-rotate(90deg);
-} */
+}
 
 header {
     padding: 1rem 1rem 0rem 1rem;
