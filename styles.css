@@ -176,10 +176,17 @@ button:hover {
     margin-right: 2rem;
 }
 
-@media screen and (max-width: 800){
+@media screen and (max-width: 900px){
     #reel-cont {
         margin: 0 auto;
         width: 80%;
+    }
+
+    #aboutsec {
+        margin: 0 auto;
+        width: 80%;
+        display: flex;
+        align-items: center;
     }
 }
 
