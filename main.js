@@ -13,7 +13,7 @@ var grid = document.querySelector('#anim-grid');
             itemSelector: '.grid-item',
             // percentPosition: true,
             fitWidth: true,
-            columnWidth: 200,
+            columnWidth: 100,
             gutter: 5
         });
 
@@ -36,8 +36,8 @@ var DesignGrid = document.getElementById("design-grid");
 var AnimBtn = document.getElementById("anim-btn");
 var DesignBtn = document.getElementById("design-btn");
 
-var animogcolor="#white";;
-var dsgogcolor="#e74d83";;
+var animogcolor;
+var dsgogcolor="e74d83";
 
 AnimBtn.onclick = function(event){
     AnimBtn.style.color = "#e74d83";
@@ -78,13 +78,13 @@ AnimBtn.onmouseleave = function(event){
 
 
 DesignBtn.onmouseenter = function(event){
+    console.log(dsgogcolor);
     dsgogcolor=DesignBtn.style.color;
     DesignBtn.style.color="white";
 }
 
 DesignBtn.onmouseleave = function(event){
-    if (dsgogcolor){
+    console.log(dsgogcolor);
         DesignBtn.style.color=dsgogcolor;
-    }
 }
 
