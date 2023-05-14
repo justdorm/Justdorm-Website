@@ -74,6 +74,7 @@ h3 {
 }
 
 .grid-item {
+    align-items: center;
     width: 20rem;
     text-align: center;
     margin-bottom: 1rem;
@@ -90,8 +91,8 @@ header {
    justify-content: space-between;
 }
 
-.nav-bar, #anim-grid,#design-grid {
- 
+.nav-bar{
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     width: 100%;
@@ -180,7 +181,7 @@ button:hover {
     margin-right: 2rem;
 }
 
-@media screen and (max-width: 900px){
+@media screen and (max-width: 1000px){
     #reel-cont {
         margin: 0 auto;
         width: 80%;
@@ -213,3 +214,8 @@ button:hover {
     }
 }
 
+@media (hover:none){
+    button:hover{
+        text-shadow: none;
+    }
+}

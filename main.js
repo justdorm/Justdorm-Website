@@ -13,7 +13,7 @@ var grid = document.querySelector('#anim-grid');
             itemSelector: '.grid-item',
             // percentPosition: true,
             fitWidth: true,
-            columnWidth: 100,
+            columnWidth: 200,
             gutter: 5
         });
 
@@ -22,21 +22,13 @@ var grid = document.querySelector('#anim-grid');
         masonry2.layout();
     }
  
-
-    // var grid2 = document.querySelector('#design-grid');
-    
-    // var masonry2 = new Masonry(grid2, {
-    //     itemSelector: '.grid-item2',
-    // });
-
-
 var AnimGrid = document.getElementById("anim-grid");
 var DesignGrid = document.getElementById("design-grid");
 
 var AnimBtn = document.getElementById("anim-btn");
 var DesignBtn = document.getElementById("design-btn");
 
-var animogcolor;
+var animogcolor="whiter";
 var dsgogcolor="e74d83";
 
 AnimBtn.onclick = function(event){
@@ -64,27 +56,21 @@ DesignBtn.onclick = function(event){
 
 
 AnimBtn.onmouseenter = function(event){
-    console.log(animogcolor);
     animogcolor=AnimBtn.style.color;
     AnimBtn.style.color="white";
 }
 
 AnimBtn.onmouseleave = function(event){
-    console.log(animogcolor);
-    if (animogcolor){
-        AnimBtn.style.color=animogcolor;
-    }
+    AnimBtn.style.color=animogcolor;
 }
 
 
 DesignBtn.onmouseenter = function(event){
-    console.log(dsgogcolor);
     dsgogcolor=DesignBtn.style.color;
     DesignBtn.style.color="white";
 }
 
 DesignBtn.onmouseleave = function(event){
-    console.log(dsgogcolor);
         DesignBtn.style.color=dsgogcolor;
 }
 
