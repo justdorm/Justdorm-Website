@@ -36,8 +36,8 @@ var DesignGrid = document.getElementById("design-grid");
 var AnimBtn = document.getElementById("anim-btn");
 var DesignBtn = document.getElementById("design-btn");
 
-var animogcolor;
-var dsgogcolor;
+var animogcolor="#white";;
+var dsgogcolor="#e74d83";;
 
 AnimBtn.onclick = function(event){
     AnimBtn.style.color = "#e74d83";
