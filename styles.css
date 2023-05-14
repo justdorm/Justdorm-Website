@@ -146,6 +146,7 @@ button:hover {
 
 .logo-img {
     width: 30px;
+    align-self: auto;
 
 }
 
