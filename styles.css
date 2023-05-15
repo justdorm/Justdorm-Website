@@ -70,11 +70,16 @@ h4 {
 }
 
  #anim-grid, #design-grid,#art-grid {
+  
     margin: 0 auto;
 }
 .grid-item img{
     width: 100%;
     height: auto;
+}
+
+iframe{
+    z-index: 101;
 }
 
 .grid-item video{
@@ -93,6 +98,17 @@ h4 {
 
 .grid-item img:hover {
     filter: hue-rotate(90deg);
+
+}
+
+canvas {
+	position: fixed;
+    height: 100%;
+    width: 100%;
+	opacity: .08;
+	z-index: 100;
+	pointer-events: none;
+	user-select: none;
 }
 
 header {
