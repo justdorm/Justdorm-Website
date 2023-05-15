@@ -8,14 +8,14 @@ var grid3 = document.querySelector('#art-grid');
             // percentPosition: true,
             fitWidth: true,
             columnWidth: 200,
-            gutter: 5
+          
         });
         var masonry2 = new Masonry(grid2, {
             itemSelector: '.grid-item',
             // percentPosition: true,
             fitWidth: true,
             columnWidth: 200,
-            gutter: 5
+      
         });
         
         var masonry = new Masonry(grid, {
@@ -23,7 +23,7 @@ var grid3 = document.querySelector('#art-grid');
             // percentPosition: true,
             fitWidth: true,
             columnWidth: 200,
-            gutter: 5
+           
         });
 
     window.onload = () => {
@@ -38,7 +38,7 @@ var DesignGrid = document.getElementById("design-grid");
 var AnimBtn = document.getElementById("anim-btn");
 var DesignBtn = document.getElementById("design-btn");
 
-var animogcolor="whiter";
+var animogcolor="white";
 var dsgogcolor="e74d83";
 
 AnimBtn.onclick = function(event){
