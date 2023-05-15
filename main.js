@@ -31,7 +31,13 @@ var grid3 = document.querySelector('#art-grid');
         masonry2.layout();
         masonry3.layout();
     }
+
+var AboutBtn = document.getElementById("abtbtn")
  
+AboutBtn.onclick = function(event){
+    wait(50);
+    masonry3.layout();
+}
 var AnimGrid = document.getElementById("anim-grid");
 var DesignGrid = document.getElementById("design-grid");
 
