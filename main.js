@@ -1,15 +1,6 @@
 var grid = document.querySelector('#anim-grid');
 var grid2 = document.querySelector('#design-grid');
-var grid3 = document.querySelector('#art-grid');
         
-
-      var masonry3 = new Masonry(grid3, {
-            itemSelector: '.grid-item',
-            // percentPosition: true,
-            fitWidth: true,
-            columnWidth: 200,
-          
-        });
         var masonry2 = new Masonry(grid2, {
             itemSelector: '.grid-item',
             // percentPosition: true,
@@ -28,15 +19,9 @@ var grid3 = document.querySelector('#art-grid');
     window.onload = () => {
         masonry.layout();
         masonry2.layout();
-        masonry3.layout();
+
     }
 
-var AboutBtn = document.getElementById("abtbtn")
- 
-AboutBtn.onclick = function(event){
-    wait(50);
-    masonry3.layout();
-}
 var AnimGrid = document.getElementById("anim-grid");
 var DesignGrid = document.getElementById("design-grid");
 
