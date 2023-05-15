@@ -56,10 +56,18 @@ h2 {
 h3 {
     font-family: PreciousSansTwoMediumItalic;
     font-size: 1.3rem;
+    padding-top: 5px;
+}
+
+h4 {
+    font-family: PreciousSansTwoLightItalic;
+    font-size: 1rem;
     padding: 5px;
 }
 
-
+#logocont{
+    align-self: center;
+}
 
  #anim-grid, #design-grid {
     margin: 0 auto;
@@ -167,6 +175,7 @@ button:hover {
     width: 50%;
     display: flex;
     align-items: center;
+    padding-bottom: 2rem;
 }
 
 #headshot {
@@ -184,7 +193,7 @@ button:hover {
     margin-right: 2rem;
 }
 
-@media screen and (max-width: 1000px){
+@media screen and (max-width: 1024px){
     #reel-cont {
         margin: 0 auto;
         width: 80%;
@@ -195,6 +204,10 @@ button:hover {
         width: 80%;
         display: flex;
         align-items: center;
+    }
+
+    #logocont{
+        margin-right: 5rem;
     }
 }
 
@@ -215,6 +228,10 @@ button:hover {
 
     h1 {
         font-size: 2.5rem;
+    }
+
+    #logocont{
+        margin-right: 6rem;
     }
 }
 
