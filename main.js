@@ -15,7 +15,6 @@ var grid3 = document.querySelector('#art-grid');
             // percentPosition: true,
             fitWidth: true,
             columnWidth: 200,
-      
         });
         
         var masonry = new Masonry(grid, {
