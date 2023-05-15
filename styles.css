@@ -42,9 +42,6 @@ h1 {
     margin-bottom: 1rem;
     font-size: 4rem;
     text-align: center;
-    /* background: linear-gradient(180deg, rgba(255,132,215,1) 0%, rgba(225,9,224,1) 23%, rgba(255,255,255,1) 50%, rgba(224,0,223,1) 52%, rgba(255,202,236,1) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; */
 }
 
 h2 {
@@ -70,7 +67,7 @@ h4 {
 }
 
  #anim-grid, #design-grid,#art-grid {
-  z-index: 99;
+    z-index: 99;
     margin: 0 auto;
 }
 .grid-item img{
@@ -98,7 +95,6 @@ iframe{
 
 .grid-item img:hover {
     filter: hue-rotate(90deg);
-
 }
 
 canvas {
@@ -123,8 +119,6 @@ header {
     display: flex;
     justify-content: center;
     width: 100%;
-    
-
 }
 
 #motion-reel {
@@ -168,6 +162,10 @@ button:hover {
     0 0 92px #e74d83,
     0 0 102px #e74d83,
     0 0 151px #e74d83;
+}
+
+#motion-reel:hover + #reel-text{
+color: #e74d83;
 }
 
 #anim-grid {
