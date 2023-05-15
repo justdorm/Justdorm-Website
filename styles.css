@@ -70,7 +70,7 @@ h4 {
 }
 
  #anim-grid, #design-grid,#art-grid {
-  z-index: 101;
+  z-index: 99;
     margin: 0 auto;
 }
 .grid-item img{
@@ -259,7 +259,7 @@ button:hover {
         height: auto;
       }
     .grid-item{
-    margin-right: 1rem;
+    margin-left: 0;
     width: auto;
     }
 
