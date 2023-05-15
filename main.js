@@ -84,9 +84,6 @@ DesignBtn.onmouseleave = function(event){
         DesignBtn.style.color=dsgogcolor;
 }
 
-// technique for this demo found here 
-// http://stackoverflow.com/questions/22003491/animating-canvas-to-look-like-tv-noise
-
 const canvas = document.querySelector('canvas'),
 				 ctx = canvas.getContext('2d')
 

@@ -70,7 +70,7 @@ h4 {
 }
 
  #anim-grid, #design-grid,#art-grid {
-  
+  z-index: 101;
     margin: 0 auto;
 }
 .grid-item img{
