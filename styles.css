@@ -105,7 +105,7 @@ canvas {
 	position: fixed;
     height: 100%;
     width: 100%;
-	opacity: .08;
+	opacity: .07;
 	z-index: 100;
 	pointer-events: none;
 	user-select: none;
