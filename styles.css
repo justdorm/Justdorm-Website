@@ -69,7 +69,7 @@ h4 {
     align-self: center;
 }
 
- #anim-grid, #design-grid {
+ #anim-grid, #design-grid,#art-grid {
     margin: 0 auto;
 }
 .grid-item img{
