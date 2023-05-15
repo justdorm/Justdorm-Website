@@ -13,12 +13,6 @@ var grid3 = document.querySelector('#art-grid');
         masonry.layout();
     }
 
-var AboutBtn = document.getElementById("abtbtn")
- 
-AboutBtn.onclick = function(event){
-    wait(50);
-    masonry.layout();
-}
 
 const canvas = document.querySelector('canvas'),
 				 ctx = canvas.getContext('2d')

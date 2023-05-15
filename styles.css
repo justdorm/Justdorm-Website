@@ -209,6 +209,7 @@ button:hover {
     margin-right: 2rem;
 }
 
+
 @media screen and (max-width: 1024px){
     #reel-cont {
         margin: 0 auto;
@@ -250,6 +251,40 @@ button:hover {
         margin-right: 6rem;
     }
 }
+
+@media screen and (max-width: 400px){
+
+    #anim-grid, #design-grid,#art-grid {
+        width: auto;
+        height: auto;
+      }
+    .grid-item{
+    margin-right: 1rem;
+    width: auto;
+    }
+
+    #reel-cont {
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    #aboutsec {
+        margin: 0 auto;
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    #logocont{
+        margin-right: 6rem;
+    }
+}
+
 
 @media (hover:none){
     button:hover{
