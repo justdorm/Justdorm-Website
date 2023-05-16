@@ -36,6 +36,10 @@ video {
     height: auto;
 }
 
+p{
+    line-height: 1.2;
+}
+
 h1 {
     font-family: PreciousSansTwoBlackItalic;
     padding: 10px;
