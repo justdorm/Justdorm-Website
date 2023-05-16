@@ -12,7 +12,7 @@ var grid2 = document.querySelector('#design-grid');
             itemSelector: '.grid-item',
             // percentPosition: true,
             fitWidth: true,
-            columnWidth: 200,
+            columnWidth: 100,
            
         });
 
