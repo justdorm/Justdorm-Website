@@ -271,6 +271,16 @@ color: #e74d83;
         font-size: 2.5rem;
     }
 
+    .toggle{
+        margin: 0 auto;
+        padding: .5rem;
+    }
+    button{
+        margin: 0 auto;
+        padding: 0px;
+        padding-bottom: 1rem;
+        text-align: center;
+
     #logocont{
         margin-right: 3rem;
     }
