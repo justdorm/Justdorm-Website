@@ -272,12 +272,21 @@ color: #e74d83;
     }
 }
 
-@media screen and (max-width: 400px){
+@media screen and (max-width: 375px){
 
     #anim-grid, #design-grid,#art-grid {
         width: auto;
         height: auto;
       }
+    .toggle{
+        display: block;
+        margin: 0 auto;
+        padding: .5rem;
+    }
+    button{
+        padding: 0px;
+        text-align: center;
+    }
     .grid-item{
     margin-left: 0;
     width: auto;
