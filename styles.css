@@ -183,6 +183,10 @@ color: #e74d83;
 
 }
 
+.logo-img:hover {
+    filter: hue-rotate(-120deg);
+}
+
 .hero {
     padding: 10px;
     align-items: center;
@@ -222,6 +226,8 @@ color: #e74d83;
     0px 0px 45px 0px rgb(255, 132, 56),
     0px 0px 60px 0px red;
 }
+
+
 
 .toggle {
     display: flex;
@@ -307,7 +313,6 @@ color: #e74d83;
     margin-left: 0;
     width: auto;
     }
-
 
     #reel-cont {
         margin: 0 auto;
