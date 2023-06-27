@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
 </head>
 <body>
+    <script type="module" src="/three.js"></script>
     <canvas id="noise" class="noise"></canvas>
     <header>
         <div class="nav-links">
@@ -25,8 +26,8 @@
         <h2 id="reel-text">Motion Reel</h2>
     </div>
     <div class="toggle">
-        <button id="design-btn">Design</button>
         <button id="anim-btn">Animation</button>
+        <button id="design-btn">Design</button>
     </div>
     <div id="design-grid">
         <div class="grid-item"><img src="imgs/Rowena Poster.png" alt=""><h3>Rowena Poster</h3></div>
@@ -45,7 +46,16 @@
     </div>
 </body>
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@latest/build/three.min.js"></script>
+<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@<version>/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@<version>/examples/jsm/"
+    }
+  }
+</script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="main.js"></script>
 </html>
