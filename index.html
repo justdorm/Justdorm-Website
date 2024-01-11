@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,20 +10,30 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
 </head>
+
 <body>
     <script type="module" src="/three.js"></script>
     <canvas id="noise" class="noise"></canvas>
     <header>
         <div class="nav-links">
             <a href="https://justdorm.com/">Home</a>
+            <a id="animMenu" href="#anim-btn">Animation</a>
+            <a id="designMenu" href="#design-btn">Design</a>
             <a id="abtbtn" href="/about.html">About</a>
         </div>
-        <a id="logocont" href="https://justdorm.com/"><img class="logo-img" src="imgs/Dormitzer-Final Logo.png" alt="Logo"></a>
+        <a id="logocont" href="https://justdorm.com/"><img class="logo-img" src="imgs/Dormitzer-Final Logo.png"
+                alt="Logo"></a>
         <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
     </header>
     <div class="hero">
-        <h1>Justin Dormitzer</h1>
-        <div id="reel-cont"><div style="padding:56.25% 0 0 0;position:relative;"><iframe id="motion-reel" src="https://player.vimeo.com/video/825235906?h=2c933fd079&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Justdorm 2023 Reel"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script></div>   
+        <div id="reel-cont">
+            <div style="padding:56.25% 0 0 0;position:relative;"><iframe id="motion-reel"
+                    src="https://player.vimeo.com/video/825235906?h=2c933fd079&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Justdorm 2024 Reel"></iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
         <h2 id="reel-text">Motion Reel</h2>
     </div>
     <div class="toggle">
@@ -30,19 +41,52 @@
         <button id="design-btn">Design</button>
     </div>
     <div id="design-grid">
-        <div class="grid-item"><img src="imgs/Rowena Poster.png" alt=""><h3>Rowena Poster</h3></div>
-        <div class="grid-item"><img src="imgs/pandemic.jpg" alt=""><h3>Word of the Year</h3></div>
-        <div class="grid-item"><img src="imgs/further east.jpg" alt=""><h3>Further East Album Cover</h3></div>
-        <div class="grid-item"><img src="imgs/anne.jpg" alt=""><h3>Anne of the 1000 Days Poster</h3></div>
-        <div class="grid-item"><img src="imgs/In Articulo Mortis.jpg" alt=""><h3>In Articulo Mortis Poster</h3></div>
-        <div class="grid-item"><img src="imgs/stupid bird.jpg" alt=""><h3>Stupid F*cking Bird Poster</h3></div>
-        <div class="grid-item"><img src="imgs/stone.jpg" alt=""><h3>The Stone Cycle Logo</h3></div>
-        <div class="grid-item"><img src="imgs/tony.png" alt=""><h3>Tony Poster</h3></div>
+        <div class="grid-item"><img src="imgs/Rowena Poster.png" alt="">
+            <h3>Rowena Poster</h3>
+        </div>
+        <div class="grid-item"><img src="imgs/pandemic.jpg" alt="">
+            <h3>Word of the Year</h3>
+        </div>
+        <div class="grid-item"><img src="imgs/further east.jpg" alt="">
+            <h3>Further East Album Cover</h3>
+        </div>
+        <div class="grid-item"><img src="imgs/anne.jpg" alt="">
+            <h3>Anne of the 1000 Days Poster</h3>
+        </div>
+        <div class="grid-item"><img src="imgs/In Articulo Mortis.jpg" alt="">
+            <h3>In Articulo Mortis Poster</h3>
+        </div>
+        <div class="grid-item"><img src="imgs/stupid bird.jpg" alt="">
+            <h3>Stupid F*cking Bird Poster</h3>
+        </div>
+        <div class="grid-item"><img src="imgs/stone.jpg" alt="">
+            <h3>The Stone Cycle Logo</h3>
+        </div>
+        <div class="grid-item"><img src="imgs/tony.png" alt="">
+            <h3>Tony Poster</h3>
+        </div>
     </div>
     <div id="anim-grid">
-        <div class="grid-item"><iframe src="https://www.youtube.com/embed/H7U-DOxa60c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><h3>Time Through Time</h3></div>
-        <div class="grid-item"><iframe src="https://www.youtube.com/embed/0tH6ksJYyXw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><h3>Move in Day - Purple People</h3></div>
-        <div class="grid-item"><iframe src="https://www.youtube.com/embed/f7-8U8OmfMw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><h3>An Animated Biography of Edgar Allan Poe</h3></div>
+        <div class="anim">
+            <h3>Time Through Time</h3>
+            <iframe src="https://www.youtube.com/embed/H7U-DOxa60c" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+        </div>
+        <div class="anim">
+            <h3>Move in Day - Purple People</h3>
+            <iframe src="https://www.youtube.com/embed/0tH6ksJYyXw" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+        </div>
+        <div class="anim">
+            <h3>An Animated Biography of Edgar Allan Poe</h3>
+            <iframe src="https://www.youtube.com/embed/f7-8U8OmfMw" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+        </div>
     </div>
 </body>
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
@@ -58,4 +102,5 @@
 </script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="main.js"></script>
+
 </html>

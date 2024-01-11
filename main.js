@@ -1,4 +1,3 @@
-var grid = document.querySelector('#anim-grid');
 var grid2 = document.querySelector('#design-grid');
         
         var masonry2 = new Masonry(grid2, {
@@ -8,16 +7,8 @@ var grid2 = document.querySelector('#design-grid');
             columnWidth: 200,
         });
         
-        var masonry = new Masonry(grid, {
-            itemSelector: '.grid-item',
-            // percentPosition: true,
-            fitWidth: true,
-            columnWidth: 100,
-           
-        });
 
     window.onload = () => {
-        masonry.layout();
         masonry2.layout();
 
     }
@@ -25,24 +16,28 @@ var grid2 = document.querySelector('#design-grid');
 var AnimGrid = document.getElementById("anim-grid");
 var DesignGrid = document.getElementById("design-grid");
 
+var AnimMenu = document.getElementById("animMenu");
+var DesignMenu = document.getElementById("designMenu");
 var AnimBtn = document.getElementById("anim-btn");
 var DesignBtn = document.getElementById("design-btn");
 
 var animogcolor="white";
 var dsgogcolor="e74d83";
 
-AnimBtn.onclick = function(event){
+function activateAnimation(event) {
     AnimBtn.style.color = "#e74d83";
     DesignBtn.style.color ="#fff";
     DesignGrid.style.display="none";
-    AnimGrid.style.display="flex";
+    AnimGrid.style.display="block";
     animogcolor="#e74d83";
     dsgogcolor="white";
     masonry.layout();
+}
 
+AnimBtn.onclick = activateAnimation;
+AnimMenu.onclick = activateAnimation;
 
-};
-DesignBtn.onclick = function(event){
+function activateDesign(event) {
     DesignBtn.style.color="#e74d83";
     AnimBtn.style.color="#fff";
     AnimGrid.style.display="none";
@@ -50,10 +45,10 @@ DesignBtn.onclick = function(event){
     dsgogcolor="#e74d83";
     animgogcolor="white";
     masonry2.layout();
+}
 
-
-};
-
+DesignBtn.onclick = activateDesign;
+DesignMenu.onclick = activateDesign;
 
 AnimBtn.onmouseenter = function(event){
     animogcolor=AnimBtn.style.color;
@@ -109,3 +104,10 @@ function noise(ctx) {
     noise(ctx);
     requestAnimationFrame(loop);
 })();
+
+let hash = window.location.hash;
+if (hash === "#anim-btn") {
+    activateAnimation();
+} else if (hash === "#design-btn") {
+    activateDesign();
+}

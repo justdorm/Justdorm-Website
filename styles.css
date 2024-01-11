@@ -58,6 +58,7 @@ h3 {
     font-family: PreciousSansTwoMediumItalic;
     font-size: 1.3rem;
     padding-top: 5px;
+    padding-bottom: .2rem;
 }
 
 h4 {
@@ -67,9 +68,29 @@ h4 {
 }
 
 #logocont{
-    align-self: center;
+    align-self: baseline;
 }
 
+.anim{
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.anim > iframe {
+    aspect-ratio: 16/9;
+    min-width: 70%;
+}
+
+#anim-grid{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
  #anim-grid, #design-grid,#art-grid {
     z-index: 99;
     margin: 0 auto;
@@ -140,7 +161,7 @@ header {
 
 #reel-cont {
     margin: 0 auto;
-    width: 50%;
+    width: 70%;
 }
 
 #motion-reel:hover, #motion-reel:active {
@@ -148,7 +169,6 @@ header {
      0px 0px 15px 5px #0ff,
      0px 0px 40px 3px #0ff,
      0px 0px 75px 2px #0ff;
-    padding: .3rem .5rem .5rem .5rem;
 }
 
 a:hover {
@@ -177,9 +197,9 @@ color: #e74d83;
 }
 
 .logo-img {
-    margin-right: 5rem;
+    margin-right: 10rem;
     width: 30px;
-    align-self: autos;
+    align-self: auto;
 
 }
 

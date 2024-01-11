@@ -13,6 +13,30 @@ var grid3 = document.querySelector('#art-grid');
         masonry.layout();
     }
 
+var AnimMenu = document.getElementById("animMenu");
+var DesignMenu = document.getElementById("designMenu");
+
+AnimMenu.onclick = function(event){
+    AnimBtn.style.color = "#e74d83";
+    DesignBtn.style.color ="#fff";
+    DesignGrid.style.display="none";
+    AnimGrid.style.display="flex";
+    animogcolor="#e74d83";
+    dsgogcolor="white";
+    masonry.layout();
+
+
+};
+
+DesignMenu.onclick = function(event){
+    DesignBtn.style.color="#e74d83";
+    AnimBtn.style.color="#fff";
+    AnimGrid.style.display="none";
+    DesignGrid.style.display="flex";
+    dsgogcolor="#e74d83";
+    animgogcolor="white";
+    masonry2.layout();
+};
 
 const canvas = document.querySelector('canvas'),
 				 ctx = canvas.getContext('2d')
