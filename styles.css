@@ -197,7 +197,7 @@ color: #e74d83;
 }
 
 .logo-img {
-    margin-right: 10rem;
+    margin-right: 20rem;
     width: 30px;
     align-self: auto;
 
@@ -276,6 +276,9 @@ color: #e74d83;
     #logocont{
         margin-right: 2rem;
     }
+    .logo-img {
+        margin-right: 15rem;
+    }
 }
 
 @media screen and (max-width: 480px){
@@ -308,7 +311,10 @@ color: #e74d83;
         text-align: center;
 
     #logocont{
-        margin-right: 3rem;
+        margin-left: 20rem;
+    }
+    .logo-img {
+        margin-left: 20rem;
     }
 }}
 
@@ -353,6 +359,9 @@ color: #e74d83;
 
     #logocont{
         margin-right: 2rem;
+    }
+    .logo-img {
+        margin-right: 5rem;
     }
 }
 
