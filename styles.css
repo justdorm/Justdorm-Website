@@ -283,6 +283,11 @@ color: #e74d83;
 
 @media screen and (max-width: 480px){
 
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+    }
+
     #reel-cont {
         margin: 0 auto;
         width: 100%;
@@ -311,7 +316,7 @@ color: #e74d83;
         text-align: center;
     }
     #logocont{
-        margin-right: 6.2rem;
+        margin-right: 6.5rem;
     }
     .logo-img {
         margin-left: 2rem;
