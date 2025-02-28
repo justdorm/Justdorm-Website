@@ -157,6 +157,13 @@ header {
     height:100%;
 }
 
+#stream-reel {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
 .ig-img {
     width: 22px;
     height: 22px;
@@ -167,6 +174,10 @@ header {
     width: 70%;
 }
 
+#stream-cont {
+    margin: 0 auto;
+    width: 70%;
+}
 #motion-reel:hover, #motion-reel:active {
     box-shadow: 0px 0px 10px 2px #ffffff,
      0px 0px 15px 5px #0ff,
@@ -218,6 +229,15 @@ color: #e74d83;
     flex-direction: column; */
 }
 
+.UIimg {
+    margin: 0 auto;
+    width: 60%;
+    display: flex;
+    align-items: center;
+    padding-bottom: 2rem;
+    padding-top: 2rem;
+}
+
 #aboutsec {
     margin: 0 auto;
     width: 60%;
@@ -227,6 +247,15 @@ color: #e74d83;
     padding-top: 2rem;
 }
 
+#streampar {
+    margin: 0 auto;
+    width: 55%;
+    display: flex;
+    align-items: center;
+    padding-bottom: .3rem;
+    padding-top: 2rem;
+    text-align: left;
+}
 #headshot {
     box-sizing: content-box;
     border-radius: 100%;

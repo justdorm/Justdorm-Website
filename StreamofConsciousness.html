@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Dormitzer Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="imgs/fav.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+</head>
+
+<body>
+    <script type="module" src="/three.js"></script>
+    <canvas id="noise" class="noise"></canvas>
+    <header>
+        <div class="nav-links">
+            <a href="https://justdorm.com/">Home</a>
+            <a id="animMenu" href="/index.html#anim-btn">Animation</a>
+            <a id="designMenu" href="/index.html#design-btn">Design</a>
+            <a href="/StreamofConsciousness.html">Stream of Consciousness</a>
+            <a id="abtbtn" href="/about.html">About</a>
+        </div>
+        <a id="logocont" href="https://justdorm.com/"><img class="logo-img" src="imgs/Dormitzer-Final Logo.png"
+                alt="Logo"></a>
+        <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
+    </header>
+</div>
+    <div class="hero">
+        <div id="stream-cont">
+            <div style="padding:45.25% 0 0 0;position:relative;"><iframe id="stream-reel"
+                    src="https://player.vimeo.com/video/1061328008?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;" title="StreamofConsciousness"></iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+        <p id="streampar">Stream of Consciousness is an interactive installation that maximizes user engagement and customization with AI. The system consists of a webcam where users can physically interact with the AI image generation and a bluetooth controller where they can change the installation settings to suit their imagination. In Stream of Consciousness, the user becomes both the artist and the art.</p>
+    </div>
+    <img class="UIimg" src="/imgs/UI.png" alt="UI">
+    <img class="UIimg" src="/imgs/UI_Labeled.png" alt="UI">
+    <p id="streampar">Stream of Consciousness was developed in TouchDesigner using StreamDiffusion, a real-time implementation of Stable Diffusion. The image generation model that this iteration is running is SDTurbo. For the user silhouette isolation, I am using Nvidia Background Removal. The silhouette is composited with a foreground and background noise and is then used as an image to image input. The system also includes both a preset management system for an intuitive and curated experience, as well as in depth UI to fully customize the prompt and generation settings for users who want full creative control.</p>
+    <img class="UIimg" src="/imgs/TDUI.png" alt="UI">
+
+    
+</body>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@<version>/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@<version>/examples/jsm/"
+    }
+  }
+</script>
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+<script src="main.js"></script>
+
+</html>
