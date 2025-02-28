@@ -324,7 +324,10 @@ color: #e74d83;
         margin: 0 auto;
         width: 100%;
     }
-
+    #stream-cont {
+        margin: 0 auto;
+        width: 100%;
+    }
     #aboutsec {
         margin: 0 auto;
         width: 80%;
@@ -378,6 +381,10 @@ color: #e74d83;
     }
 
     #reel-cont {
+        margin: 0 auto;
+        width: 100%;
+    }
+    #stream-cont {
         margin: 0 auto;
         width: 100%;
     }
