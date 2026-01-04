@@ -132,7 +132,7 @@ iframe{
     width: 65%;
     margin: auto;
     margin-top: .5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
    
 }
 
@@ -251,6 +251,8 @@ color: #e74d83;
     margin: 0 auto;
     width: 60%;
     display: flex;
+    position: relative;
+    z-index: 101;
     align-items: center;
     padding-bottom: 2rem;
     padding-top: 2rem;
