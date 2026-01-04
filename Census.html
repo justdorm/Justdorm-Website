@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Dormitzer Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="imgs/fav.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+</head>
+
+<body>
+    <script type="module" src="/three.js"></script>
+    <canvas id="noise" class="noise"></canvas>
+    <header>
+        <div class="nav-links">
+            <a id="animMenu" href="/index.html">Motion Design</a>
+            <a id="designMenu" href="/Interactive.html">Interactive Art</a>
+            <a id="abtbtn" href="/about.html">About</a>
+        </div>
+        <a id="logocont" href="https://justdorm.com/"><img class="logo-img" src="imgs/Dormitzer-Final Logo.png"
+                alt="Logo"></a>
+        <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
+    </header>
+</div>
+    <div class="hero">
+        <h2>Census</h2>
+        <div id="stream-cont">
+            <div style="padding:50.25% 0 0 0;position:relative;"><iframe id ="stream-reel" src="https://player.vimeo.com/video/1150743293?h=db3ff67f71&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Census Documentation"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+        <p id="streampar">Census is an artwork that builds itself through its audience. At its center is a slowly rotating pie chart, which begins as a blank canvas and gradually fills with unique textures, one for each viewer. Over the course of the exhibition, this accumulation transforms the work into both an archive and a portrait of the event itself. By its conclusion, “Census” captures not data but presence, recording the community through the simple act of participation.</p>
+    </div>
+    <img class="UIimgSmall" src="/imgs/Census.png" alt="UI">
+    <p id="streampar">Census premiered at the SVA Flatiron Gallery for the Fall 2025 show "Technological Perseverance." It was developed in TouchDesigner, using a depth camera to detect when a viewer is in front of the piece. A glow indicates that their presence is being recorded. Behind the scenes, there is a table for data storage (how long a viewer is present and the angle which the slice should originate from), and replicators which reference this data for the pie chart slices themselves. A random texture from a texture library is chosen for each new viewer and is blended with previous slices in case of overlap. <br>  </p>
+    
+</body>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@<version>/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@<version>/examples/jsm/"
+    }
+  }
+</script>
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+<script src="main.js"></script>
+
+</html>
