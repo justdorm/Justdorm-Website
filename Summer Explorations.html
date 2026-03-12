@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Dormitzer Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="imgs/fav.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+</head>
+
+<body>
+    <script type="module" src="/three.js"></script>
+    <canvas id="noise" class="noise"></canvas>
+    <header>
+        <div class="nav-links">
+            <a id="animMenu" href="/index.html">Motion Design</a>
+            <a id="designMenu" href="/Interactive.html">Interactive Art</a>
+            <a id="abtbtn" href="/about.html">About</a>
+        </div>
+        <a id="logocont" href="https://justdorm.com/"><img class="logo-img" src="imgs/Dormitzer-Final Logo.png"
+                alt="Logo"></a>
+        <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
+    </header>
+</div>
+    <div class="hero">
+        <h2>Summer Explorations</h2>
+        
+        <div id="stream-cont">
+            <div style="padding:50.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1150867523?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Summer Explorations Documentation"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+        </div>
+        <p id="streampar">Summer Explorations is a gesture controlled art gallery. It is a collection of around 100 AI generated images and five video overlays, created by my collaborator Adam Meyers, that is controlled with hand position tracking. The vertical movement of the left hand controls the scrolling of the gallery, and the right hand controls the intensity of the video overlays. There are two rectangles indicating the position of the hands, and the color of these recangles can be shifted with horizontal hand movement. This project was developed in TouchDesigner and shown during BitBasel Miami Art Week 2025. </p>
+    </div>
+</body>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@<version>/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@<version>/examples/jsm/"
+    }
+  }
+</script>
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+<script src="main.js"></script>
+
+</html>
