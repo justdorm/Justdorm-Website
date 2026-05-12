@@ -7,24 +7,42 @@ import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 // ─── Renderer ───
-const canvas = document.getElementById('jd-scene');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+const canvas = document.querySelector('.jd-canvas') || document.getElementById('jd-scene');
+const isHeader = canvas.dataset.mode === 'header';
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: isHeader });
+
+let W, H;
+if (isHeader) {
+  W = canvas.clientWidth || 30;
+  H = canvas.clientHeight || 30;
+} else {
+  W = window.innerWidth;
+  H = window.innerHeight;
+}
+
+renderer.setSize(W, H);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMapping = isHeader ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
 renderer.autoClear = false;
 
-const W = window.innerWidth, H = window.innerHeight;
 const PR = Math.min(window.devicePixelRatio, 2);
 
 // ─── Camera ───
 const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
-camera.position.set(0, 0.5, 12);
+if (isHeader) {
+  camera.position.set(0.2, 0.4, 10); 
+  camera.lookAt(0.2, 0.4, 0);
+} else {
+  camera.position.set(0, 0.5, 12);
+}
 
 // ─── Main scene (background, outlines, J, D, particles) ───
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
+if (!isHeader) {
+  scene.background = new THREE.Color(0x000000);
+}
 
 // ─── Lighting (shared params) ───
 function addLights(s) {
@@ -259,7 +277,7 @@ loader.load(
     // We use ExtrudeGeometry's native bevelSize to expand the 2D shape for flawless outlines
     // Keep bevelThickness small to prevent the outline faces from pushing forward and covering the main colors
     const optsBlack = { font, size, depth, curveSegments, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.24, bevelSegments: 1 };
-    const optsWhite = { font, size, depth, curveSegments, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.5, bevelSegments: 1 };
+    const optsWhite = { font, size, depth, curveSegments, bevelEnabled: true, bevelThickness: 0.05, bevelSize: isHeader ? 0.8 : 0.5, bevelSegments: 1 };
 
     const jGeo = extendJ(new TextGeometry('J', optsMain), 0.6);
     const jGeoBlack = extendJ(new TextGeometry('J', optsBlack), 0.6);
@@ -332,10 +350,12 @@ for (let i = 0; i < pN; i++) {
   pV[j] = (Math.random() - .5) * .003; pV[j + 1] = (Math.random() - .5) * .003;
 }
 pGeo.setAttribute('position', new THREE.BufferAttribute(pP, 3));
-scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
-  color: 0xffffff, size: 0.04, transparent: true, opacity: 0.35,
-  sizeAttenuation: true, depthWrite: false,
-})));
+if (!isHeader) {
+  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
+    color: 0xffffff, size: 0.04, transparent: true, opacity: 0.35,
+    sizeAttenuation: true, depthWrite: false,
+  })));
+}
 
 // ─── Mouse ───
 const tR = { x: 0, y: 0 }, cR = { x: 0, y: 0 };
@@ -343,17 +363,30 @@ let mob = window.innerWidth < 768;
 
 const mouseNDC = new THREE.Vector2(-999, -999);
 window.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  
+  // Update NDC for hover detection
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+    mouseNDC.x = (x / rect.width) * 2 - 1;
+    mouseNDC.y = -(y / rect.height) * 2 + 1;
+  } else {
+    mouseNDC.set(-999, -999);
+  }
+
   if (mob) return;
-  tR.y = ((e.clientX / window.innerWidth) * 2 - 1) * 0.1;
-  tR.x = -((e.clientY / window.innerHeight) * 2 - 1) * 0.1;
-  mouseNDC.x = (e.clientX / window.innerWidth) * 2 - 1;
-  mouseNDC.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  // Subtle parallax for header logo, full for homepage
+  const pFact = isHeader ? 0.03 : 0.1;
+  tR.y = ((e.clientX / window.innerWidth) * 2 - 1) * pFact;
+  tR.x = -((e.clientY / window.innerHeight) * 2 - 1) * pFact;
 });
 window.addEventListener('mouseleave', () => { mouseNDC.set(-999, -999); });
 
 // ─── Gyroscope (Mobile) ───
 window.addEventListener('deviceorientation', e => {
-  if (!mob || e.gamma === null) return;
+  if (!mob || e.gamma === null || isHeader) return;
   // clamp rotation values to prevent it from spinning too far
   let gamma = Math.max(-45, Math.min(45, e.gamma)); // Left/Right tilt
   let beta = Math.max(-45, Math.min(45, e.beta - 40)); // Up/Down tilt (assuming 40deg neutral angle)
@@ -380,7 +413,14 @@ let partyMode = false;
 const raycaster = new THREE.Raycaster();
 
 window.addEventListener('resize', () => {
-  const w = window.innerWidth, h = window.innerHeight;
+  let w, h;
+  if (isHeader) {
+    w = canvas.clientWidth || 30;
+    h = canvas.clientHeight || 30;
+  } else {
+    w = window.innerWidth;
+    h = window.innerHeight;
+  }
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
@@ -398,7 +438,7 @@ function animate() {
   cR.x += (tR.x - cR.x) * 0.07;
   cR.y += (tR.y - cR.y) * 0.07;
 
-  const logoScale = mob ? 0.8 : 1.0;
+  const logoScale = mob && !isHeader ? 0.8 : 1.0;
   // Sync all groups
   for (const g of allGroups) {
     g.rotation.x = cR.x;

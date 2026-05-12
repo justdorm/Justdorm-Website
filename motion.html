@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <script type="module" src="/three.js"></script>
+    
     <canvas id="noise" class="noise"></canvas>
     <header>
         <div class="nav-links">
@@ -20,8 +20,7 @@
             <a id="designMenu" href="/CreativeTechnology.html">Creative Technology</a>
             <a id="abtbtn" href="/about.html">About</a>
         </div>
-        <a id="logocont" href="https://justdorm.com/"><img class="logo-img" src="imgs/Dormitzer-Final Logo.png"
-                alt="Logo"></a>
+        <a id="logocont" href="https://justdorm.com/"><canvas class="jd-canvas logo-img" data-mode="header"></canvas></a>
         <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
     </header>
     <h1>Motion Design</h1>
@@ -70,18 +69,22 @@
                 allowfullscreen></iframe>
         </div>
     </div>
+
+    <!-- Import Map for Three.js -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="homepage-scene.js"></script>
 </body>
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
 
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@<version>/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@<version>/examples/jsm/"
-    }
-  }
-</script>
+
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
 <script src="main.js"></script>
 

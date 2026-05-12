@@ -19,7 +19,7 @@
             <a id="designMenu" href="/CreativeTechnology.html">Creative Technology</a>
             <a id="abtbtn" href="/about.html">About</a>
         </div>
-        <a href="https://justdorm.com/"><img class="logo-img" src="imgs/Dormitzer-Final Logo.png" alt="Logo"></a>
+        <a href="https://justdorm.com/"><canvas class="jd-canvas logo-img" data-mode="header"></canvas></a>
         <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
     </header>
     <div id="aboutsec">
@@ -73,6 +73,21 @@
         </div>
 
     </div>
+
+    <!-- Import Map for Three.js -->
+    
+    
+
+    <!-- Import Map for Three.js -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="homepage-scene.js"></script>
 </body>
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
