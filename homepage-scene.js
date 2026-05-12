@@ -300,8 +300,8 @@ loader.load(
     const mW = new THREE.MeshBasicMaterial({ color: 0xe0e0e0 });
     const mB = new THREE.MeshBasicMaterial({ color: 0x050505 });
 
-    mk(jGroup, jGeoWhite, mW, jP, jR, 1.0, -0.80);
-    mk(logoGroup, dGeoWhite, mW.clone(), dP, dR, 1.0, -0.60);
+    mk(jGroup, jGeoWhite, mW, jP, jR, 1.0, -0.68);
+    mk(logoGroup, dGeoWhite, mW.clone(), dP, dR, 1.0, -0.48);
     mk(jGroup, jGeoBlack, mB, jP, jR, 1.0, 0.029);
     mk(logoGroup, dGeoBlack, mB.clone(), dP, dR, 1.0, -0.18);
 
@@ -389,7 +389,7 @@ window.addEventListener('mouseleave', () => { mouseNDC.set(-999, -999); });
 
 // ─── Gyroscope (Mobile) ───
 window.addEventListener('deviceorientation', e => {
-  if (!mob || e.gamma === null || isHeader) return;
+  if (!mob || e.gamma === null) return;
   
   // Hide prompt automatically if we are receiving gyro data (means permission was already granted)
   const prompt = document.getElementById('gyro-prompt');
@@ -401,8 +401,9 @@ window.addEventListener('deviceorientation', e => {
   let gamma = Math.max(-45, Math.min(45, e.gamma)); // Left/Right tilt
   let beta = Math.max(-45, Math.min(45, e.beta - 40)); // Up/Down tilt (assuming 40deg neutral angle)
   
-  tR.y = (gamma / 45) * 0.15;
-  tR.x = (beta / 45) * 0.15;
+  const gyroFact = isHeader ? 0.05 : 0.15;
+  tR.y = (gamma / 45) * gyroFact;
+  tR.x = (beta / 45) * gyroFact;
 });
 
 // ─── Color Cycle on Click ───

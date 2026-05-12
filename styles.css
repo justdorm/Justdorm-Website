@@ -362,6 +362,11 @@ color: #e74d83;
     }
 }
 
+@media screen and (max-width: 768px) {
+    .project {
+        text-align: center;
+    }
+}
 @media screen and (max-width: 480px){
 
     .nav-links {
