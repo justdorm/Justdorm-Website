@@ -156,33 +156,26 @@ canvas.noise {
 /* --- Responsive --- */
 @media screen and (max-width: 768px) {
   .nav-overlay {
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
-    gap: 0;
-    padding: 0;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-top: 2rem;
   }
 
   .nav-link {
     writing-mode: horizontal-tb;
     text-orientation: initial;
-    font-size: clamp(0.9rem, 4vw, 1.3rem);
-    padding: 1em;
+    font-size: clamp(0.65rem, 3vw, 0.9rem);
+    padding: 0.5em;
+    text-align: center;
+    line-height: 1.4;
+    max-width: 45vw;
   }
 
-  .nav-link--left {
+  .nav-link--left, .nav-link--right {
     transform: none;
-    position: fixed;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .nav-link--right {
-    position: fixed;
-    top: 3.5rem;
-    left: 50%;
-    transform: translateX(-50%);
+    position: static;
   }
 
   .bottom-bar {

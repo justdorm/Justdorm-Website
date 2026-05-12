@@ -398,10 +398,12 @@ function animate() {
   cR.x += (tR.x - cR.x) * 0.07;
   cR.y += (tR.y - cR.y) * 0.07;
 
+  const logoScale = mob ? 0.8 : 1.0;
   // Sync all groups
   for (const g of allGroups) {
     g.rotation.x = cR.x;
     g.rotation.y = cR.y;
+    g.scale.set(logoScale, logoScale, logoScale);
   }
 
   // Shift the J layer around for a dynamic parallax effect
