@@ -148,6 +148,23 @@ canvas.noise {
   pointer-events: none;
 }
 
+.gyro-prompt {
+  display: none;
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 60;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  font-family: PreciousSansTwoLight, sans-serif;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  text-align: center;
+  transition: opacity 0.5s ease;
+  animation: pulse-load 1.5s ease-in-out infinite;
+}
+
 @keyframes pulse-load {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.8; }
@@ -180,5 +197,9 @@ canvas.noise {
 
   .bottom-bar {
     bottom: 1rem;
+  }
+  
+  .gyro-prompt {
+    display: block;
   }
 }

@@ -78,6 +78,7 @@ const dDepthTarget = new THREE.WebGLRenderTarget(W * PR, H * PR, {
   minFilter: THREE.NearestFilter,
   magFilter: THREE.NearestFilter,
   type: THREE.FloatType,
+  samples: 4
 });
 dDepthTarget.depthTexture = new THREE.DepthTexture(W * PR, H * PR);
 dDepthTarget.depthTexture.format = THREE.DepthFormat;
@@ -204,10 +205,6 @@ const jOverlapShader = {
     varying float vLocalZ;
     varying vec3 vWorldPosition;
 
-    float readDepth(sampler2D depthTex, vec2 uv) {
-      return texture2D(depthTex, uv).r;
-    }
-
     vec3 cmyColor(float idx) {
       float i = mod(idx, 3.0);
       if (i < 0.5) return vec3(0.0, 1.0, 1.0);
@@ -221,10 +218,20 @@ const jOverlapShader = {
       else return vec3(0.3, 0.25, 0.0);
     }
 
+    float checkExists(sampler2D depthTex, vec2 uv, vec2 res) {
+      float total = 0.0;
+      vec2 off = 0.5 / res;
+      if (texture2D(depthTex, uv + vec2(off.x, off.y)).r < 0.9999) total += 1.0;
+      if (texture2D(depthTex, uv + vec2(-off.x, off.y)).r < 0.9999) total += 1.0;
+      if (texture2D(depthTex, uv + vec2(off.x, -off.y)).r < 0.9999) total += 1.0;
+      if (texture2D(depthTex, uv + vec2(-off.x, -off.y)).r < 0.9999) total += 1.0;
+      return total * 0.25;
+    }
+
     void main() {
       vec2 uv = gl_FragCoord.xy / resolution;
-      float dD = readDepth(dDepth, uv);
-      bool dExists = dD < 0.9999;
+      // 4x super-sampling for the depth mask to get smooth antialiased edges
+      float dExists = checkExists(dDepth, uv, resolution);
       
       // Slot C (overlap/yellow area): index 2,0,1 cycling
       float cur = floor(colorPhase);
@@ -235,13 +242,16 @@ const jOverlapShader = {
       vec3 black = vec3(0.12, 0.12, 0.12);
       vec3 blackDeep = vec3(0.02, 0.02, 0.03);
       
-      vec3 edgeColor = dExists ? slotCEdge : black;
-      vec3 centerColor = dExists ? slotCDeep : blackDeep;
-      
       float dist = length(vec2(vLocalX, vLocalY));
       float edgeFactor = clamp(dist / 2.8, 0.0, 1.0);
       edgeFactor = pow(edgeFactor, 2.0);
-      vec3 color = dExists ? mix(edgeColor, centerColor, edgeFactor) : mix(centerColor, edgeColor, edgeFactor);
+      
+      // Smoothly mix between the overlap colors and the base black based on dExists alpha
+      vec3 color = mix(
+        mix(blackDeep, black, edgeFactor), 
+        mix(slotCDeep, slotCEdge, edgeFactor), 
+        dExists
+      );
       
       gl_FragColor = vec4(color, 1.0);
     }
@@ -276,7 +286,7 @@ loader.load(
     const optsMain = { font, size, depth, curveSegments, bevelEnabled: false };
     // We use ExtrudeGeometry's native bevelSize to expand the 2D shape for flawless outlines
     // Keep bevelThickness small to prevent the outline faces from pushing forward and covering the main colors
-    const optsBlack = { font, size, depth, curveSegments, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.24, bevelSegments: 1 };
+    const optsBlack = { font, size, depth, curveSegments, bevelEnabled: true, bevelThickness: 0.05, bevelSize: isHeader ? 0.4 : 0.24, bevelSegments: 1 };
     const optsWhite = { font, size, depth, curveSegments, bevelEnabled: true, bevelThickness: 0.05, bevelSize: isHeader ? 0.8 : 0.5, bevelSegments: 1 };
 
     const jGeo = extendJ(new TextGeometry('J', optsMain), 0.6);
@@ -362,6 +372,13 @@ const tR = { x: 0, y: 0 }, cR = { x: 0, y: 0 };
 let mob = window.innerWidth < 768;
 
 const mouseNDC = new THREE.Vector2(-999, -999);
+
+// Hide gyro prompt on non-iOS devices (where requestPermission isn't required)
+if (!(typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function')) {
+  const prompt = document.getElementById('gyro-prompt');
+  if (prompt) prompt.style.display = 'none';
+}
+
 window.addEventListener('mousemove', e => {
   const rect = canvas.getBoundingClientRect();
   
@@ -401,11 +418,22 @@ let colorPhaseCurrent = 0;
 
 canvas.addEventListener('click', () => {
   colorPhaseTarget += 1;
-  // Request gyroscope permission for iOS devices
+});
+
+// Request gyroscope permission for iOS devices on first interaction anywhere
+const requestGyro = () => {
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
     DeviceOrientationEvent.requestPermission().catch(console.error);
   }
-});
+  
+  const prompt = document.getElementById('gyro-prompt');
+  if (prompt) prompt.style.opacity = '0';
+
+  window.removeEventListener('click', requestGyro);
+  window.removeEventListener('touchstart', requestGyro);
+};
+window.addEventListener('click', requestGyro);
+window.addEventListener('touchstart', requestGyro);
 canvas.style.cursor = 'pointer';
 
 // ─── Party Mode (raycast hover over logo) ───
@@ -456,10 +484,10 @@ function animate() {
       globalDMat.uniforms.jOffset.value.set(jX, jY);
     }
 
-    // Raycast to detect hover over the logo meshes
+    // Raycast to detect hover over the logo meshes (Disable for mobile)
     raycaster.setFromCamera(mouseNDC, camera);
     const wasParty = partyMode;
-    partyMode = raycaster.intersectObjects(logoGroup.children, true).length > 0;
+    partyMode = !mob && raycaster.intersectObjects(logoGroup.children, true).length > 0;
     canvas.style.cursor = partyMode ? 'pointer' : 'default';
 
     // Party mode: rapidly cycle colors while hovering over logo

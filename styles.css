@@ -156,8 +156,9 @@ iframe{
 header {
     padding: 1rem 1rem 0rem 1rem;
     width: 100%;
-   display: flex;
-   justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
 }
 
 .nav-bar{
@@ -226,6 +227,13 @@ color: #e74d83;
 
 #design-grid {
     display: none;
+}
+
+#logocont {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 1rem;
 }
 
 .logo-img {
@@ -383,15 +391,6 @@ color: #e74d83;
     .toggle{
         margin: 0 auto;
         padding: .5rem;
-    }
-    button{
-        margin: 0 auto;
-        padding: 0px;
-        padding-bottom: 1rem;
-        text-align: center;
-    }
-    #logocont{
-        margin-right: 0;
     }
     .logo-img {
         margin-left: 0;
