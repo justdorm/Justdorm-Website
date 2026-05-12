@@ -1,0 +1,191 @@
+/* ========================================
+   JD 3D Homepage Styles
+   ======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+  color: #fff;
+  font-family: PreciousSansTwoMedium, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* --- Three.js Canvas --- */
+#jd-scene {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* --- Noise Grain Overlay --- */
+canvas.noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.06;
+  z-index: 100;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* --- Navigation Overlay --- */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4vw;
+}
+
+/* --- Side Navigation Links --- */
+.nav-link {
+  pointer-events: auto;
+  font-family: PreciousSansTwoDemiBold, 'Helvetica Neue', Arial, sans-serif;
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 1.2em 0.6em;
+  transition: color 0.4s ease, text-shadow 0.4s ease, transform 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Left link — Motion Design — Cyan hover */
+.nav-link--left {}
+
+.nav-link--left:hover {
+  color: #00ffff;
+  text-shadow:
+    0 0 4px rgba(0, 255, 255, 0.6),
+    0 0 12px rgba(0, 255, 255, 0.3),
+    0 0 30px rgba(0, 255, 255, 0.15);
+}
+
+
+
+/* Right link — Creative Technology — Magenta hover */
+.nav-link--right:hover {
+  color: #ff00ff;
+  text-shadow:
+    0 0 4px rgba(255, 0, 255, 0.6),
+    0 0 12px rgba(255, 0, 255, 0.3),
+    0 0 30px rgba(255, 0, 255, 0.15);
+}
+
+
+
+/* --- Bottom Bar --- */
+.bottom-bar {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  pointer-events: auto;
+}
+
+.bottom-bar a {
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: PreciousSansTwoLight, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.bottom-bar a:hover {
+  color: #e74d83;
+}
+
+.bottom-bar .ig-img {
+  width: 18px;
+  height: 18px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.bottom-bar a:hover .ig-img {
+  opacity: 1;
+}
+
+/* --- Loading State --- */
+.loading-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+  font-family: PreciousSansTwoLight, sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  animation: pulse-load 1.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-load {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* --- Responsive --- */
+@media screen and (max-width: 768px) {
+  .nav-overlay {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+  }
+
+  .nav-link {
+    writing-mode: horizontal-tb;
+    text-orientation: initial;
+    font-size: clamp(0.9rem, 4vw, 1.3rem);
+    padding: 1em;
+  }
+
+  .nav-link--left {
+    transform: none;
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-link--right {
+    position: fixed;
+    top: 3.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .bottom-bar {
+    bottom: 1rem;
+  }
+}
