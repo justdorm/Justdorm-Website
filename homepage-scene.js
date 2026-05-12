@@ -430,10 +430,8 @@ const requestGyro = () => {
   if (prompt) prompt.style.opacity = '0';
 
   window.removeEventListener('click', requestGyro);
-  window.removeEventListener('touchstart', requestGyro);
 };
 window.addEventListener('click', requestGyro);
-window.addEventListener('touchstart', requestGyro);
 canvas.style.cursor = 'pointer';
 
 // ─── Party Mode (raycast hover over logo) ───
