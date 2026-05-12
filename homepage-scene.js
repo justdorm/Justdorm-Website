@@ -16,6 +16,7 @@ renderer.toneMappingExposure = 1.2;
 renderer.autoClear = false;
 
 const W = window.innerWidth, H = window.innerHeight;
+const PR = Math.min(window.devicePixelRatio, 2);
 
 // ─── Camera ───
 const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
@@ -55,12 +56,12 @@ let globalDMat = null;
 let globalJMat = null;
 
 // ─── D Depth Render Target ───
-const dDepthTarget = new THREE.WebGLRenderTarget(W, H, {
+const dDepthTarget = new THREE.WebGLRenderTarget(W * PR, H * PR, {
   minFilter: THREE.NearestFilter,
   magFilter: THREE.NearestFilter,
   type: THREE.FloatType,
 });
-dDepthTarget.depthTexture = new THREE.DepthTexture(W, H);
+dDepthTarget.depthTexture = new THREE.DepthTexture(W * PR, H * PR);
 dDepthTarget.depthTexture.format = THREE.DepthFormat;
 dDepthTarget.depthTexture.type = THREE.UnsignedIntType;
 
@@ -154,7 +155,7 @@ const dSplitShader = {
 const jOverlapShader = {
   uniforms: {
     dDepth: { value: null },
-    resolution: { value: new THREE.Vector2(W, H) },
+    resolution: { value: new THREE.Vector2(W * PR, H * PR) },
     jMaxX: { value: 0.0 },
     colorPhase: { value: 0.0 }
   },
@@ -367,6 +368,10 @@ let colorPhaseCurrent = 0;
 
 canvas.addEventListener('click', () => {
   colorPhaseTarget += 1;
+  // Request gyroscope permission for iOS devices
+  if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+    DeviceOrientationEvent.requestPermission().catch(console.error);
+  }
 });
 canvas.style.cursor = 'pointer';
 
@@ -379,8 +384,9 @@ window.addEventListener('resize', () => {
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
-  dDepthTarget.setSize(w, h);
-  jOverlapShader.uniforms.resolution.value.set(w, h);
+  const pr = Math.min(window.devicePixelRatio, 2);
+  dDepthTarget.setSize(w * pr, h * pr);
+  jOverlapShader.uniforms.resolution.value.set(w * pr, h * pr);
   mob = w < 768;
 });
 
