@@ -73,16 +73,12 @@ const allGroups = [logoGroup, dDepthGroup];
 let globalDMat = null;
 let globalJMat = null;
 
-// ─── D Depth Render Target ───
-const dDepthTarget = new THREE.WebGLRenderTarget(W * PR, H * PR, {
-  minFilter: THREE.NearestFilter,
-  magFilter: THREE.NearestFilter,
-  type: THREE.FloatType,
-  samples: 4
+// ─── D Mask Render Target ───
+const dMaskTarget = new THREE.WebGLRenderTarget(W * PR * 2, H * PR * 2, {
+  minFilter: THREE.LinearFilter,
+  magFilter: THREE.LinearFilter,
+  format: THREE.RGBAFormat
 });
-dDepthTarget.depthTexture = new THREE.DepthTexture(W * PR, H * PR);
-dDepthTarget.depthTexture.format = THREE.DepthFormat;
-dDepthTarget.depthTexture.type = THREE.UnsignedIntType;
 
 const dSplitShader = {
   uniforms: {
@@ -173,7 +169,7 @@ const dSplitShader = {
 
 const jOverlapShader = {
   uniforms: {
-    dDepth: { value: null },
+    dMask: { value: null },
     resolution: { value: new THREE.Vector2(W * PR, H * PR) },
     jMaxX: { value: 0.0 },
     colorPhase: { value: 0.0 }
@@ -195,7 +191,7 @@ const jOverlapShader = {
     }
   `,
   fragmentShader: `
-    uniform sampler2D dDepth;
+    uniform sampler2D dMask;
     uniform vec2 resolution;
     uniform float jMaxX;
     uniform float colorPhase;
@@ -218,20 +214,10 @@ const jOverlapShader = {
       else return vec3(0.3, 0.25, 0.0);
     }
 
-    float checkExists(sampler2D depthTex, vec2 uv, vec2 res) {
-      float total = 0.0;
-      vec2 off = 0.5 / res;
-      if (texture2D(depthTex, uv + vec2(off.x, off.y)).r < 0.9999) total += 1.0;
-      if (texture2D(depthTex, uv + vec2(-off.x, off.y)).r < 0.9999) total += 1.0;
-      if (texture2D(depthTex, uv + vec2(off.x, -off.y)).r < 0.9999) total += 1.0;
-      if (texture2D(depthTex, uv + vec2(-off.x, -off.y)).r < 0.9999) total += 1.0;
-      return total * 0.25;
-    }
-
     void main() {
       vec2 uv = gl_FragCoord.xy / resolution;
-      // 4x super-sampling for the depth mask to get smooth antialiased edges
-      float dExists = checkExists(dDepth, uv, resolution);
+      // Read the anti-aliased color mask (red channel) from the MSAA render target
+      float dExists = texture2D(dMask, uv).r;
       
       // Slot C (overlap/yellow area): index 2,0,1 cycling
       float cur = floor(colorPhase);
@@ -248,8 +234,8 @@ const jOverlapShader = {
       
       // Smoothly mix between the overlap colors and the base black based on dExists alpha
       vec3 color = mix(
-        mix(blackDeep, black, edgeFactor), 
-        mix(slotCDeep, slotCEdge, edgeFactor), 
+        mix(black, blackDeep, edgeFactor), 
+        mix(slotCEdge, slotCDeep, edgeFactor), 
         dExists
       );
       
@@ -287,7 +273,7 @@ loader.load(
     // We use ExtrudeGeometry's native bevelSize to expand the 2D shape for flawless outlines
     // Keep bevelThickness small to prevent the outline faces from pushing forward and covering the main colors
     const optsBlack = { font, size, depth, curveSegments, bevelEnabled: true, bevelThickness: 0.05, bevelSize: isHeader ? 0.4 : 0.24, bevelSegments: 1 };
-    const optsWhite = { font, size, depth, curveSegments, bevelEnabled: true, bevelThickness: 0.05, bevelSize: isHeader ? 0.8 : 0.5, bevelSegments: 1 };
+    const optsWhite = { font, size, depth, curveSegments, bevelEnabled: true, bevelThickness: 0.05, bevelSize: isHeader ? 1.0 : 0.5, bevelSegments: 1 };
 
     const jGeo = extendJ(new TextGeometry('J', optsMain), 0.6);
     const jGeoBlack = extendJ(new TextGeometry('J', optsBlack), 0.6);
@@ -330,7 +316,7 @@ loader.load(
 
     // ── J letter with overlap shader (in main scene) ──
     const jMatLocal = new THREE.ShaderMaterial(jOverlapShader);
-    jMatLocal.uniforms.dDepth.value = dDepthTarget.depthTexture;
+    jMatLocal.uniforms.dMask.value = dMaskTarget.texture;
     jGeo.computeBoundingBox();
     jMatLocal.uniforms.jMaxX.value = jGeo.boundingBox.max.x;
     globalJMat = jMatLocal;
@@ -404,6 +390,13 @@ window.addEventListener('mouseleave', () => { mouseNDC.set(-999, -999); });
 // ─── Gyroscope (Mobile) ───
 window.addEventListener('deviceorientation', e => {
   if (!mob || e.gamma === null || isHeader) return;
+  
+  // Hide prompt automatically if we are receiving gyro data (means permission was already granted)
+  const prompt = document.getElementById('gyro-prompt');
+  if (prompt && prompt.style.display !== 'none') {
+    prompt.style.display = 'none';
+  }
+
   // clamp rotation values to prevent it from spinning too far
   let gamma = Math.max(-45, Math.min(45, e.gamma)); // Left/Right tilt
   let beta = Math.max(-45, Math.min(45, e.beta - 40)); // Up/Down tilt (assuming 40deg neutral angle)
@@ -427,7 +420,10 @@ const requestGyro = () => {
   }
   
   const prompt = document.getElementById('gyro-prompt');
-  if (prompt) prompt.style.opacity = '0';
+  if (prompt) {
+    prompt.style.animation = 'none';
+    prompt.style.display = 'none';
+  }
 
   window.removeEventListener('click', requestGyro);
 };
@@ -451,8 +447,8 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
   const pr = Math.min(window.devicePixelRatio, 2);
-  dDepthTarget.setSize(w * pr, h * pr);
-  jOverlapShader.uniforms.resolution.value.set(w * pr, h * pr);
+  dMaskTarget.setSize(w * pr * 2, h * pr * 2);
+  if (globalJMat) globalJMat.uniforms.resolution.value.set(w * pr, h * pr);
   mob = w < 768;
 });
 
@@ -512,12 +508,13 @@ function animate() {
   }
   pGeo.attributes.position.needsUpdate = true;
 
-  // ── Pass 1: Render D to depth texture ──
-  renderer.setRenderTarget(dDepthTarget);
-  renderer.clear(true, true, false);
+  // Render the D into the mask texture (anti-aliased)
+  renderer.setRenderTarget(dMaskTarget);
+  renderer.setClearColor(0x000000, 0);
+  renderer.clear();
   renderer.render(dDepthScene, camera);
 
-  // ── Pass 2: Render main scene (bg, outlines, D split, J overlap) ──
+  // Render main scene to screen
   renderer.setRenderTarget(null);
   renderer.clear(true, true, false);
   renderer.render(scene, camera);
