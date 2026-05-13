@@ -357,7 +357,8 @@ if (!isHeader) {
       pixelRatio: { value: PR },
       winHeight: { value: window.innerHeight },
       aspectRatio: { value: window.innerWidth / window.innerHeight },
-      mouseNDC: { value: new THREE.Vector2(-999, -999) }
+      mouseNDC: { value: new THREE.Vector2(-999, -999) },
+      mRadius: { value: 0.4 }
     },
     transparent: true,
     depthWrite: false,
@@ -370,6 +371,8 @@ if (!isHeader) {
       uniform float winHeight;
       uniform float aspectRatio;
       uniform vec2 mouseNDC;
+      uniform float mRadius;
+      
       varying vec3 vPos;
       varying float vMouseForce;
       void main() {
@@ -397,7 +400,7 @@ if (!isHeader) {
         vec2 dir = screenPos - mouseNDC;
         dir.x *= aspectRatio;
         float distToMouse = length(dir);
-        float mForce = smoothstep(0.4, 0.0, distToMouse);
+        float mForce = smoothstep(mRadius, 0.0, distToMouse);
         vMouseForce = mForce;
         
         gl_Position = projPos;
@@ -595,6 +598,9 @@ function animate() {
     g.rotation.x = cR.x;
     g.rotation.y = cR.y;
     g.scale.set(logoScale, logoScale, logoScale);
+    
+    // Shift the entire logo to the left on mobile to improve framing
+    g.position.x = mob && !isHeader ? -1.0 : 0;
   }
 
   // Shift the J layer around for a dynamic parallax effect
@@ -613,9 +619,9 @@ function animate() {
       const noiseX = Math.sin(t * 0.5) * 0.6 + Math.sin(t * 1.2) * 0.3;
       const noiseY = Math.cos(t * 0.4) * 0.6 + Math.sin(t * 1.1) * 0.3;
       
-      // Combine noise with a dampened gyroscope tilt
-      mouseNDC.x = noiseX + (cR.y / 0.15) * 0.4;
-      mouseNDC.y = noiseY + (-cR.x / 0.15) * 0.4;
+      // Combine noise with the gyroscope tilt (multiplier increased to 1.2 for much higher sensitivity)
+      mouseNDC.x = noiseX + (cR.y / 0.15) * 1.2;
+      mouseNDC.y = noiseY + (-cR.x / 0.15) * 1.2;
     }
 
     // Raycast to detect hover over the logo meshes (Disable for mobile)
@@ -650,6 +656,9 @@ function animate() {
       globalParticleMat.uniforms.hoverPulse.value = hoverPulseVal;
       globalParticleMat.uniforms.swirlAngle.value = globalSwirlAngle;
       globalParticleMat.uniforms.mouseNDC.value.copy(mouseNDC);
+      
+      // Drastically increase the virtual cursor radius on mobile so more particles flare up
+      globalParticleMat.uniforms.mRadius.value = mob && !isHeader ? 1.2 : 0.4;
     }
 
     // Dynamic vertical gradient glow matching the cycle
