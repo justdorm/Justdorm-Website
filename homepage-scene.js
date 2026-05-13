@@ -344,7 +344,7 @@ function mk(grp, geo, mat, pos, rot, s, zOff) {
 
 // ─── Mobile WebGL Glow ───
 if (!isHeader) {
-  const glowGeo = new THREE.PlaneGeometry(12, 12);
+  const glowGeo = new THREE.PlaneGeometry(30, 30);
   globalMobileGlowMat = new THREE.ShaderMaterial({
     uniforms: { colorPhase: { value: 0.0 } },
     transparent: true, depthWrite: false,
@@ -372,22 +372,22 @@ if (!isHeader) {
         
         vec2 uv = vUv - vec2(0.5);
         
-        // Precise UV offsets mapping to J and D mesh coordinates in a 12x12 plane
-        vec2 uvJ = uv - vec2(-0.025, -0.008); 
-        vec2 uvDL = uv - vec2(0.02, -0.016);
-        vec2 uvDR = uv - vec2(0.08, -0.016);
+        // Horizontal offsets to spread the glow out left and right behind the logo
+        vec2 uvJ = uv - vec2(-0.06, 0.0); 
+        vec2 uvDL = uv - vec2(0.0, 0.0);
+        vec2 uvDR = uv - vec2(0.06, 0.0);
         
-        // Stretch vertically to match the letter tallness
-        uvJ.y *= 0.6;
-        uvDL.y *= 0.6;
-        uvDR.y *= 0.6;
+        // Stretch vertically so it matches the tall aspect ratio of the JD logo
+        uvJ.y *= 0.7;
+        uvDL.y *= 0.7;
+        uvDR.y *= 0.7;
         
-        // Tighter, highly intense glow
-        float aJ = smoothstep(0.2, 0.0, length(uvJ)) * 0.85;
-        float aDL = smoothstep(0.2, 0.0, length(uvDL)) * 0.85;
-        float aDR = smoothstep(0.2, 0.0, length(uvDR)) * 0.85;
+        // Soft gradient that peeks just outside the opaque letters
+        float aJ = smoothstep(0.18, 0.0, length(uvJ)) * 0.8;
+        float aDL = smoothstep(0.18, 0.0, length(uvDL)) * 0.8;
+        float aDR = smoothstep(0.18, 0.0, length(uvDR)) * 0.8;
         
-        float aCore = max(smoothstep(0.08, 0.0, length(uvDL)), smoothstep(0.08, 0.0, length(uvJ))) * 1.2;
+        float aCore = max(smoothstep(0.06, 0.0, length(uvDL)), smoothstep(0.06, 0.0, length(uvJ))) * 1.5;
         
         vec3 rgb = (colJ * aJ) + (colDL * aDL) + (colDR * aDR) + (vec3(1.0) * aCore);
         float alpha = max(max(aJ, aDL), max(aDR, aCore));
