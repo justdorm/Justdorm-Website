@@ -76,6 +76,7 @@ let globalDMat = null;
 let globalJMat = null;
 let globalMobileGlowMat = null;
 let globalMobileGlowMesh = null;
+let globalFlareMat = null;
 
 // ─── D Mask Render Target ───
 const maskPR = mob ? PR : (PR * 2);
@@ -326,6 +327,136 @@ loader.load(
     jMatLocal.uniforms.jMaxX.value = jGeo.boundingBox.max.x;
     globalJMat = jMatLocal;
     mk(jGroup, jGeo, jMatLocal, jP, jR, 1.0, 0.08);
+
+    // ── Interactive Border Flares ──
+    jGeoWhite.computeBoundingBox();
+    dGeoWhite.computeBoundingBox();
+
+    function getClosestVertex(geo, targetPt) {
+      const pos = geo.attributes.position;
+      let minDist = Infinity;
+      const closest = new THREE.Vector3();
+      const temp = new THREE.Vector3();
+      const zMax = geo.boundingBox.max.z;
+      for(let i=0; i<pos.count; i++) {
+        temp.fromBufferAttribute(pos, i);
+        if (temp.z < zMax - 0.2) continue; 
+        const d = temp.distanceTo(targetPt);
+        if(d < minDist) {
+          minDist = d;
+          closest.copy(temp);
+        }
+      }
+      return closest;
+    }
+
+    const jTargets = [
+      new THREE.Vector3(-999, 999, 0),   // Top Left
+      new THREE.Vector3(999, 999, 0),    // Top Right
+      new THREE.Vector3(-999, 400, 0),   // Mid-Top Left
+      new THREE.Vector3(-999, 0, 0),     // Mid Left
+      new THREE.Vector3(-999, -400, 0),  // Mid-Bottom Left
+      new THREE.Vector3(-999, -999, 0)   // Bottom Left hook
+    ];
+
+    const dTargets = [
+      new THREE.Vector3(-999, 999, 0),   // Top Left of D
+      new THREE.Vector3(999, 999, 0),    // Top Right
+      new THREE.Vector3(999, 0, 0),      // Far Right curve
+      new THREE.Vector3(999, -999, 0),   // Bottom Right
+      new THREE.Vector3(-999, -999, 0),  // Bottom Left of D
+      new THREE.Vector3(0, -999, 0)      // Bottom Center of D
+    ];
+
+    function nudgeInward(pt) {
+      const len = Math.sqrt(pt.x * pt.x + pt.y * pt.y);
+      if (len > 0) {
+        const shift = 0.06; // Moved back out by ~3px
+        pt.x -= (pt.x / len) * shift;
+        pt.y -= (pt.y / len) * shift;
+      }
+      return pt;
+    }
+
+    const jFlaresGeo = new THREE.BufferGeometry().setFromPoints(
+      jTargets.map(pt => nudgeInward(getClosestVertex(jGeoWhite, pt)))
+    );
+    const dFlaresGeo = new THREE.BufferGeometry().setFromPoints(
+      dTargets.map(pt => nudgeInward(getClosestVertex(dGeoWhite, pt)))
+    );
+
+    const borderFlareMat = new THREE.ShaderMaterial({
+      uniforms: {
+        mouseWorldPos: { value: new THREE.Vector3(999, 999, 999) },
+        pixelRatio: { value: PR },
+        winHeight: { value: window.innerHeight }
+      },
+      transparent: true,
+      depthWrite: false,
+      depthTest: false,
+      vertexShader: `
+        uniform vec3 mouseWorldPos;
+        uniform float pixelRatio;
+        uniform float winHeight;
+        varying float vDistance;
+        void main() {
+          vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+          vDistance = distance(worldPosition.xy, mouseWorldPos.xy);
+          
+          vec4 mvPosition = viewMatrix * worldPosition;
+          gl_Position = projectionMatrix * mvPosition;
+          
+          float sizeMult = smoothstep(1.5, 0.0, vDistance);
+          float currentSize = (0.1 + (sizeMult * 0.4)) * 3.0; // Restored size
+          
+          gl_PointSize = (currentSize * winHeight * pixelRatio * 0.5) / -mvPosition.z;
+        }
+      `,
+      fragmentShader: `
+        varying float vDistance;
+        void main() {
+          vec2 coord = gl_PointCoord - vec2(0.5);
+          float dist = length(coord) * 2.0; 
+          
+          float revealAlpha = smoothstep(1.5, 0.0, vDistance);
+          if (revealAlpha < 0.01) discard;
+          
+          float coreBright = smoothstep(0.1, 0.0, dist) * 0.8; // Restored core brightness
+          
+          float fadeX = smoothstep(0.5, 0.0, abs(coord.x));
+          float flareH = smoothstep(0.04, 0.0, abs(coord.y)) * fadeX;
+          
+          float fadeY = smoothstep(0.5, 0.0, abs(coord.y));
+          float flareV = smoothstep(0.04, 0.0, abs(coord.x)) * fadeY;
+          
+          float diag1Dist = abs((coord.x - coord.y) * 0.7071);
+          float diag1Fade = smoothstep(0.5, 0.0, abs((coord.x + coord.y) * 0.7071));
+          float flareD1 = smoothstep(0.02, 0.0, diag1Dist) * diag1Fade * 0.4; // Restored spike intensity
+          
+          float diag2Dist = abs((coord.x + coord.y) * 0.7071);
+          float diag2Fade = smoothstep(0.5, 0.0, abs((coord.x - coord.y) * 0.7071));
+          float flareD2 = smoothstep(0.02, 0.0, diag2Dist) * diag2Fade * 0.4; // Restored spike intensity
+          
+          float totalFlare = coreBright + (flareH + flareV + flareD1 + flareD2) * 1.5; // Restored total intensity
+          
+          float finalAlpha = totalFlare * revealAlpha;
+          if (finalAlpha < 0.01) discard;
+          
+          gl_FragColor = vec4(1.0, 1.0, 1.0, finalAlpha);
+        }
+      `
+    });
+    globalFlareMat = borderFlareMat;
+
+    const jFlares = new THREE.Points(jFlaresGeo, borderFlareMat);
+    jFlares.position.set(jP.x, jP.y, jP.z - 0.68 + 0.1);
+    jFlares.rotation.copy(jR);
+    jGroup.add(jFlares);
+
+    const dFlares = new THREE.Points(dFlaresGeo, borderFlareMat);
+    dFlares.position.set(dP.x, dP.y, dP.z - 0.48 + 0.1);
+    dFlares.rotation.copy(dR);
+    logoGroup.add(dFlares);
 
     const el = document.getElementById('loading-text');
     if (el) el.style.display = 'none';
@@ -666,6 +797,9 @@ window.addEventListener('resize', () => {
     globalParticleMat.uniforms.aspectRatio.value = w / h;
     globalParticleMat.uniforms.winHeight.value = h;
   }
+  if (globalFlareMat) {
+    globalFlareMat.uniforms.winHeight.value = h;
+  }
   mob = w < 768;
 });
 
@@ -708,9 +842,23 @@ function animate() {
 
     // Raycast to detect hover over the logo meshes (Disable for mobile)
     raycaster.setFromCamera(mouseNDC, camera);
+    const intersects = raycaster.intersectObjects(logoGroup.children, true);
     const wasParty = partyMode;
-    partyMode = !mob && raycaster.intersectObjects(logoGroup.children, true).length > 0;
+    partyMode = !mob && intersects.length > 0;
     canvas.style.cursor = partyMode ? 'pointer' : 'default';
+
+    // Pass world intersection point to border flares
+    if (mob && !isHeader && globalFlareMat) {
+      // Simulate a light sweeping across the logo based on gyroscope tilt
+      // Map the ~[-0.3, 0.3] rotation range to a ~[-3.6, 3.6] coordinate space
+      const simX = cR.y * 12.0; 
+      const simY = -cR.x * 12.0;
+      globalFlareMat.uniforms.mouseWorldPos.value.set(simX, simY, 0);
+    } else if (partyMode && !isHeader && globalFlareMat) {
+      globalFlareMat.uniforms.mouseWorldPos.value.copy(intersects[0].point);
+    } else if (globalFlareMat) {
+      globalFlareMat.uniforms.mouseWorldPos.value.set(999, 999, 999);
+    }
 
     // Party mode: rapidly cycle colors while hovering over logo
     if (partyMode) {
@@ -771,7 +919,7 @@ function animate() {
         return `rgba(${fR}, ${fG}, ${fB}, ${alpha})`;
       };
 
-      canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.15)})`;
+      canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.25)})`;
     } else if (mob) {
       canvas.style.filter = 'none';
       canvas.style.willChange = 'auto';
