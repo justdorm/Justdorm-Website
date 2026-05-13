@@ -76,11 +76,11 @@ let globalMobileGlowMat = null;
 let globalMobileGlowMesh = null;
 
 // ─── D Mask Render Target ───
-const dMaskTarget = new THREE.WebGLRenderTarget(W * PR, H * PR, {
+const maskPR = mob ? PR : (PR * 2);
+const dMaskTarget = new THREE.WebGLRenderTarget(W * maskPR, H * maskPR, {
   minFilter: THREE.LinearFilter,
   magFilter: THREE.LinearFilter,
-  format: THREE.RGBAFormat,
-  samples: 4
+  format: THREE.RGBAFormat
 });
 
 const dSplitShader = {
@@ -631,8 +631,9 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
   const pr = Math.min(window.devicePixelRatio, 2);
-  dMaskTarget.setSize(w * pr, h * pr);
-  if (globalJMat) globalJMat.uniforms.resolution.value.set(w * pr, h * pr);
+  const maskPR = mob ? pr : (pr * 2);
+  dMaskTarget.setSize(w * maskPR, h * maskPR);
+  if (globalJMat) globalJMat.uniforms.resolution.value.set(w * maskPR, h * maskPR);
   if (globalMobileGlowMesh) globalMobileGlowMesh.visible = mob;
   if (globalParticleMat) {
     globalParticleMat.uniforms.aspectRatio.value = w / h;
