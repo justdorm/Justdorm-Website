@@ -76,7 +76,7 @@ let globalMobileGlowMat = null;
 let globalMobileGlowMesh = null;
 
 // ─── D Mask Render Target ───
-const maskPR = mob ? PR : (PR * 2);
+const maskPR = (window.innerWidth < 768) ? PR : (PR * 2);
 const dMaskTarget = new THREE.WebGLRenderTarget(W * maskPR, H * maskPR, {
   minFilter: THREE.LinearFilter,
   magFilter: THREE.LinearFilter,
