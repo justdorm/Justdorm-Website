@@ -74,7 +74,7 @@ let globalDMat = null;
 let globalJMat = null;
 
 // ─── D Mask Render Target ───
-const dMaskTarget = new THREE.WebGLRenderTarget(W * PR * 2, H * PR * 2, {
+const dMaskTarget = new THREE.WebGLRenderTarget(W * PR, H * PR, {
   minFilter: THREE.LinearFilter,
   magFilter: THREE.LinearFilter,
   format: THREE.RGBAFormat
@@ -593,7 +593,7 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
   const pr = Math.min(window.devicePixelRatio, 2);
-  dMaskTarget.setSize(w * pr * 2, h * pr * 2);
+  dMaskTarget.setSize(w * pr, h * pr);
   if (globalJMat) globalJMat.uniforms.resolution.value.set(w * pr, h * pr);
   if (globalParticleMat) {
     globalParticleMat.uniforms.aspectRatio.value = w / h;
@@ -705,10 +705,14 @@ function animate() {
 
       // Added an inner, tighter, less saturated core layer, plus a massive, low-opacity background glow
       if (mob) {
-        // iOS will often silently disable drop-shadows on rapidly redrawing WebGL canvases unless explicitly forced into a hardware-accelerated layer
+        // iOS Safari TBDR architecture struggles heavily with updating CSS filters on a WebGL canvas every frame.
+        // We set it once with a static color to avoid tanking the FPS.
         canvas.style.willChange = 'filter';
         canvas.style.transform = 'translateZ(0)';
-        canvas.style.filter = `drop-shadow(0px 0px 30px ${getCycleColor(2, 0.5)})`;
+        if (!canvas.dataset.shadowSet) {
+          canvas.style.filter = `drop-shadow(0px 0px 30px rgba(0, 255, 255, 0.4))`;
+          canvas.dataset.shadowSet = 'true';
+        }
       } else {
         canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.15)})`;
       }
