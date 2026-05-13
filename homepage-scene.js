@@ -382,12 +382,13 @@ if (!isHeader) {
         uvRight.y *= 0.7;
         
         // Match exact CSS opacities: Sides are dim (0.3), Center is medium (0.5), Core is tight (0.6)
-        float aLeft = smoothstep(0.12, 0.0, length(uvLeft)) * 0.3;
-        float aRight = smoothstep(0.12, 0.0, length(uvRight)) * 0.3;
-        float aCenter = smoothstep(0.15, 0.0, length(uvCenter)) * 0.5;
+        // Update: Boosted multipliers to make it brighter without expanding the radius
+        float aLeft = smoothstep(0.12, 0.0, length(uvLeft)) * 0.6;
+        float aRight = smoothstep(0.12, 0.0, length(uvRight)) * 0.6;
+        float aCenter = smoothstep(0.15, 0.0, length(uvCenter)) * 0.85;
         
-        float aCore = smoothstep(0.05, 0.0, length(uvCenter)) * 0.6;
-        float aAmbient = smoothstep(0.4, 0.0, length(uvCenter)) * 0.2; // 120px background glow
+        float aCore = smoothstep(0.05, 0.0, length(uvCenter)) * 1.0;
+        float aAmbient = smoothstep(0.4, 0.0, length(uvCenter)) * 0.35; // 120px background glow
         
         vec3 rgb = (colLeft * aLeft) + (colRight * aRight) + (colCenter * aCenter) + (colCenter * aAmbient) + (vec3(1.0) * aCore);
         float alpha = max(max(max(aLeft, aRight), max(aCenter, aAmbient)), aCore);
