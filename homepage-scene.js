@@ -945,7 +945,7 @@ function animate() {
         return `rgba(${fR}, ${fG}, ${fB}, ${alpha})`;
       };
 
-      canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.18)}) drop-shadow(-80px 0px 100px ${getCycleColor(0, 0.05)}) drop-shadow(80px 0px 100px ${getCycleColor(1, 0.05)})`;
+      canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.25)})`;
     } else if (mob) {
       canvas.style.filter = 'none';
       canvas.style.willChange = 'auto';
