@@ -371,7 +371,7 @@ loader.load(
     function nudgeInward(pt) {
       const len = Math.sqrt(pt.x * pt.x + pt.y * pt.y);
       if (len > 0) {
-        const shift = 0.06; // Moved back out by ~3px
+        const shift = 0.04; // Moved out by 1px (from 0.06)
         pt.x -= (pt.x / len) * shift;
         pt.y -= (pt.y / len) * shift;
       }
@@ -406,8 +406,8 @@ loader.load(
           vec4 mvPosition = viewMatrix * worldPosition;
           gl_Position = projectionMatrix * mvPosition;
           
-          float sizeMult = smoothstep(1.5, 0.0, vDistance);
-          float currentSize = (0.1 + (sizeMult * 0.4)) * 3.0; // Restored size
+          float sizeMult = smoothstep(2.5, 0.0, vDistance);
+          float currentSize = (0.05 + (sizeMult * 0.3)) * 2.0; // Much more subtle
           
           gl_PointSize = (currentSize * winHeight * pixelRatio * 0.5) / -mvPosition.z;
         }
@@ -418,10 +418,10 @@ loader.load(
           vec2 coord = gl_PointCoord - vec2(0.5);
           float dist = length(coord) * 2.0; 
           
-          float revealAlpha = smoothstep(1.5, 0.0, vDistance);
+          float revealAlpha = smoothstep(2.5, 0.0, vDistance); // Wider reveal area
           if (revealAlpha < 0.01) discard;
           
-          float coreBright = smoothstep(0.1, 0.0, dist) * 0.8; // Restored core brightness
+          float coreBright = smoothstep(0.1, 0.0, dist) * 0.5; // Very subtle core
           
           float fadeX = smoothstep(0.5, 0.0, abs(coord.x));
           float flareH = smoothstep(0.04, 0.0, abs(coord.y)) * fadeX;
@@ -431,13 +431,13 @@ loader.load(
           
           float diag1Dist = abs((coord.x - coord.y) * 0.7071);
           float diag1Fade = smoothstep(0.5, 0.0, abs((coord.x + coord.y) * 0.7071));
-          float flareD1 = smoothstep(0.02, 0.0, diag1Dist) * diag1Fade * 0.4; // Restored spike intensity
+          float flareD1 = smoothstep(0.02, 0.0, diag1Dist) * diag1Fade * 0.2; // Subtle spikes
           
           float diag2Dist = abs((coord.x + coord.y) * 0.7071);
           float diag2Fade = smoothstep(0.5, 0.0, abs((coord.x - coord.y) * 0.7071));
-          float flareD2 = smoothstep(0.02, 0.0, diag2Dist) * diag2Fade * 0.4; // Restored spike intensity
+          float flareD2 = smoothstep(0.02, 0.0, diag2Dist) * diag2Fade * 0.2; // Subtle spikes
           
-          float totalFlare = coreBright + (flareH + flareV + flareD1 + flareD2) * 1.5; // Restored total intensity
+          float totalFlare = coreBright + (flareH + flareV + flareD1 + flareD2) * 0.8; // Reduced overall intensity
           
           float finalAlpha = totalFlare * revealAlpha;
           if (finalAlpha < 0.01) discard;
@@ -849,10 +849,13 @@ function animate() {
 
     // Pass world intersection point to border flares
     if (mob && !isHeader && globalFlareMat) {
-      // Simulate a light sweeping across the logo based on gyroscope tilt
-      // Map the ~[-0.3, 0.3] rotation range to a ~[-3.6, 3.6] coordinate space
-      const simX = cR.y * 12.0; 
-      const simY = -cR.x * 12.0;
+      // Create a slow, ambient, sweeping light animation for mobile that adds onto gyroscope tilt
+      const time = Date.now() * 0.001;
+      const ambientX = Math.sin(time * 0.8) * 3.5;
+      const ambientY = Math.cos(time * 0.5) * 3.5;
+      
+      const simX = (cR.y * 12.0) + ambientX; 
+      const simY = (-cR.x * 12.0) + ambientY;
       globalFlareMat.uniforms.mouseWorldPos.value.set(simX, simY, 0);
     } else if (partyMode && !isHeader && globalFlareMat) {
       globalFlareMat.uniforms.mouseWorldPos.value.copy(intersects[0].point);
