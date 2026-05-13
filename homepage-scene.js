@@ -631,15 +631,12 @@ function animate() {
       globalDMat.uniforms.jOffset.value.set(jX, jY);
     }
     
-    // On mobile, use a smooth, meandering noise function for the virtual cursor, gently influenced by the gyroscope
+    // On mobile, use the gyroscope tilt directly to move the virtual cursor into quadrants
     if (mob && !isHeader) {
-      // Generate smooth wandering noise using layered sine waves
-      const noiseX = Math.sin(t * 0.5) * 0.6 + Math.sin(t * 1.2) * 0.3;
-      const noiseY = Math.cos(t * 0.4) * 0.6 + Math.sin(t * 1.1) * 0.3;
-      
-      // Combine noise with the gyroscope tilt (multiplier increased to 1.2 for much higher sensitivity)
-      mouseNDC.x = noiseX + (cR.y / 0.15) * 1.2;
-      mouseNDC.y = noiseY + (-cR.x / 0.15) * 1.2;
+      // Map gyroscope tilt directly to screen corners. 
+      // Multiplier of 1.5 ensures a comfortable tilt pushes the cursor fully into a quadrant.
+      mouseNDC.x = (cR.y / 0.15) * 1.5;
+      mouseNDC.y = (-cR.x / 0.15) * 1.5;
     }
 
     // Raycast to detect hover over the logo meshes (Disable for mobile)
@@ -675,8 +672,8 @@ function animate() {
       globalParticleMat.uniforms.swirlAngle.value = globalSwirlAngle;
       globalParticleMat.uniforms.mouseNDC.value.copy(mouseNDC);
       
-      // Drastically increase the virtual cursor radius on mobile so more particles flare up
-      globalParticleMat.uniforms.mRadius.value = mob && !isHeader ? 1.2 : 0.4;
+      // Set radius to cover roughly a quarter of the screen (a quadrant)
+      globalParticleMat.uniforms.mRadius.value = mob && !isHeader ? 1.4 : 0.4;
     }
 
     // Dynamic vertical gradient glow matching the cycle
