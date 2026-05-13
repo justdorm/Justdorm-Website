@@ -349,11 +349,11 @@ loader.load(
       const closest = new THREE.Vector3();
       const temp = new THREE.Vector3();
       const zMax = geo.boundingBox.max.z;
-      for(let i=0; i<pos.count; i++) {
+      for (let i = 0; i < pos.count; i++) {
         temp.fromBufferAttribute(pos, i);
-        if (temp.z < zMax - 0.2) continue; 
+        if (temp.z < zMax - 0.2) continue;
         const d = temp.distanceTo(targetPt);
-        if(d < minDist) {
+        if (d < minDist) {
           minDist = d;
           closest.copy(temp);
         }
@@ -844,7 +844,7 @@ function animate() {
     g.rotation.x = cR.x;
     g.rotation.y = cR.y;
     g.scale.set(logoScale, logoScale, logoScale);
-    
+
     // Shift the entire logo slightly to the left on mobile to improve framing
     g.position.x = mob && !isHeader ? -0.25 : 0;
   }
@@ -858,7 +858,7 @@ function animate() {
     if (globalDMat) {
       globalDMat.uniforms.jOffset.value.set(jX, jY);
     }
-    
+
     // On mobile, use the gyroscope tilt directly to move the virtual cursor into quadrants
     if (mob && !isHeader) {
       // Map gyroscope tilt directly to screen corners. 
@@ -877,7 +877,7 @@ function animate() {
     // Pass world intersection point to border flares
     if (mob && !isHeader && globalFlareMat) {
       // Light sweeps exclusively based on gyroscope tilt
-      const simX = cR.y * 15.0; 
+      const simX = cR.y * 15.0;
       const simY = -cR.x * 15.0;
       globalFlareMat.uniforms.mouseWorldPos.value.set(simX, simY, 0);
     } else if (partyMode && !isHeader && globalFlareMat) {
@@ -903,17 +903,17 @@ function animate() {
     // Decay the particle pulse and animate the hover pulse
     particlePulse += (0.0 - particlePulse) * 0.04;
     hoverPulseVal += ((partyMode ? 1.0 : 0.0) - hoverPulseVal) * 0.1;
-    
+
     // Accumulate swirl angle (reverse direction, base slow rotation + smaller burst of speed on click)
     globalSwirlAngle -= 0.002 + (particlePulse * 0.02);
-    
+
     if (globalParticleMat) {
       globalParticleMat.uniforms.time.value = t;
       globalParticleMat.uniforms.pulse.value = particlePulse;
       globalParticleMat.uniforms.hoverPulse.value = hoverPulseVal;
       globalParticleMat.uniforms.swirlAngle.value = globalSwirlAngle;
       globalParticleMat.uniforms.mouseNDC.value.copy(mouseNDC);
-      
+
       // Set radius to cover roughly a quarter of the screen (a quadrant)
       globalParticleMat.uniforms.mRadius.value = mob && !isHeader ? 1.4 : 0.4;
     }
@@ -933,19 +933,19 @@ function animate() {
         const t = phase - cur;
         const c1 = getCmyColor(cur);
         const c2 = getCmyColor(cur + 1);
-        
+
         const r = c1[0] + (c2[0] - c1[0]) * t;
         const g = c1[1] + (c2[1] - c1[1]) * t;
         const b = c1[2] + (c2[2] - c1[2]) * t;
-        
+
         const fR = Math.round(r + (255 - r) * desaturate);
         const fG = Math.round(g + (255 - g) * desaturate);
         const fB = Math.round(b + (255 - b) * desaturate);
-        
+
         return `rgba(${fR}, ${fG}, ${fB}, ${alpha})`;
       };
 
-      canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.25)}) drop-shadow(-100px 0px 200px ${getCycleColor(0, 0.15)}) drop-shadow(100px 0px 200px ${getCycleColor(1, 0.15)})`;
+      canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.18)}) drop-shadow(-80px 0px 100px ${getCycleColor(0, 0.05)}) drop-shadow(80px 0px 100px ${getCycleColor(1, 0.05)})`;
     } else if (mob) {
       canvas.style.filter = 'none';
       canvas.style.willChange = 'auto';
