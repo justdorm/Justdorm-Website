@@ -365,32 +365,32 @@ if (!isHeader) {
         float cur = floor(colorPhase);
         float t = colorPhase - cur;
         
-        // Exact colors of the meshes
-        vec3 colDL = mix(cmyColor(cur), cmyColor(cur+1.0), t);     // Cyan (D-Left)
-        vec3 colDR = mix(cmyColor(cur+1.0), cmyColor(cur+2.0), t); // Magenta (D-Right)
-        vec3 colJ = mix(cmyColor(cur+2.0), cmyColor(cur+3.0), t);  // Yellow (J/Overlap)
+        // Match exact color order of the desktop CSS drop shadow
+        vec3 colLeft = mix(cmyColor(cur), cmyColor(cur+1.0), t);       // Cyan (offset 0)
+        vec3 colRight = mix(cmyColor(cur+1.0), cmyColor(cur+2.0), t);  // Magenta (offset 1)
+        vec3 colCenter = mix(cmyColor(cur+2.0), cmyColor(cur+3.0), t); // Yellow (offset 2)
         
         vec2 uv = vUv - vec2(0.5);
         
-        // Horizontal offsets to spread the glow out left and right behind the logo
-        vec2 uvJ = uv - vec2(-0.06, 0.0); 
-        vec2 uvDL = uv - vec2(0.0, 0.0);
-        vec2 uvDR = uv - vec2(0.06, 0.0);
+        // Match horizontal offsets of the -20px and 20px drop shadows
+        vec2 uvLeft = uv - vec2(-0.06, 0.0); 
+        vec2 uvCenter = uv - vec2(0.0, 0.0);
+        vec2 uvRight = uv - vec2(0.06, 0.0);
         
-        // Stretch vertically so it matches the tall aspect ratio of the JD logo
-        uvJ.y *= 0.7;
-        uvDL.y *= 0.7;
-        uvDR.y *= 0.7;
+        uvLeft.y *= 0.7;
+        uvCenter.y *= 0.7;
+        uvRight.y *= 0.7;
         
-        // Soft gradient that peeks just outside the opaque letters
-        float aJ = smoothstep(0.18, 0.0, length(uvJ)) * 0.8;
-        float aDL = smoothstep(0.18, 0.0, length(uvDL)) * 0.8;
-        float aDR = smoothstep(0.18, 0.0, length(uvDR)) * 0.8;
+        // Match exact CSS opacities: Sides are dim (0.3), Center is medium (0.5), Core is tight (0.6)
+        float aLeft = smoothstep(0.12, 0.0, length(uvLeft)) * 0.3;
+        float aRight = smoothstep(0.12, 0.0, length(uvRight)) * 0.3;
+        float aCenter = smoothstep(0.15, 0.0, length(uvCenter)) * 0.5;
         
-        float aCore = max(smoothstep(0.06, 0.0, length(uvDL)), smoothstep(0.06, 0.0, length(uvJ))) * 1.5;
+        float aCore = smoothstep(0.05, 0.0, length(uvCenter)) * 0.6;
+        float aAmbient = smoothstep(0.4, 0.0, length(uvCenter)) * 0.2; // 120px background glow
         
-        vec3 rgb = (colJ * aJ) + (colDL * aDL) + (colDR * aDR) + (vec3(1.0) * aCore);
-        float alpha = max(max(aJ, aDL), max(aDR, aCore));
+        vec3 rgb = (colLeft * aLeft) + (colRight * aRight) + (colCenter * aCenter) + (colCenter * aAmbient) + (vec3(1.0) * aCore);
+        float alpha = max(max(max(aLeft, aRight), max(aCenter, aAmbient)), aCore);
         
         gl_FragColor = vec4(rgb, alpha);
       }
