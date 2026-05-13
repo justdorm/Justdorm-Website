@@ -433,8 +433,8 @@ if (!isHeader) {
         
         float alphaMult = smoothstep(0.5, 0.0, dist);
         
-        // Total force driving the glow: heavily softened local mouse proximity + subtle global hover + softened global click
-        float glowForce = (vMouseForce * 0.15) + (hoverPulse * 0.3) + (pulse * 0.5);
+        // Total force driving the glow: use max() to prevent hover and click from stacking and blowing out!
+        float glowForce = max(vMouseForce * 0.15, max(hoverPulse * 0.15, pulse * 0.15));
         
         float coreBrightness = smoothstep(0.15, 0.0, dist) * glowForce * 0.8;
         
@@ -675,7 +675,12 @@ function animate() {
       };
 
       // Added an inner, tighter, less saturated core layer, plus a massive, low-opacity background glow
-      canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.15)})`;
+      if (mob) {
+        // Simplified 2-layer glow for mobile to prevent iOS Safari from stripping complex filters
+        canvas.style.filter = `drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(0px 0px 80px ${getCycleColor(2, 0.2)})`;
+      } else {
+        canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.15)})`;
+      }
     }
   }
 
