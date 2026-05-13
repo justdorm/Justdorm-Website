@@ -542,9 +542,19 @@ window.addEventListener('click', () => {
 });
 
 // Request gyroscope permission for iOS devices on first interaction anywhere
+let gyroRequested = false;
 const requestGyro = () => {
+  if (gyroRequested) return;
+
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-    DeviceOrientationEvent.requestPermission().catch(console.error);
+    gyroRequested = true;
+    DeviceOrientationEvent.requestPermission()
+      .then(permissionState => {
+        if (permissionState === 'granted') {
+          // permission granted
+        }
+      })
+      .catch(console.error);
   }
 
   const prompt = document.getElementById('gyro-prompt');
@@ -554,8 +564,16 @@ const requestGyro = () => {
   }
 
   window.removeEventListener('click', requestGyro);
+  window.removeEventListener('touchend', requestGyro);
+  document.body.removeEventListener('click', requestGyro);
+  document.body.removeEventListener('touchend', requestGyro);
 };
 window.addEventListener('click', requestGyro);
+window.addEventListener('touchend', requestGyro);
+document.body.addEventListener('click', requestGyro);
+document.body.addEventListener('touchend', requestGyro);
+canvas.addEventListener('click', requestGyro);
+canvas.addEventListener('touchend', requestGyro);
 canvas.style.cursor = 'pointer';
 
 // ─── Party Mode (raycast hover over logo) ───
