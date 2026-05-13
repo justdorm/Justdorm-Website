@@ -89,7 +89,8 @@ const dMaskTarget = new THREE.WebGLRenderTarget(W * maskPR, H * maskPR, {
 const dSplitShader = {
   uniforms: {
     jOffset: { value: new THREE.Vector2(0, 0) },
-    colorPhase: { value: 0.0 }
+    colorPhase: { value: 0.0 },
+    isHeaderFlag: { value: isHeader ? 1.0 : 0.0 }
   },
   vertexShader: `
     varying vec3 vNormal;
@@ -118,6 +119,7 @@ const dSplitShader = {
   fragmentShader: `
     uniform vec2 jOffset;
     uniform float colorPhase;
+    uniform float isHeaderFlag;
     varying vec3 vNormal;
     varying vec3 vLogoPos;
     varying vec3 vWorldPosition;
@@ -167,6 +169,9 @@ const dSplitShader = {
       edgeFactor = pow(edgeFactor, 2.0);
       
       vec3 color = mix(centerColor, edgeColor, edgeFactor);
+      if (isHeaderFlag > 0.5) {
+        color = edgeColor;
+      }
       
       gl_FragColor = vec4(color, 1.0);
     }
@@ -178,7 +183,8 @@ const jOverlapShader = {
     dMask: { value: null },
     resolution: { value: new THREE.Vector2(W * PR, H * PR) },
     jMaxX: { value: 0.0 },
-    colorPhase: { value: 0.0 }
+    colorPhase: { value: 0.0 },
+    isHeaderFlag: { value: isHeader ? 1.0 : 0.0 }
   },
   vertexShader: `
     varying vec3 vNormal;
@@ -201,6 +207,7 @@ const jOverlapShader = {
     uniform vec2 resolution;
     uniform float jMaxX;
     uniform float colorPhase;
+    uniform float isHeaderFlag;
     varying vec3 vNormal;
     varying float vLocalY;
     varying float vLocalX;
@@ -244,6 +251,10 @@ const jOverlapShader = {
         mix(slotCEdge, slotCDeep, edgeFactor), 
         dExists
       );
+      
+      if (isHeaderFlag > 0.5) {
+        color = mix(black, slotCEdge, dExists);
+      }
       
       gl_FragColor = vec4(color, 1.0);
     }
