@@ -406,8 +406,8 @@ loader.load(
           vec4 mvPosition = viewMatrix * worldPosition;
           gl_Position = projectionMatrix * mvPosition;
           
-          float sizeMult = smoothstep(2.5, 0.0, vDistance);
-          float currentSize = (0.05 + (sizeMult * 0.3)) * 2.0; // Much more subtle
+          float sizeMult = smoothstep(4.0, 0.0, vDistance);
+          float currentSize = (0.08 + (sizeMult * 0.35)) * 2.2; // Middle ground size
           
           gl_PointSize = (currentSize * winHeight * pixelRatio * 0.5) / -mvPosition.z;
         }
@@ -418,7 +418,7 @@ loader.load(
           vec2 coord = gl_PointCoord - vec2(0.5);
           float dist = length(coord) * 2.0; 
           
-          float revealAlpha = smoothstep(2.5, 0.0, vDistance); // Wider reveal area
+          float revealAlpha = smoothstep(4.0, 0.0, vDistance); // Wide reveal so gyroscope tilts are highly visible
           if (revealAlpha < 0.01) discard;
           
           float coreBright = smoothstep(0.1, 0.0, dist) * 0.5; // Very subtle core
@@ -849,13 +849,9 @@ function animate() {
 
     // Pass world intersection point to border flares
     if (mob && !isHeader && globalFlareMat) {
-      // Create a slow, ambient, sweeping light animation for mobile that adds onto gyroscope tilt
-      const time = Date.now() * 0.001;
-      const ambientX = Math.sin(time * 0.8) * 3.5;
-      const ambientY = Math.cos(time * 0.5) * 3.5;
-      
-      const simX = (cR.y * 12.0) + ambientX; 
-      const simY = (-cR.x * 12.0) + ambientY;
+      // Light sweeps exclusively based on gyroscope tilt
+      const simX = cR.y * 15.0; 
+      const simY = -cR.x * 15.0;
       globalFlareMat.uniforms.mouseWorldPos.value.set(simX, simY, 0);
     } else if (partyMode && !isHeader && globalFlareMat) {
       globalFlareMat.uniforms.mouseWorldPos.value.copy(intersects[0].point);
