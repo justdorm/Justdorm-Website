@@ -72,12 +72,15 @@ dDepthScene.add(dDepthGroup);
 const allGroups = [logoGroup, dDepthGroup];
 let globalDMat = null;
 let globalJMat = null;
+let globalMobileGlowMat = null;
+let globalMobileGlowMesh = null;
 
 // ─── D Mask Render Target ───
-const dMaskTarget = new THREE.WebGLRenderTarget(W * PR * 2, H * PR * 2, {
+const dMaskTarget = new THREE.WebGLRenderTarget(W * PR, H * PR, {
   minFilter: THREE.LinearFilter,
   magFilter: THREE.LinearFilter,
-  format: THREE.RGBAFormat
+  format: THREE.RGBAFormat,
+  samples: 4
 });
 
 const dSplitShader = {
@@ -337,6 +340,41 @@ function mk(grp, geo, mat, pos, rot, s, zOff) {
   return m;
 }
 
+// ─── Mobile WebGL Glow ───
+if (!isHeader) {
+  const glowGeo = new THREE.PlaneGeometry(35, 35);
+  globalMobileGlowMat = new THREE.ShaderMaterial({
+    uniforms: { colorPhase: { value: 0.0 } },
+    transparent: true, depthWrite: false,
+    vertexShader: `
+      varying vec2 vUv;
+      void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }
+    `,
+    fragmentShader: `
+      uniform float colorPhase;
+      varying vec2 vUv;
+      vec3 cmyColor(float idx) {
+        float i = mod(idx, 3.0);
+        if (i < 0.5) return vec3(0.0, 1.0, 1.0);
+        else if (i < 1.5) return vec3(1.0, 0.0, 1.0);
+        else return vec3(1.0, 1.0, 0.0);
+      }
+      void main() {
+        float cur = floor(colorPhase);
+        float t = colorPhase - cur;
+        vec3 color = mix(cmyColor(cur+2.0), cmyColor(cur+3.0), t);
+        float dist = length(vUv - vec2(0.5));
+        float alpha = smoothstep(0.5, 0.0, dist) * 0.45;
+        gl_FragColor = vec4(color, alpha);
+      }
+    `
+  });
+  globalMobileGlowMesh = new THREE.Mesh(glowGeo, globalMobileGlowMat);
+  globalMobileGlowMesh.position.z = -6;
+  globalMobileGlowMesh.visible = mob;
+  scene.add(globalMobileGlowMesh);
+}
+
 // ─── Particles ───
 const pN = 400, pGeo = new THREE.BufferGeometry();
 const pP = new Float32Array(pN * 3), pV = new Float32Array(pN * 3);
@@ -593,8 +631,9 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
   const pr = Math.min(window.devicePixelRatio, 2);
-  dMaskTarget.setSize(w * pr * 2, h * pr * 2);
+  dMaskTarget.setSize(w * pr, h * pr);
   if (globalJMat) globalJMat.uniforms.resolution.value.set(w * pr, h * pr);
+  if (globalMobileGlowMesh) globalMobileGlowMesh.visible = mob;
   if (globalParticleMat) {
     globalParticleMat.uniforms.aspectRatio.value = w / h;
     globalParticleMat.uniforms.winHeight.value = h;
@@ -657,6 +696,7 @@ function animate() {
     colorPhaseCurrent += (colorPhaseTarget - colorPhaseCurrent) * 0.25;
     dSplitShader.uniforms.colorPhase.value = colorPhaseCurrent;
     jOverlapShader.uniforms.colorPhase.value = colorPhaseCurrent;
+    if (globalMobileGlowMat) globalMobileGlowMat.uniforms.colorPhase.value = colorPhaseCurrent;
 
     // Decay the particle pulse and animate the hover pulse
     particlePulse += (0.0 - particlePulse) * 0.04;
@@ -676,8 +716,8 @@ function animate() {
       globalParticleMat.uniforms.mRadius.value = mob && !isHeader ? 1.4 : 0.4;
     }
 
-    // Dynamic vertical gradient glow matching the cycle
-    if (!isHeader) {
+    // Dynamic vertical gradient glow matching the cycle (Desktop Only)
+    if (!isHeader && !mob) {
       const getCmyColor = (idx) => {
         const i = ((idx % 3) + 3) % 3;
         if (i < 0.5) return [0, 255, 255]; // Cyan
@@ -703,15 +743,10 @@ function animate() {
         return `rgba(${fR}, ${fG}, ${fB}, ${alpha})`;
       };
 
-      // Added an inner, tighter, less saturated core layer, plus a massive, low-opacity background glow
-      if (mob) {
-        // iOS will often silently disable drop-shadows on rapidly redrawing WebGL canvases unless explicitly forced into a hardware-accelerated layer
-        canvas.style.willChange = 'filter';
-        canvas.style.transform = 'translateZ(0)';
-        canvas.style.filter = `drop-shadow(0px 0px 30px ${getCycleColor(2, 0.5)})`;
-      } else {
-        canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.15)})`;
-      }
+      canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.15)})`;
+    } else if (mob) {
+      canvas.style.filter = 'none';
+      canvas.style.willChange = 'auto';
     }
   }
 
