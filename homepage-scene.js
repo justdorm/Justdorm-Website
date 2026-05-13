@@ -344,7 +344,7 @@ function mk(grp, geo, mat, pos, rot, s, zOff) {
 
 // ─── Mobile WebGL Glow ───
 if (!isHeader) {
-  const glowGeo = new THREE.PlaneGeometry(16, 16);
+  const glowGeo = new THREE.PlaneGeometry(24, 24);
   globalMobileGlowMat = new THREE.ShaderMaterial({
     uniforms: { colorPhase: { value: 0.0 } },
     transparent: true, depthWrite: false,
@@ -371,15 +371,15 @@ if (!isHeader) {
         
         vec2 uv = vUv - vec2(0.5);
         
-        // Compress Y slightly so it traces a wider horizontal rectangle (like the JD logo)
-        vec2 uvL = uv - vec2(-0.15, 0.0); uvL.y *= 1.2;
-        vec2 uvR = uv - vec2(0.15, 0.0); uvR.y *= 1.2;
-        vec2 uvC = uv; uvC.y *= 1.2;
+        // Stretch Y slightly so it traces a taller shape
+        vec2 uvL = uv - vec2(-0.15, 0.0); uvL.y *= 0.85;
+        vec2 uvR = uv - vec2(0.15, 0.0); uvR.y *= 0.85;
+        vec2 uvC = uv; uvC.y *= 0.85;
         
-        float alphaL = smoothstep(0.25, 0.0, length(uvL)) * 0.35;
-        float alphaR = smoothstep(0.25, 0.0, length(uvR)) * 0.35;
-        float alphaC = smoothstep(0.35, 0.0, length(uvC)) * 0.45;
-        float alphaCore = smoothstep(0.1, 0.0, length(uvC)) * 0.6;
+        float alphaL = smoothstep(0.35, 0.0, length(uvL)) * 0.6;
+        float alphaR = smoothstep(0.35, 0.0, length(uvR)) * 0.6;
+        float alphaC = smoothstep(0.45, 0.0, length(uvC)) * 0.7;
+        float alphaCore = smoothstep(0.15, 0.0, length(uvC)) * 1.0;
         
         vec3 rgb = (cL * alphaL) + (cR * alphaR) + (cC * alphaC) + (cC * alphaCore);
         float alpha = max(max(alphaL, alphaR), max(alphaC, alphaCore));
