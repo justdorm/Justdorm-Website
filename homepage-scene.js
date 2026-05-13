@@ -384,8 +384,8 @@ if (!isHeader) {
         pos.y = position.x * s + position.y * c;
         
         // Add chaotic noise movement on click
-        float nX = sin(time * 4.0 + position.y * 0.3) * pulse * 1.0;
-        float nY = cos(time * 4.0 + position.x * 0.3) * pulse * 1.0;
+        float nX = sin(time * 4.0 + position.y * 0.3) * pulse * 0.4;
+        float nY = cos(time * 4.0 + position.x * 0.3) * pulse * 0.4;
         pos.x += nX;
         pos.y += nY;
         
@@ -607,10 +607,15 @@ function animate() {
       globalDMat.uniforms.jOffset.value.set(jX, jY);
     }
     
-    // On mobile, map the smooth gyroscope tilt to the mouse coordinates to act as a virtual cursor for particles
+    // On mobile, use a smooth, meandering noise function for the virtual cursor, gently influenced by the gyroscope
     if (mob && !isHeader) {
-      mouseNDC.x = cR.y / 0.15; // 0.15 is the gyroFact for the homepage
-      mouseNDC.y = -cR.x / 0.15;
+      // Generate smooth wandering noise using layered sine waves
+      const noiseX = Math.sin(t * 0.5) * 0.6 + Math.sin(t * 1.2) * 0.3;
+      const noiseY = Math.cos(t * 0.4) * 0.6 + Math.sin(t * 1.1) * 0.3;
+      
+      // Combine noise with a dampened gyroscope tilt
+      mouseNDC.x = noiseX + (cR.y / 0.15) * 0.4;
+      mouseNDC.y = noiseY + (-cR.x / 0.15) * 0.4;
     }
 
     // Raycast to detect hover over the logo meshes (Disable for mobile)
@@ -676,8 +681,10 @@ function animate() {
 
       // Added an inner, tighter, less saturated core layer, plus a massive, low-opacity background glow
       if (mob) {
-        // Simplified 2-layer glow for mobile to prevent iOS Safari from stripping complex filters
-        canvas.style.filter = `drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(0px 0px 80px ${getCycleColor(2, 0.2)})`;
+        // iOS will often silently disable drop-shadows on rapidly redrawing WebGL canvases unless explicitly forced into a hardware-accelerated layer
+        canvas.style.willChange = 'filter';
+        canvas.style.transform = 'translateZ(0)';
+        canvas.style.filter = `drop-shadow(0px 0px 30px ${getCycleColor(2, 0.5)})`;
       } else {
         canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.15)})`;
       }
