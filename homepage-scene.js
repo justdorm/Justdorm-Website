@@ -344,7 +344,7 @@ function mk(grp, geo, mat, pos, rot, s, zOff) {
 
 // ─── Mobile WebGL Glow ───
 if (!isHeader) {
-  const glowGeo = new THREE.PlaneGeometry(24, 24);
+  const glowGeo = new THREE.PlaneGeometry(12, 12);
   globalMobileGlowMat = new THREE.ShaderMaterial({
     uniforms: { colorPhase: { value: 0.0 } },
     transparent: true, depthWrite: false,
@@ -365,24 +365,32 @@ if (!isHeader) {
         float cur = floor(colorPhase);
         float t = colorPhase - cur;
         
-        vec3 cL = mix(cmyColor(cur), cmyColor(cur+1.0), t);
-        vec3 cR = mix(cmyColor(cur+1.0), cmyColor(cur+2.0), t);
-        vec3 cC = mix(cmyColor(cur+2.0), cmyColor(cur+3.0), t);
+        // Exact colors of the meshes
+        vec3 colDL = mix(cmyColor(cur), cmyColor(cur+1.0), t);     // Cyan (D-Left)
+        vec3 colDR = mix(cmyColor(cur+1.0), cmyColor(cur+2.0), t); // Magenta (D-Right)
+        vec3 colJ = mix(cmyColor(cur+2.0), cmyColor(cur+3.0), t);  // Yellow (J/Overlap)
         
         vec2 uv = vUv - vec2(0.5);
         
-        // Stretch Y slightly so it traces a taller shape
-        vec2 uvL = uv - vec2(-0.15, 0.0); uvL.y *= 0.85;
-        vec2 uvR = uv - vec2(0.15, 0.0); uvR.y *= 0.85;
-        vec2 uvC = uv; uvC.y *= 0.85;
+        // Precise UV offsets mapping to J and D mesh coordinates in a 12x12 plane
+        vec2 uvJ = uv - vec2(-0.025, -0.008); 
+        vec2 uvDL = uv - vec2(0.02, -0.016);
+        vec2 uvDR = uv - vec2(0.08, -0.016);
         
-        float alphaL = smoothstep(0.35, 0.0, length(uvL)) * 0.6;
-        float alphaR = smoothstep(0.35, 0.0, length(uvR)) * 0.6;
-        float alphaC = smoothstep(0.45, 0.0, length(uvC)) * 0.7;
-        float alphaCore = smoothstep(0.15, 0.0, length(uvC)) * 1.0;
+        // Stretch vertically to match the letter tallness
+        uvJ.y *= 0.6;
+        uvDL.y *= 0.6;
+        uvDR.y *= 0.6;
         
-        vec3 rgb = (cL * alphaL) + (cR * alphaR) + (cC * alphaC) + (cC * alphaCore);
-        float alpha = max(max(alphaL, alphaR), max(alphaC, alphaCore));
+        // Tighter, highly intense glow
+        float aJ = smoothstep(0.2, 0.0, length(uvJ)) * 0.85;
+        float aDL = smoothstep(0.2, 0.0, length(uvDL)) * 0.85;
+        float aDR = smoothstep(0.2, 0.0, length(uvDR)) * 0.85;
+        
+        float aCore = max(smoothstep(0.08, 0.0, length(uvDL)), smoothstep(0.08, 0.0, length(uvJ))) * 1.2;
+        
+        vec3 rgb = (colJ * aJ) + (colDL * aDL) + (colDR * aDR) + (vec3(1.0) * aCore);
+        float alpha = max(max(aJ, aDL), max(aDR, aCore));
         
         gl_FragColor = vec4(rgb, alpha);
       }
