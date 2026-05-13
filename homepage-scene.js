@@ -381,19 +381,14 @@ if (!isHeader) {
         uvCenter.y *= 0.7;
         uvRight.y *= 0.7;
         
-        // Colored glows (spread out slightly past the opaque letters)
-        float aLeft = smoothstep(0.18, 0.0, length(uvLeft)) * 0.6;
-        float aRight = smoothstep(0.18, 0.0, length(uvRight)) * 0.6;
-        float aCenter = smoothstep(0.18, 0.0, length(uvCenter)) * 0.85;
+        // Match exact CSS opacities: Sides are dim (0.3), Center is medium (0.5), Core is tight (0.6)
+        // Update: Boosted multipliers to make it brighter without expanding the radius
+        float aLeft = smoothstep(0.12, 0.0, length(uvLeft)) * 0.6;
+        float aRight = smoothstep(0.12, 0.0, length(uvRight)) * 0.6;
+        float aCenter = smoothstep(0.15, 0.0, length(uvCenter)) * 0.85;
         
-        // Tight white core: sharp falloff just outside the letter boundaries
-        float coreL = smoothstep(0.13, 0.05, length(uvLeft));
-        float coreC = smoothstep(0.13, 0.05, length(uvCenter));
-        float coreR = smoothstep(0.13, 0.05, length(uvRight));
-        float aCore = max(coreL, max(coreC, coreR)) * 0.7;
-        
-        // Large, dim background ambient glow
-        float aAmbient = smoothstep(0.4, 0.0, length(uvCenter)) * 0.35;
+        float aCore = smoothstep(0.05, 0.0, length(uvCenter)) * 1.0;
+        float aAmbient = smoothstep(0.4, 0.0, length(uvCenter)) * 0.35; // 120px background glow
         
         vec3 rgb = (colLeft * aLeft) + (colRight * aRight) + (colCenter * aCenter) + (colCenter * aAmbient) + (vec3(1.0) * aCore);
         float alpha = max(max(max(aLeft, aRight), max(aCenter, aAmbient)), aCore);
