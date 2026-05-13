@@ -381,25 +381,38 @@ loader.load(
     const jFlaresGeo = new THREE.BufferGeometry().setFromPoints(
       jTargets.map(pt => nudgeInward(getClosestVertex(jGeoWhite, pt)))
     );
+    const jHide = new Float32Array(jTargets.length).fill(0);
+    jFlaresGeo.setAttribute('aMobileHide', new THREE.BufferAttribute(jHide, 1));
+
     const dFlaresGeo = new THREE.BufferGeometry().setFromPoints(
       dTargets.map(pt => nudgeInward(getClosestVertex(dGeoWhite, pt)))
     );
+    const dHide = new Float32Array(dTargets.length).fill(0);
+    dHide[4] = 1; // Bottom Left of D
+    dHide[5] = 1; // Bottom Center of D
+    dFlaresGeo.setAttribute('aMobileHide', new THREE.BufferAttribute(dHide, 1));
 
     const borderFlareMat = new THREE.ShaderMaterial({
       uniforms: {
         mouseWorldPos: { value: new THREE.Vector3(999, 999, 999) },
         pixelRatio: { value: PR },
-        winHeight: { value: window.innerHeight }
+        winHeight: { value: window.innerHeight },
+        isMobile: { value: mob ? 1.0 : 0.0 }
       },
       transparent: true,
       depthWrite: false,
       depthTest: false,
       vertexShader: `
+        attribute float aMobileHide;
         uniform vec3 mouseWorldPos;
         uniform float pixelRatio;
         uniform float winHeight;
+        uniform float isMobile;
         varying float vDistance;
+        varying float vHidden;
         void main() {
+          vHidden = (isMobile > 0.5 && aMobileHide > 0.5) ? 1.0 : 0.0;
+          
           vec4 worldPosition = modelMatrix * vec4(position, 1.0);
           vDistance = distance(worldPosition.xy, mouseWorldPos.xy);
           
@@ -414,7 +427,10 @@ loader.load(
       `,
       fragmentShader: `
         varying float vDistance;
+        varying float vHidden;
         void main() {
+          if (vHidden > 0.5) discard;
+          
           vec2 coord = gl_PointCoord - vec2(0.5);
           float dist = length(coord) * 2.0; 
           
@@ -799,8 +815,8 @@ window.addEventListener('resize', () => {
   }
   if (globalFlareMat) {
     globalFlareMat.uniforms.winHeight.value = h;
+    globalFlareMat.uniforms.isMobile.value = mob ? 1.0 : 0.0;
   }
-  mob = w < 768;
 });
 
 // ─── Animate ───
