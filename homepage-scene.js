@@ -599,8 +599,8 @@ function animate() {
     g.rotation.y = cR.y;
     g.scale.set(logoScale, logoScale, logoScale);
     
-    // Shift the entire logo to the left on mobile to improve framing
-    g.position.x = mob && !isHeader ? -1.0 : 0;
+    // Shift the entire logo slightly to the left on mobile to improve framing
+    g.position.x = mob && !isHeader ? -0.25 : 0;
   }
 
   // Shift the J layer around for a dynamic parallax effect
