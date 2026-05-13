@@ -10,7 +10,7 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 const canvas = document.querySelector('.jd-canvas') || document.getElementById('jd-scene');
 const isHeader = canvas.dataset.mode === 'header';
 
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: isHeader });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 
 let W, H;
 if (isHeader) {
@@ -32,7 +32,7 @@ const PR = Math.min(window.devicePixelRatio, 2);
 // ─── Camera ───
 const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
 if (isHeader) {
-  camera.position.set(0.2, 0.4, 10); 
+  camera.position.set(0.2, 0.4, 10);
   camera.lookAt(0.2, 0.4, 0);
 } else {
   camera.position.set(0, 0.5, 12);
@@ -41,7 +41,7 @@ if (isHeader) {
 // ─── Main scene (background, outlines, J, D, particles) ───
 const scene = new THREE.Scene();
 if (!isHeader) {
-  scene.background = new THREE.Color(0x000000);
+  // Transparent background to allow CSS drop-shadow glow
 }
 
 // ─── Lighting (shared params) ───
@@ -342,15 +342,134 @@ const pN = 400, pGeo = new THREE.BufferGeometry();
 const pP = new Float32Array(pN * 3), pV = new Float32Array(pN * 3);
 for (let i = 0; i < pN; i++) {
   const j = i * 3;
-  pP[j] = (Math.random() - .5) * 30; pP[j + 1] = (Math.random() - .5) * 20; pP[j + 2] = (Math.random() - .5) * 15 - 5;
+  pP[j] = (Math.random() - .5) * 60; pP[j + 1] = (Math.random() - .5) * 40; pP[j + 2] = (Math.random() - .5) * 15 - 10;
   pV[j] = (Math.random() - .5) * .003; pV[j + 1] = (Math.random() - .5) * .003;
 }
 pGeo.setAttribute('position', new THREE.BufferAttribute(pP, 3));
+let globalParticleMat = null;
 if (!isHeader) {
-  scene.add(new THREE.Points(pGeo, new THREE.PointsMaterial({
-    color: 0xffffff, size: 0.04, transparent: true, opacity: 0.35,
-    sizeAttenuation: true, depthWrite: false,
-  })));
+  globalParticleMat = new THREE.ShaderMaterial({
+    uniforms: {
+      time: { value: 0 },
+      pulse: { value: 0 },
+      hoverPulse: { value: 0 },
+      swirlAngle: { value: 0 },
+      pixelRatio: { value: PR },
+      winHeight: { value: window.innerHeight },
+      aspectRatio: { value: window.innerWidth / window.innerHeight },
+      mouseNDC: { value: new THREE.Vector2(-999, -999) }
+    },
+    transparent: true,
+    depthWrite: false,
+    vertexShader: `
+      uniform float time;
+      uniform float pulse;
+      uniform float hoverPulse;
+      uniform float swirlAngle;
+      uniform float pixelRatio;
+      uniform float winHeight;
+      uniform float aspectRatio;
+      uniform vec2 mouseNDC;
+      varying vec3 vPos;
+      varying float vMouseForce;
+      void main() {
+        vPos = position;
+        
+        // Continuous swirl effect around Z axis
+        float angle = swirlAngle * 10.0 / (length(position.xy) + 2.0);
+        float s = sin(angle);
+        float c = cos(angle);
+        vec3 pos = position;
+        pos.x = position.x * c - position.y * s;
+        pos.y = position.x * s + position.y * c;
+        
+        // Add chaotic noise movement on click
+        float nX = sin(time * 4.0 + position.y * 0.3) * pulse * 1.0;
+        float nY = cos(time * 4.0 + position.x * 0.3) * pulse * 1.0;
+        pos.x += nX;
+        pos.y += nY;
+        
+        vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+        vec4 projPos = projectionMatrix * mvPosition;
+        
+        // Mouse interact (grow only)
+        vec2 screenPos = projPos.xy / projPos.w;
+        vec2 dir = screenPos - mouseNDC;
+        dir.x *= aspectRatio;
+        float distToMouse = length(dir);
+        float mForce = smoothstep(0.4, 0.0, distToMouse);
+        vMouseForce = mForce;
+        
+        gl_Position = projPos;
+        
+        // Base size logic. mForce multiplier heavily reduced to make mouse hover swelling much more subtle.
+        float currentSize = (0.12 + (pulse * 0.4) + (hoverPulse * 0.15) + (mForce * 0.25)) * 5.0; 
+        
+        gl_PointSize = (currentSize * winHeight * pixelRatio * 0.5) / -mvPosition.z;
+      }
+    `,
+    fragmentShader: `
+      uniform float time;
+      uniform float pulse;
+      uniform float hoverPulse;
+      varying vec3 vPos;
+      varying float vMouseForce;
+      
+      vec3 hsv2rgb(vec3 c) {
+        vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+        vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+        return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+      }
+
+      void main() {
+        vec2 coord = gl_PointCoord - vec2(0.5);
+        
+        // Scale distance by 5 to match the vertex shader multiplier
+        float dist = length(coord) * 5.0;
+        
+        vec3 rainbow = hsv2rgb(vec3(vPos.x * 0.05 + vPos.y * 0.05 + time * 1.5, 1.0, 1.0));
+        vec3 baseColor = vec3(1.0, 1.0, 1.0); 
+        vec3 finalColor = mix(baseColor, rainbow, pulse);
+        
+        float alphaMult = smoothstep(0.5, 0.0, dist);
+        
+        // Total force driving the glow: heavily softened local mouse proximity + subtle global hover + softened global click
+        float glowForce = (vMouseForce * 0.15) + (hoverPulse * 0.3) + (pulse * 0.5);
+        
+        float coreBrightness = smoothstep(0.15, 0.0, dist) * glowForce * 0.8;
+        
+        // Starburst lens flare (8 spikes)
+        float fadeX = smoothstep(0.5, 0.0, abs(coord.x));
+        float flareH = smoothstep(0.03, 0.0, abs(coord.y)) * fadeX;
+        
+        float fadeY = smoothstep(0.5, 0.0, abs(coord.y));
+        float flareV = smoothstep(0.03, 0.0, abs(coord.x)) * fadeY;
+        
+        float diag1Dist = abs((coord.x - coord.y) * 0.7071);
+        float diag1Fade = smoothstep(0.5, 0.0, abs((coord.x + coord.y) * 0.7071));
+        float flareD1 = smoothstep(0.02, 0.0, diag1Dist) * diag1Fade * 0.6; // Slightly dimmer diagonals
+        
+        float diag2Dist = abs((coord.x + coord.y) * 0.7071);
+        float diag2Fade = smoothstep(0.5, 0.0, abs((coord.x - coord.y) * 0.7071));
+        float flareD2 = smoothstep(0.02, 0.0, diag2Dist) * diag2Fade * 0.6;
+        
+        float flare = (flareH + flareV + flareD1 + flareD2) * glowForce * 1.5;
+        
+        float totalExtraGlow = coreBrightness + flare;
+        
+        float baseAlpha = 0.35 + (hoverPulse * 0.15);
+        float circleAlpha = (mix(baseAlpha, 0.9, pulse) + vMouseForce * 0.4) * alphaMult;
+        
+        float finalAlpha = circleAlpha + totalExtraGlow;
+        if(finalAlpha < 0.01) discard;
+        
+        // Multiply by the original color to preserve the particle
+        vec3 glowColor = finalColor * (1.0 + totalExtraGlow * 1.5);
+        gl_FragColor = vec4(glowColor, finalAlpha);
+      }
+    `
+  });
+  scene.add(new THREE.Points(pGeo, globalParticleMat));
 }
 
 // ─── Mouse ───
@@ -367,7 +486,7 @@ if (!(typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationE
 
 window.addEventListener('mousemove', e => {
   const rect = canvas.getBoundingClientRect();
-  
+
   // Update NDC for hover detection
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
@@ -380,8 +499,8 @@ window.addEventListener('mousemove', e => {
 
   if (mob) return;
 
-  // Subtle parallax for header logo, full for homepage
-  const pFact = isHeader ? 0.03 : 0.1;
+  // Full parallax for header logo (thumbnail), just like homepage
+  const pFact = isHeader ? 0.1 : 0.1;
   tR.y = ((e.clientX / window.innerWidth) * 2 - 1) * pFact;
   tR.x = -((e.clientY / window.innerHeight) * 2 - 1) * pFact;
 });
@@ -390,7 +509,7 @@ window.addEventListener('mouseleave', () => { mouseNDC.set(-999, -999); });
 // ─── Gyroscope (Mobile) ───
 window.addEventListener('deviceorientation', e => {
   if (!mob || e.gamma === null) return;
-  
+
   // Hide prompt automatically if we are receiving gyro data (means permission was already granted)
   const prompt = document.getElementById('gyro-prompt');
   if (prompt && prompt.style.display !== 'none') {
@@ -400,8 +519,9 @@ window.addEventListener('deviceorientation', e => {
   // clamp rotation values to prevent it from spinning too far
   let gamma = Math.max(-45, Math.min(45, e.gamma)); // Left/Right tilt
   let beta = Math.max(-45, Math.min(45, e.beta - 40)); // Up/Down tilt (assuming 40deg neutral angle)
-  
-  const gyroFact = isHeader ? 0.05 : 0.15;
+
+  // Even more sensitive gyroscope for header logo (thumbnail) than homepage
+  const gyroFact = isHeader ? 0.25 : 0.15;
   tR.y = (gamma / 45) * gyroFact;
   tR.x = (beta / 45) * gyroFact;
 });
@@ -409,9 +529,13 @@ window.addEventListener('deviceorientation', e => {
 // ─── Color Cycle on Click ───
 let colorPhaseTarget = 0;
 let colorPhaseCurrent = 0;
+let particlePulse = 0;
+let hoverPulseVal = 0;
+let globalSwirlAngle = 0;
 
-canvas.addEventListener('click', () => {
+window.addEventListener('click', () => {
   colorPhaseTarget += 1;
+  particlePulse = 1.0;
 });
 
 // Request gyroscope permission for iOS devices on first interaction anywhere
@@ -419,7 +543,7 @@ const requestGyro = () => {
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
     DeviceOrientationEvent.requestPermission().catch(console.error);
   }
-  
+
   const prompt = document.getElementById('gyro-prompt');
   if (prompt) {
     prompt.style.animation = 'none';
@@ -450,6 +574,10 @@ window.addEventListener('resize', () => {
   const pr = Math.min(window.devicePixelRatio, 2);
   dMaskTarget.setSize(w * pr * 2, h * pr * 2);
   if (globalJMat) globalJMat.uniforms.resolution.value.set(w * pr, h * pr);
+  if (globalParticleMat) {
+    globalParticleMat.uniforms.aspectRatio.value = w / h;
+    globalParticleMat.uniforms.winHeight.value = h;
+  }
   mob = w < 768;
 });
 
@@ -478,6 +606,12 @@ function animate() {
     if (globalDMat) {
       globalDMat.uniforms.jOffset.value.set(jX, jY);
     }
+    
+    // On mobile, map the smooth gyroscope tilt to the mouse coordinates to act as a virtual cursor for particles
+    if (mob && !isHeader) {
+      mouseNDC.x = cR.y / 0.15; // 0.15 is the gyroFact for the homepage
+      mouseNDC.y = -cR.x / 0.15;
+    }
 
     // Raycast to detect hover over the logo meshes (Disable for mobile)
     raycaster.setFromCamera(mouseNDC, camera);
@@ -487,7 +621,7 @@ function animate() {
 
     // Party mode: rapidly cycle colors while hovering over logo
     if (partyMode) {
-      colorPhaseTarget += 0.08;
+      colorPhaseTarget += 0.06;
     } else if (wasParty) {
       // Snap to nearest clean CMY color on exit
       colorPhaseTarget = Math.round(colorPhaseTarget);
@@ -497,6 +631,52 @@ function animate() {
     colorPhaseCurrent += (colorPhaseTarget - colorPhaseCurrent) * 0.25;
     dSplitShader.uniforms.colorPhase.value = colorPhaseCurrent;
     jOverlapShader.uniforms.colorPhase.value = colorPhaseCurrent;
+
+    // Decay the particle pulse and animate the hover pulse
+    particlePulse += (0.0 - particlePulse) * 0.04;
+    hoverPulseVal += ((partyMode ? 1.0 : 0.0) - hoverPulseVal) * 0.1;
+    
+    // Accumulate swirl angle (reverse direction, base slow rotation + smaller burst of speed on click)
+    globalSwirlAngle -= 0.002 + (particlePulse * 0.02);
+    
+    if (globalParticleMat) {
+      globalParticleMat.uniforms.time.value = t;
+      globalParticleMat.uniforms.pulse.value = particlePulse;
+      globalParticleMat.uniforms.hoverPulse.value = hoverPulseVal;
+      globalParticleMat.uniforms.swirlAngle.value = globalSwirlAngle;
+      globalParticleMat.uniforms.mouseNDC.value.copy(mouseNDC);
+    }
+
+    // Dynamic vertical gradient glow matching the cycle
+    if (!isHeader) {
+      const getCmyColor = (idx) => {
+        const i = ((idx % 3) + 3) % 3;
+        if (i < 0.5) return [0, 255, 255]; // Cyan
+        if (i < 1.5) return [255, 0, 255]; // Magenta
+        return [255, 255, 0]; // Yellow
+      };
+
+      const getCycleColor = (offset, alpha = 0.45, desaturate = 0) => {
+        const phase = colorPhaseCurrent + offset;
+        const cur = Math.floor(phase);
+        const t = phase - cur;
+        const c1 = getCmyColor(cur);
+        const c2 = getCmyColor(cur + 1);
+        
+        const r = c1[0] + (c2[0] - c1[0]) * t;
+        const g = c1[1] + (c2[1] - c1[1]) * t;
+        const b = c1[2] + (c2[2] - c1[2]) * t;
+        
+        const fR = Math.round(r + (255 - r) * desaturate);
+        const fG = Math.round(g + (255 - g) * desaturate);
+        const fB = Math.round(b + (255 - b) * desaturate);
+        
+        return `rgba(${fR}, ${fG}, ${fB}, ${alpha})`;
+      };
+
+      // Added an inner, tighter, less saturated core layer, plus a massive, low-opacity background glow
+      canvas.style.filter = `drop-shadow(-20px 0px 10px ${getCycleColor(0, 0.2)}) drop-shadow(0px 0px 20px ${getCycleColor(2, 0.4)}) drop-shadow(20px 0px 10px ${getCycleColor(1, 0.2)}) drop-shadow(0px 0px 4px ${getCycleColor(2, 0.6, 0.7)}) drop-shadow(0px 0px 120px ${getCycleColor(2, 0.15)})`;
+    }
   }
 
   // Particles
@@ -504,8 +684,8 @@ function animate() {
   for (let i = 0; i < pN; i++) {
     const j = i * 3;
     a[j] += pV[j]; a[j + 1] += pV[j + 1];
-    if (a[j] > 15) a[j] = -15; if (a[j] < -15) a[j] = 15;
-    if (a[j + 1] > 10) a[j + 1] = -10; if (a[j + 1] < -10) a[j + 1] = 10;
+    if (a[j] > 30) a[j] = -30; if (a[j] < -30) a[j] = 30;
+    if (a[j + 1] > 20) a[j + 1] = -20; if (a[j + 1] < -20) a[j + 1] = 20;
   }
   pGeo.attributes.position.needsUpdate = true;
 

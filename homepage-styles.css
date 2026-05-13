@@ -14,7 +14,7 @@ html, body {
   overflow: hidden;
   background-color: #000;
   color: #fff;
-  font-family: PreciousSansTwoMedium, 'Helvetica Neue', Arial, sans-serif;
+  font-family: PreciousSansTwoMedium;
 }
 
 /* --- Three.js Canvas --- */
@@ -58,7 +58,7 @@ canvas.noise {
 /* --- Side Navigation Links --- */
 .nav-link {
   pointer-events: auto;
-  font-family: PreciousSansTwoDemiBold, 'Helvetica Neue', Arial, sans-serif;
+  font-family: PreciousSansTwoDemiBoldItalic;
   font-size: clamp(1rem, 2vw, 1.6rem);
   text-decoration: none;
   color: rgba(255, 255, 255, 0.85);
@@ -110,7 +110,7 @@ canvas.noise {
 .bottom-bar a {
   text-decoration: none;
   color: rgba(255, 255, 255, 0.5);
-  font-family: PreciousSansTwoLight, 'Helvetica Neue', Arial, sans-serif;
+  font-family: PreciousSansTwoMedium;
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -139,7 +139,7 @@ canvas.noise {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 200;
-  font-family: PreciousSansTwoLight, sans-serif;
+  font-family: PreciousSansTwoMedium;
   font-size: 0.9rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -157,7 +157,7 @@ canvas.noise {
   z-index: 60;
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.8rem;
-  font-family: PreciousSansTwoLight, sans-serif;
+  font-family: PreciousSansTwoMedium;
   letter-spacing: 0.05em;
   pointer-events: none;
   text-align: center;
