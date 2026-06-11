@@ -273,6 +273,17 @@ color: #e74d83;
     align-items: center;
     padding-bottom: 2rem;
     padding-top: 2rem;
+    animation: rotateSlowly 180s linear infinite;
+    transition: none;
+}
+
+@keyframes rotateSlowly {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 #aboutsec {
     margin: 0 auto;
@@ -365,6 +376,9 @@ color: #e74d83;
 @media screen and (max-width: 768px) {
     .project {
         text-align: center;
+    }
+    .UIimgSmall {
+        width: 80%;
     }
 }
 @media screen and (max-width: 480px){
