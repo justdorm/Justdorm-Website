@@ -698,7 +698,7 @@ body.lightbox-locked { overflow: hidden; }
 }
 
 .about-intro h1 {
-  font-size: clamp(1.15rem, 4.2vw, 3rem);
+  font-size: clamp(1rem, 3.6vw, 3rem);
 }
 
 .headshot {
