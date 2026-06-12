@@ -697,6 +697,11 @@ body.lightbox-locked { overflow: hidden; }
   .about-hero { grid-template-columns: 1fr; justify-items: center; text-align: center; }
 }
 
+.about-intro h1 {
+  white-space: nowrap;
+  font-size: clamp(1.4rem, 5.5vw, 3rem);
+}
+
 .headshot {
   width: clamp(180px, 26vw, 300px);
   border-radius: 50%;
