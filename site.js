@@ -6,6 +6,20 @@
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // ── Random grain jitter (JS so it never loops) ──
+  var grain = document.querySelector('.grain');
+  if (grain && !reduceMotion) {
+    var lastGrain = 0;
+    (function jitter(t) {
+      requestAnimationFrame(jitter);
+      if (t - lastGrain < 90) return;        // ~11 fps
+      lastGrain = t;
+      var x = (Math.random() * 3 - 1.5).toFixed(2);
+      var y = (Math.random() * 3 - 1.5).toFixed(2);
+      grain.style.transform = 'translate(' + x + '%, ' + y + '%)';
+    })(0);
+  }
+
   // ── Active nav state ──
   var path = location.pathname.split('/').pop().toLowerCase() || 'index.html';
   document.querySelectorAll('.site-nav a').forEach(function (a) {
