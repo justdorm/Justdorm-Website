@@ -87,6 +87,10 @@ a { color: inherit; text-decoration: none; }
   animation: none;
 }
 
+@media (max-width: 768px) {
+  .grain { opacity: 0.10; }
+}
+
 /* ---------- Header ---------- */
 .site-header {
   position: sticky;
