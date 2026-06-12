@@ -568,29 +568,7 @@ body.lightbox-locked { overflow: hidden; }
 /* ---------- Case study template ---------- */
 .case-study { max-width: 1080px; margin: 0 auto; padding: 0 var(--gutter); }
 
-.cs-hero {
-  padding: clamp(3rem, 8vh, 5rem) 0 clamp(2rem, 5vh, 3rem);
-  position: relative;
-  isolation: isolate;
-}
-
-/* Giant outlined case number ghosted behind the hero */
-.cs-hero::before {
-  content: attr(data-num);
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  right: 0;
-  transform: translateY(-55%);
-  font-family: var(--font-display);
-  font-size: clamp(9rem, 26vw, 20rem);
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 2.5px var(--accent);
-  opacity: 0.3;
-  pointer-events: none;
-  user-select: none;
-}
+.cs-hero { padding: clamp(3rem, 8vh, 5rem) 0 clamp(2rem, 5vh, 3rem); }
 
 .cs-hero .page-title { text-align: left; }
 
