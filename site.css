@@ -72,6 +72,32 @@ a { color: inherit; text-decoration: none; }
 @keyframes vt-out { to { opacity: 0; } }
 @keyframes vt-in  { from { opacity: 0; transform: translateY(10px); } }
 
+/* Title morph: a case row title on the index and the matching case study
+   hero title share a view-transition-name, so the browser morphs one into
+   the other during navigation. */
+.vt-cs-01 { view-transition-name: cs-title-01; }
+.vt-cs-02 { view-transition-name: cs-title-02; }
+.vt-cs-03 { view-transition-name: cs-title-03; }
+.vt-cs-04 { view-transition-name: cs-title-04; }
+.vt-cs-05 { view-transition-name: cs-title-05; }
+
+/* ---------- Scroll progress hairline (element added by site.js) ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 0;
+  z-index: 990;
+  pointer-events: none;
+}
+
+/* ---------- Magnetic micro-interactions (class added by site.js) ---------- */
+.magnetic { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+
 /* ---------- Star field (rendered by starfield.js) ---------- */
 .starfield-canvas {
   position: fixed;
@@ -542,7 +568,29 @@ body.lightbox-locked { overflow: hidden; }
 /* ---------- Case study template ---------- */
 .case-study { max-width: 1080px; margin: 0 auto; padding: 0 var(--gutter); }
 
-.cs-hero { padding: clamp(3rem, 8vh, 5rem) 0 clamp(2rem, 5vh, 3rem); }
+.cs-hero {
+  padding: clamp(3rem, 8vh, 5rem) 0 clamp(2rem, 5vh, 3rem);
+  position: relative;
+  isolation: isolate;
+}
+
+/* Giant outlined case number ghosted behind the hero */
+.cs-hero::before {
+  content: attr(data-num);
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  right: 0;
+  transform: translateY(-55%);
+  font-family: var(--font-display);
+  font-size: clamp(9rem, 26vw, 20rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2.5px var(--accent);
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
 
 .cs-hero .page-title { text-align: left; }
 
@@ -873,11 +921,20 @@ body.lightbox-locked { overflow: hidden; }
   font-size: clamp(1.5rem, 4.5vw, 3rem);
   line-height: 1.1;
   display: inline-block;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  transition: color 0.3s ease, text-shadow 0.3s ease, background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   overflow-wrap: anywhere;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 3px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 0.12em;
 }
 
-.footer-cta:hover { color: var(--accent); text-shadow: 0 0 24px var(--accent-glow); }
+.footer-cta:hover {
+  color: var(--accent);
+  text-shadow: 0 0 24px var(--accent-glow);
+  background-size: 100% 3px;
+}
 
 .footer-meta {
   display: flex;
@@ -901,6 +958,6 @@ body.lightbox-locked { overflow: hidden; }
   .ink-split { opacity: 1; }
   .ink-split.in { animation: none; }
   .rotate-slow { animation: none; }
-  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }

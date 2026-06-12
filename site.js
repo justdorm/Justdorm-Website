@@ -69,6 +69,43 @@
     revealEls.forEach(function (el) { io.observe(el); });
   }
 
+  // ── Scroll progress hairline ──
+  var prog = document.createElement('div');
+  prog.className = 'scroll-progress';
+  prog.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(prog);
+  function updateProgress() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.transform = 'scaleX(' + (max > 0 ? window.scrollY / max : 0) + ')';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+
+  // ── Magnetic micro-interactions on small interactive elements ──
+  if (!reduceMotion && window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.btn-ghost, .case-link, .ig-link').forEach(function (el) {
+      el.classList.add('magnetic');
+      el.addEventListener('mousemove', function (e) {
+        var r = el.getBoundingClientRect();
+        var dx = e.clientX - (r.left + r.width / 2);
+        var dy = e.clientY - (r.top + r.height / 2);
+        el.style.transform = 'translate(' + (dx * 0.22).toFixed(1) + 'px, ' + (dy * 0.22).toFixed(1) + 'px)';
+      });
+      el.addEventListener('mouseleave', function () { el.style.transform = ''; });
+    });
+  }
+
+  // ── For the curious ──
+  try {
+    console.log(
+      '%c J %c D %c designed & built by Justin Dormitzer — justin@justdorm.com',
+      'background:#00ffff;color:#000;font-weight:bold;padding:2px 7px;',
+      'background:#ff00ff;color:#000;font-weight:bold;padding:2px 7px;',
+      'color:#ffe600;padding:2px 6px;'
+    );
+  } catch (err) { /* no console, no problem */ }
+
   // ── Lightbox ──
   var lightbox = null;
   var lastFocus = null;

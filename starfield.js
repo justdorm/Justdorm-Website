@@ -45,7 +45,8 @@ import * as THREE from 'three';
       winHeight: { value: window.innerHeight },
       aspectRatio: { value: window.innerWidth / window.innerHeight },
       mouseNDC: { value: new THREE.Vector2(-999, -999) },
-      mRadius: { value: 0.4 }
+      mRadius: { value: 0.4 },
+      mStrength: { value: 1.0 }
     },
     transparent: true,
     depthWrite: false,
@@ -56,6 +57,7 @@ import * as THREE from 'three';
       uniform float aspectRatio;
       uniform vec2 mouseNDC;
       uniform float mRadius;
+      uniform float mStrength;
       varying float vMouseForce;
       void main() {
         // Ambient float: slow directionless bob, phase-shifted per particle
@@ -71,12 +73,12 @@ import * as THREE from 'three';
         vec2 dir = screenPos - mouseNDC;
         dir.x *= aspectRatio;
         float distToMouse = length(dir);
-        float mForce = smoothstep(mRadius, 0.0, distToMouse);
+        float mForce = smoothstep(mRadius, 0.0, distToMouse) * mStrength;
         vMouseForce = mForce;
 
         gl_Position = projPos;
 
-        float currentSize = (0.12 + (mForce * 0.25)) * 5.0;
+        float currentSize = (0.12 + (mForce * 0.12)) * 5.0;
         gl_PointSize = (currentSize * winHeight * pixelRatio * 0.5) / -mvPosition.z;
       }
     `,
@@ -165,7 +167,8 @@ import * as THREE from 'three';
       tilt.x += (tiltTarget.x - tilt.x) * 0.07;
       tilt.y += (tiltTarget.y - tilt.y) * 0.07;
       mouseNDC.set(tilt.x * 1.5, -tilt.y * 1.5);
-      mat.uniforms.mRadius.value = 1.4;
+      mat.uniforms.mRadius.value = 1.1;
+      mat.uniforms.mStrength.value = 0.55;
     }
     mat.uniforms.mouseNDC.value.copy(mouseNDC);
 
