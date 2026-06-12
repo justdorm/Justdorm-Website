@@ -697,9 +697,6 @@ body.lightbox-locked { overflow: hidden; }
   .about-hero { grid-template-columns: 1fr; justify-items: center; text-align: center; }
 }
 
-.about-intro h1 {
-  font-size: clamp(1rem, 3.6vw, 3rem);
-}
 
 .headshot {
   width: clamp(180px, 26vw, 300px);
@@ -723,7 +720,7 @@ body.lightbox-locked { overflow: hidden; }
 
 .about-intro h1 {
   font-family: var(--font-display);
-  font-size: var(--fs-title);
+  font-size: clamp(1rem, 3.6vw, 3rem);
   line-height: 1.05;
   margin-bottom: 1.2rem;
 }
