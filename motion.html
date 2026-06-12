@@ -3,74 +3,139 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Dormitzer Portfolio</title>
+    <title>Motion Design — Justin Dormitzer | Justdorm</title>
+    <meta name="description"
+        content="Motion design by Justin Dormitzer — branded animation, music videos, and short films. Featuring the 2024 reel, At Present, Time Through Time, and more.">
+    <meta property="og:title" content="Motion Design — Justin Dormitzer">
+    <meta property="og:description" content="Branded animation, music videos, and short films.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://justdorm.com/motion.html">
+    <meta property="og:image" content="https://vumbnail.com/825235906.jpg">
     <link rel="icon" type="image/x-icon" href="imgs/fav.png">
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <link rel="stylesheet" href="site.css">
 </head>
 
-<body>
-    
-    <canvas id="noise" class="noise"></canvas>
-    <header>
-        <div class="nav-links">
-            <a id="animMenu" href="/motion.html">Motion Design</a>
-            <a id="designMenu" href="/CreativeTechnology.html">Creative Technology</a>
-            <a id="abtbtn" href="/about.html">About</a>
-        </div>
-        <a id="logocont" href="https://justdorm.com/"><canvas class="jd-canvas logo-img" data-mode="header"></canvas></a>
-        <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
-    </header>
-    <h1>Motion Design</h1>
-    <div class="hero">
-        <div id="reel-cont">
-            <div style="padding:56.25% 0 0 0;position:relative;"><iframe id="motion-reel"
-                    src="https://player.vimeo.com/video/825235906?h=2c933fd079&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
-                    style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Justdorm 2024 Reel"></iframe>
-            </div>
-            <script src="https://player.vimeo.com/api/player.js"></script>
-        </div>
-        <h2 id="reel-text">Motion Reel</h2>
-    </div>
-    <div id="anim-grid">
-        <div class="anim">
-            <h3>At Present Short Film</h3>
-            <iframe src="https://www.youtube.com/embed/HHptfJ4DvUQ?si=2kqoiUMBVPOPbCqw" title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="anim">
-            <h3>Move in Day - Purple People</h3>
-            <iframe src="https://www.youtube.com/embed/0tH6ksJYyXw" title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
-        </div>
-        <div class="anim">
-            <h3>Time Through Time</h3>
-            <iframe src="https://www.youtube.com/embed/H7U-DOxa60c" title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
-        </div>
-        <div class="anim">
-            <h3>"Give Life Back to Music" - MTV Bumper</h3>
-            <iframe src="https://www.youtube.com/embed/Ngi9Q2JUAw0?si=eETMUBWWH2yYbmkm" title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
-        </div>
-        <div class="anim">
-            <h3>An Animated Biography of Edgar Allan Poe</h3>
-            <iframe src="https://www.youtube.com/embed/f7-8U8OmfMw" title="YouTube video player" frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
-        </div>
-    </div>
+<body class="theme-cyan">
 
-    <!-- Import Map for Three.js -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary">
+            <a class="nav-item nav-item--motion" href="motion.html">Motion Design</a>
+            <a class="nav-item nav-item--ct" href="CreativeTechnology.html">Creative Technology</a>
+            <a class="nav-item nav-item--about" href="about.html">About</a>
+        </nav>
+        <a class="logo-link" href="index.html" aria-label="Justdorm — home"><canvas class="jd-canvas"
+                data-mode="header"></canvas></a>
+        <a class="ig-link" href="https://www.instagram.com/justdorm/" aria-label="Instagram"><img
+                src="imgs/ig logo.png" alt=""></a>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <h1 class="page-title ink-split">Motion Design</h1>
+            <p class="page-sub reveal">Branded animation, music videos, and short films</p>
+        </section>
+
+        <section class="reel-hero" aria-label="Motion reel">
+            <div class="reveal">
+                <button class="reel-poster" data-inline
+                    data-embed="https://player.vimeo.com/video/825235906?h=2c933fd079&amp;autoplay=1&amp;badge=0&amp;autopause=0"
+                    data-vimeo-thumb="https://vimeo.com/825235906/2c933fd079"
+                    data-title="Justdorm Motion Reel" aria-label="Play the motion reel">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt=""
+                        loading="eager">
+                    <span class="play-glyph" aria-hidden="true"></span>
+                </button>
+                <div class="reel-label">
+                    <span>Motion Reel</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-label="Selected films">
+            <div class="film-grid">
+                <article class="film reveal">
+                    <button class="film-poster"
+                        data-embed="https://www.youtube.com/embed/HHptfJ4DvUQ?autoplay=1&amp;rel=0"
+                        data-title="At Present" aria-label="Play At Present">
+                        <img src="https://i.ytimg.com/vi/HHptfJ4DvUQ/maxresdefault.jpg" alt="" loading="lazy">
+                        <span class="play-glyph" aria-hidden="true"></span>
+                    </button>
+                    <div class="film-caption">
+                        <h2>At Present</h2>
+                        <p>Animated short film</p>
+                    </div>
+                </article>
+
+                <article class="film reveal">
+                    <button class="film-poster"
+                        data-embed="https://www.youtube.com/embed/0tH6ksJYyXw?autoplay=1&amp;rel=0"
+                        data-title="Move in Day" aria-label="Play Move in Day">
+                        <img src="https://i.ytimg.com/vi/0tH6ksJYyXw/maxresdefault.jpg" alt="" loading="lazy">
+                        <span class="play-glyph" aria-hidden="true"></span>
+                    </button>
+                    <div class="film-caption">
+                        <h2>Move in Day - Purple People</h2>
+                        <p>Music video</p>
+                    </div>
+                </article>
+
+                <article class="film reveal">
+                    <button class="film-poster"
+                        data-embed="https://www.youtube.com/embed/H7U-DOxa60c?autoplay=1&amp;rel=0"
+                        data-title="Time Through Time" aria-label="Play Time Through Time">
+                        <img src="https://i.ytimg.com/vi/H7U-DOxa60c/maxresdefault.jpg" alt="" loading="lazy">
+                        <span class="play-glyph" aria-hidden="true"></span>
+                    </button>
+                    <div class="film-caption">
+                        <h2>Time Through Time</h2>
+                        <p>Animated short film</p>
+                    </div>
+                </article>
+
+                <article class="film reveal">
+                    <button class="film-poster"
+                        data-embed="https://www.youtube.com/embed/Ngi9Q2JUAw0?autoplay=1&amp;rel=0"
+                        data-title="Give Life Back to Music" aria-label="Play Give Life Back to Music">
+                        <img src="https://i.ytimg.com/vi/Ngi9Q2JUAw0/hqdefault.jpg" alt="" loading="lazy">
+                        <span class="play-glyph" aria-hidden="true"></span>
+                    </button>
+                    <div class="film-caption">
+                        <h2>Give Life Back to Music</h2>
+                        <p>MTV bumper</p>
+                    </div>
+                </article>
+
+                <article class="film reveal">
+                    <button class="film-poster"
+                        data-embed="https://www.youtube.com/embed/f7-8U8OmfMw?autoplay=1&amp;rel=0"
+                        data-title="An Animated Biography of Edgar Allan Poe"
+                        aria-label="Play An Animated Biography of Edgar Allan Poe">
+                        <img src="https://i.ytimg.com/vi/f7-8U8OmfMw/hqdefault.jpg" alt="" loading="lazy">
+                        <span class="play-glyph" aria-hidden="true"></span>
+                    </button>
+                    <div class="film-caption">
+                        <h2>Edgar Allan Poe</h2>
+                        <p>Animated biography</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-kicker reveal">Let's make something</p>
+        <a class="footer-cta reveal" href="mailto:justin@justdorm.com">justin@justdorm.com</a>
+        <div class="footer-meta">
+            <a href="https://www.instagram.com/justdorm/">Instagram</a>
+            <a href="about.html">About</a>
+            <span>© 2026 Justin Dormitzer</span>
+        </div>
+    </footer>
+
     <script type="importmap">
     {
         "imports": {
@@ -80,12 +145,7 @@
     }
     </script>
     <script type="module" src="homepage-scene.js"></script>
+    <script src="site.js" defer></script>
 </body>
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
-
-<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-<script src="main.js"></script>
 
 </html>

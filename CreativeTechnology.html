@@ -3,82 +3,133 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Dormitzer Portfolio</title>
+    <title>Creative Technology — Justin Dormitzer | Justdorm</title>
+    <meta name="description"
+        content="Creative technology by Justin Dormitzer — interactive installations, audio-reactive visuals, and real-time AI art shown at Porsche Studio, SVA, BitBasel, and more.">
+    <meta property="og:title" content="Creative Technology — Justin Dormitzer">
+    <meta property="og:description"
+        content="Interactive installations, audio-reactive visuals, and real-time AI art.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://justdorm.com/CreativeTechnology.html">
+    <meta property="og:image" content="https://justdorm.com/imgs/web/spinshift-thumb.jpg">
     <link rel="icon" type="image/x-icon" href="imgs/fav.png">
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <link rel="stylesheet" href="site.css">
 </head>
 
-<body>
-    
-    <canvas id="noise" class="noise"></canvas>
-    <header>
-        <div class="nav-links">
-            <a id="animMenu" href="/motion.html">Motion Design</a>
-            <a id="designMenu" href="/CreativeTechnology.html">Creative Technology</a>
-            <a id="abtbtn" href="/about.html">About</a>
-        </div>
-        <a id="logocont" href="https://justdorm.com/"><canvas class="jd-canvas logo-img" data-mode="header"></canvas></a>
-        <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
+<body class="theme-magenta">
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary">
+            <a class="nav-item nav-item--motion" href="motion.html">Motion Design</a>
+            <a class="nav-item nav-item--ct" href="CreativeTechnology.html">Creative Technology</a>
+            <a class="nav-item nav-item--about" href="about.html">About</a>
+        </nav>
+        <a class="logo-link" href="index.html" aria-label="Justdorm — home"><canvas class="jd-canvas"
+                data-mode="header"></canvas></a>
+        <a class="ig-link" href="https://www.instagram.com/justdorm/" aria-label="Instagram"><img
+                src="imgs/ig logo.png" alt=""></a>
     </header>
-    <h1>Creative Technology</h1>
-    <div class="project-cont">
 
-        <div class="project">
-            <h2>Spin X Shift</h2>
-            <h3>360° Audio Reactive Visuals w/ Depth Camera</h3>
-            <h4>Porsche Studio</h4>
-            <a href="SpinXShift.html">
-                <img class="thumbimg" src="imgs/Spinshift Thumb.jpg" alt="Project Two Image" />
-            </a>
+    <main>
+        <section class="page-hero">
+            <h1 class="page-title ink-split">Creative Technology</h1>
+            <p class="page-sub reveal">Installations, real-time systems, and immersive experiences</p>
+        </section>
+
+        <section class="section" aria-label="Case studies">
+            <div class="case-list">
+                <article class="case-row reveal">
+                    <a class="case-media" href="SpinXShift.html" tabindex="-1" aria-hidden="true">
+                        <img src="imgs/web/spinshift-thumb.jpg" alt="Projection-mapped visuals wrapping the walls of Porsche Studio Portland"
+                            loading="lazy">
+                    </a>
+                    <div class="case-info">
+                        <span class="case-num">01</span>
+                        <h2 class="case-title"><a href="SpinXShift.html">Spin X Shift</a></h2>
+                        <p class="case-desc">360° audio-reactive visuals with a live depth camera</p>
+                        <p class="case-venue">Porsche Studio Portland · Shifting Realities</p>
+                        <a class="case-link" href="SpinXShift.html">View case study <span class="arrow"
+                                aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+
+                <article class="case-row reveal">
+                    <a class="case-media" href="Census.html" tabindex="-1" aria-hidden="true">
+                        <img src="imgs/web/census-thumb.jpg" alt="A glowing pie chart of textures projected in a dark gallery"
+                            loading="lazy">
+                    </a>
+                    <div class="case-info">
+                        <span class="case-num">02</span>
+                        <h2 class="case-title"><a href="Census.html">Census</a></h2>
+                        <p class="case-desc">An interactive projection that builds itself from its audience</p>
+                        <p class="case-venue">SVA Flatiron Gallery · Technological Perseverance</p>
+                        <a class="case-link" href="Census.html">View case study <span class="arrow"
+                                aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+
+                <article class="case-row reveal">
+                    <a class="case-media" href="StreamofConsciousness.html" tabindex="-1" aria-hidden="true">
+                        <img src="imgs/web/stream-thumb.jpg" alt="A visitor's silhouette transformed by real-time AI image generation"
+                            loading="lazy">
+                    </a>
+                    <div class="case-info">
+                        <span class="case-num">03</span>
+                        <h2 class="case-title"><a href="StreamofConsciousness.html">Stream of Consciousness</a></h2>
+                        <p class="case-desc">A real-time AI installation where the user becomes the art</p>
+                        <p class="case-venue">SVA MFA Computer Arts</p>
+                        <a class="case-link" href="StreamofConsciousness.html">View case study <span class="arrow"
+                                aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+
+                <article class="case-row reveal">
+                    <a class="case-media" href="summer-explorations.html" tabindex="-1" aria-hidden="true">
+                        <img src="imgs/web/summer-explorations-thumb.jpg" alt="A gallery of AI-generated imagery controlled by hand gestures"
+                            loading="lazy">
+                    </a>
+                    <div class="case-info">
+                        <span class="case-num">04</span>
+                        <h2 class="case-title"><a href="summer-explorations.html">Summer Explorations</a></h2>
+                        <p class="case-desc">A gesture-controlled art gallery navigated by hand tracking</p>
+                        <p class="case-venue">BitBasel · Miami Art Week</p>
+                        <a class="case-link" href="summer-explorations.html">View case study <span class="arrow"
+                                aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+
+                <article class="case-row reveal">
+                    <a class="case-media" href="rave-visuals.html" tabindex="-1" aria-hidden="true">
+                        <img src="imgs/web/raves.jpg" alt="Audio-reactive visuals projected behind a DJ booth"
+                            loading="lazy">
+                    </a>
+                    <div class="case-info">
+                        <span class="case-num">05</span>
+                        <h2 class="case-title"><a href="rave-visuals.html">Rave Visuals</a></h2>
+                        <p class="case-desc">Live-rendered, audio-reactive visuals driven from the DJ booth</p>
+                        <p class="case-venue">Haustoria · Queens, NYC</p>
+                        <a class="case-link" href="rave-visuals.html">View case study <span class="arrow"
+                                aria-hidden="true">→</span></a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-kicker reveal">Let's make something</p>
+        <a class="footer-cta reveal" href="mailto:justin@justdorm.com">justin@justdorm.com</a>
+        <div class="footer-meta">
+            <a href="https://www.instagram.com/justdorm/">Instagram</a>
+            <a href="about.html">About</a>
+            <span>© 2026 Justin Dormitzer</span>
         </div>
-        <div class="project-cont">
+    </footer>
 
-            <div class="project">
-                <h2>Census</h2>
-                <h3>Interactive Projection</h3>
-                <h4>Technological Perseverance</h4>
-                <a href="Census.html">
-                    <img class="thumbimg" src="imgs/Census Thumb.png" alt="Project Two Image" />
-                </a>
-            </div>
-
-            <div class="project">
-                <h2>Stream of Consciousness</h2>
-                <h3>Real-time AI Installation</h3>
-                <h4>SVA MFA Computer Arts</h4>
-                <a href="StreamofConsciousness.html">
-                    <img class="thumbimg" src="imgs/Stream Thumb.png" alt="Project One Image" />
-                </a>
-            </div>
-
-            <div class="project">
-                <h2>Summer Explorations</h2>
-                <h3>Gesture Controlled Art Gallery</h3>
-                <h4>BitBasel Miami Art Week</h4>
-                <a href="Summer Explorations.html">
-                    <img class="thumbimg" src="imgs/Summer Explorations Thumb.png" alt="Project Three Image" />
-                </a>
-            </div>
-
-            <div class="project">
-                <h2>Rave Visuals</h2>
-                <h3>Live Rendered Audio-Reactive Visuals</h3>
-                <h4>Haustoria</h4>
-                <a href="Rave Visuals.html">
-                    <img class="thumbimg" src="imgs/Raves.png" alt="Project Three Image" />
-                </a>
-            </div>
-        </div>
-
-
-    <!-- Import Map for Three.js -->
-    
-    
-
-    <!-- Import Map for Three.js -->
     <script type="importmap">
     {
         "imports": {
@@ -88,7 +139,7 @@
     }
     </script>
     <script type="module" src="homepage-scene.js"></script>
+    <script src="site.js" defer></script>
 </body>
-<script src="main.js"></script>
 
 </html>

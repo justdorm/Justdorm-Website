@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rave Visuals — Live Audio-Reactive VJ Sets | Justdorm</title>
+    <meta name="description"
+        content="Live-rendered, audio-reactive rave visuals by Justin Dormitzer — TouchDesigner systems driven directly from the DJ booth at Haustoria events across Queens, NYC.">
+    <meta property="og:title" content="Rave Visuals — Justin Dormitzer">
+    <meta property="og:description"
+        content="Live-rendered, audio-reactive visuals driven from the DJ booth.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://justdorm.com/rave-visuals.html">
+    <meta property="og:image" content="https://justdorm.com/imgs/web/raves.jpg">
+    <link rel="icon" type="image/x-icon" href="imgs/fav.png">
+    <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <link rel="stylesheet" href="site.css">
+</head>
+
+<body class="theme-magenta">
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary">
+            <a class="nav-item nav-item--motion" href="motion.html">Motion Design</a>
+            <a class="nav-item nav-item--ct" href="CreativeTechnology.html">Creative Technology</a>
+            <a class="nav-item nav-item--about" href="about.html">About</a>
+        </nav>
+        <a class="logo-link" href="index.html" aria-label="Justdorm — home"><canvas class="jd-canvas"
+                data-mode="header"></canvas></a>
+        <a class="ig-link" href="https://www.instagram.com/justdorm/" aria-label="Instagram"><img
+                src="imgs/ig logo.png" alt=""></a>
+    </header>
+
+    <main class="case-study">
+        <header class="cs-hero">
+            <a class="kicker reveal" href="CreativeTechnology.html">Case study 05 — Creative Technology</a>
+            <h1 class="page-title ink-split">Rave Visuals</h1>
+            <p class="cs-sub reveal">Live-rendered, audio-reactive visuals driven straight from the DJ booth</p>
+            <dl class="cs-meta reveal">
+                <div>
+                    <dt>Role</dt>
+                    <dd>VJ &amp; systems designer</dd>
+                </div>
+                <div>
+                    <dt>Tools</dt>
+                    <dd>TouchDesigner · MIDI · Depth Camera</dd>
+                </div>
+                <div>
+                    <dt>Venue</dt>
+                    <dd>Haustoria — venues across Queens, NYC</dd>
+                </div>
+            </dl>
+        </header>
+
+        <div class="cs-video reveal">
+            <div class="video-frame">
+                <iframe src="https://player.vimeo.com/video/1151601440?badge=0&amp;autopause=0" loading="lazy"
+                    allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen
+                    title="Rave Visuals — compilation"></iframe>
+            </div>
+        </div>
+
+        <section class="cs-section reveal">
+            <h2>Sound you can see</h2>
+            <p>This is a compilation of my work as a VJ at raves across various venues in Queens, hosted by Haustoria.
+                I build systems in TouchDesigner that are both audio-reactive and MIDI-controlled, connecting my PC
+                directly to the DJ booth so the sound waves from the music drive the visuals in real time.</p>
+        </section>
+
+        <aside class="tech-panel reveal">
+            <h2>How it works</h2>
+            <p>Different parameters of each visual system are both audio-reactive and bound to sliders and buttons on a MIDI controller,
+                allowing for variation and live art direction over the course of a set — the visuals are performed,
+                not played back.</p>
+        </aside>
+
+        <nav class="cs-pager" aria-label="More case studies">
+            <a class="pager-link prev" href="summer-explorations.html">
+                <span class="pager-label">← Previous</span>
+                <span class="pager-title">Summer Explorations</span>
+            </a>
+            <a class="pager-link next" href="SpinXShift.html">
+                <span class="pager-label">Next →</span>
+                <span class="pager-title">Spin X Shift</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-kicker reveal">Let's make something</p>
+        <a class="footer-cta reveal" href="mailto:justin@justdorm.com">justin@justdorm.com</a>
+        <div class="footer-meta">
+            <a href="https://www.instagram.com/justdorm/">Instagram</a>
+            <a href="about.html">About</a>
+            <span>© 2026 Justin Dormitzer</span>
+        </div>
+    </footer>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="homepage-scene.js"></script>
+    <script src="site.js" defer></script>
+</body>
+
+</html>

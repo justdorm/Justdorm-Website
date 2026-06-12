@@ -3,88 +3,123 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About</title>
+    <title>About — Justin Dormitzer | Justdorm</title>
+    <meta name="description"
+        content="Justin Dormitzer is a New York City based creative technologist and motion designer. MFA in Computer Arts from SVA; work shown at SIGGRAPH, BitBasel, Sérum Light Festival, VIEW Conference, and Porsche Studio Portland.">
+    <meta property="og:title" content="About — Justin Dormitzer">
+    <meta property="og:description"
+        content="New York City based creative technologist and motion designer, transporting you to other worlds.">
+    <meta property="og:type" content="profile">
+    <meta property="og:url" content="https://justdorm.com/about.html">
+    <meta property="og:image" content="https://justdorm.com/imgs/Headshot.jpg">
     <link rel="icon" type="image/x-icon" href="imgs/fav.png">
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <link rel="stylesheet" href="site.css">
 </head>
 
-<body>
-    <canvas id="noise" class="noise"></canvas>
-    <header>
-        <div class="nav-links">
-            <a id="animMenu" href="/motion.html">Motion Design</a>
-            <a id="designMenu" href="/CreativeTechnology.html">Creative Technology</a>
-            <a id="abtbtn" href="/about.html">About</a>
-        </div>
-        <a id="logocont" href="https://justdorm.com/"><canvas class="jd-canvas logo-img"
+<body class="theme-yellow">
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary">
+            <a class="nav-item nav-item--motion" href="motion.html">Motion Design</a>
+            <a class="nav-item nav-item--ct" href="CreativeTechnology.html">Creative Technology</a>
+            <a class="nav-item nav-item--about" href="about.html">About</a>
+        </nav>
+        <a class="logo-link" href="index.html" aria-label="Justdorm — home"><canvas class="jd-canvas"
                 data-mode="header"></canvas></a>
-        <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
+        <a class="ig-link" href="https://www.instagram.com/justdorm/" aria-label="Instagram"><img
+                src="imgs/ig logo.png" alt=""></a>
     </header>
-    <div id="aboutsec">
-        <img id="headshot" src="imgs/Headshot.jpg" alt="Headshot">
-        <p> Hi, I'm <b><i> Justin Dormitzer</b></i> - a New York City based creative technologist and motion designer on
-            a mission to transport you to other worlds through my work.
 
-            I hold an MFA degree in Computer Arts from the School of Visual Arts, with a focus on motion graphics and
-            experimental art. My work ranges from traditional design and animation to interactive experiences and new
-            media art, and has been showcased internationally at <b><i></i>SIGGRAPH, BitBasel, Sérum Light Festival,
-                VIEW
-                Conference, and Porsche Studio Portland</b></i>, among others.
+    <main>
+        <section class="about-hero">
+            <img class="headshot reveal" src="imgs/Headshot.jpg" alt="Justin Dormitzer">
+            <div class="about-intro">
+                <h1 class="ink-split">Hi, I'm Justin Dormitzer</h1>
+                <p class="reveal">I'm a New York City based creative technologist and motion designer on a mission to
+                    transport you to other worlds through my work.</p>
+                <p class="reveal">I hold an MFA in Computer Arts from the School of Visual Arts, with a focus on motion
+                    graphics and experimental art. My work ranges from traditional design and animation to interactive
+                    experiences and new media art.</p>
+                <p class="reveal">My approach is to combine technical expertise with a vivid imagination — resulting
+                    in pieces that are both visually striking and sensorily immersive.</p>
+                <div class="contact-row reveal">
+                    <a class="btn-ghost" href="mailto:justin@justdorm.com">Email me</a>
+                    <a class="btn-ghost" href="https://www.instagram.com/justdorm/">@justdorm</a>
+                </div>
+            </div>
+        </section>
 
-            My approach to art and design is to combine technical expertise with a vivid imagination, resulting in
-            pieces that are both visually striking and sensorily immersive. <br><br> You can contact me via email at <a
-                href="mailto:justin@justdorm.com"><u>justin@justdorm.com</u></a><br> or on Instagram <a
-                href="https://www.instagram.com/justdorm/"><u>@justdorm</a></u><br><br>Below are some of my personal
-            artworks - including paintings, sculptures and more!</p>
-    </div>
-    <div id="art-grid">
-        <div class="grid-item"><img src="imgs/SLAM.jpg" alt="">
-            <h3>Meeting the Being</h3>
-            <h4>3d Render</h4>
-        </div>
-        <div class="grid-item"><img src="imgs/Portrait of Angela.jpg" alt="">
-            <h3>Portrait of Angela</h3>
-            <h4>Oil on Canvas</h4>
-        </div>
-        <div class="grid-item"><img src="imgs/self portrait.jpg" alt="">
-            <h3>Self Portrait</h3>
-            <h4>Watercolor and Ink</h4>
-        </div>
-        <div class="grid-item"><img src="imgs/edited render.jpg" alt="">
-            <h3>Living Space</h3>
-            <h4>3d Render</h4>
-        </div>
-        <div class="grid-item"><img src="imgs/Drawing-1-small-766x1024.jpg" alt="">
-            <h3>Life Drawing</h3>
-            <h4>Charcoal</h4>
-        </div>
-        <div class="grid-item"><img src="imgs/ring-of-fire-720x480.jpg" alt="">
-            <h3>Ring of Fire</h3>
-            <h4>Jewelry Fabrication</h4>
-        </div>
-        <div class="grid-item"><img src="imgs/Pig Mask.jpg" alt="">
-            <h3>The Big Bad Pig</h3>
-            <h4>SFX Mask</h4>
-        </div>
-        <div class="grid-item"><img src="imgs/Head-Ring-720x571.jpg" alt="">
-            <h3>Portrait Ring</h3>
-            <h4>Lost Wax Jewelry</h4>
-        </div>
-        <div class="grid-item"><img src="imgs/untitled-720x540.jpg" alt="">
-            <h3>A Lonely Home</h3>
-            <h4>Photography and Photo Manipulation</h4>
-        </div>
+        <ul class="cred-strip reveal" aria-label="Shown internationally at">
+            <li class="cred-label">Shown at</li>
+            <li>SIGGRAPH</li>
+            <li>BitBasel</li>
+            <li>Sérum Light Festival</li>
+            <li>VIEW Conference</li>
+            <li>Porsche Studio Portland</li>
+        </ul>
 
-    </div>
+        <section aria-label="Personal artwork">
+            <div class="gallery-head reveal">
+                <h2>Personal artworks</h2>
+                <p>Paintings, sculpture, jewelry, and more</p>
+            </div>
+            <div class="art-grid">
+                <figure class="art-item reveal">
+                    <img src="imgs/SLAM.jpg" alt="Meeting the Being — 3D render" loading="lazy">
+                    <figcaption><strong>Meeting the Being</strong><span>3D render</span></figcaption>
+                </figure>
+                <figure class="art-item reveal">
+                    <img src="imgs/Portrait of Angela.jpg" alt="Portrait of Angela — oil on canvas" loading="lazy">
+                    <figcaption><strong>Portrait of Angela</strong><span>Oil on canvas</span></figcaption>
+                </figure>
+                <figure class="art-item reveal">
+                    <img src="imgs/self portrait.jpg" alt="Self portrait — watercolor and ink" loading="lazy">
+                    <figcaption><strong>Self Portrait</strong><span>Watercolor and ink</span></figcaption>
+                </figure>
+                <figure class="art-item reveal">
+                    <img src="imgs/edited render.jpg" alt="Living Space — 3D render" loading="lazy">
+                    <figcaption><strong>Living Space</strong><span>3D render</span></figcaption>
+                </figure>
+                <figure class="art-item reveal">
+                    <img src="imgs/Drawing-1-small-766x1024.jpg" alt="Life drawing — charcoal" loading="lazy">
+                    <figcaption><strong>Life Drawing</strong><span>Charcoal</span></figcaption>
+                </figure>
+                <figure class="art-item reveal">
+                    <img src="imgs/ring-of-fire-720x480.jpg" alt="Ring of Fire — fabricated jewelry" loading="lazy">
+                    <figcaption><strong>Ring of Fire</strong><span>Jewelry fabrication</span></figcaption>
+                </figure>
+                <figure class="art-item reveal">
+                    <img src="imgs/Pig Mask.jpg" alt="The Big Bad Pig — special effects mask" loading="lazy">
+                    <figcaption><strong>The Big Bad Pig</strong><span>SFX mask</span></figcaption>
+                </figure>
+                <figure class="art-item reveal">
+                    <img src="imgs/Head-Ring-720x571.jpg" alt="Portrait Ring — lost wax jewelry" loading="lazy">
+                    <figcaption><strong>Portrait Ring</strong><span>Lost wax jewelry</span></figcaption>
+                </figure>
+                <figure class="art-item reveal">
+                    <img src="imgs/untitled-720x540.jpg" alt="A Lonely Home — photography and photo manipulation"
+                        loading="lazy">
+                    <figcaption><strong>A Lonely Home</strong><span>Photography &amp; photo manipulation</span>
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+    </main>
 
-    <!-- Import Map for Three.js -->
+    <footer class="site-footer">
+        <p class="footer-kicker reveal">Let's make something</p>
+        <a class="footer-cta reveal" href="mailto:justin@justdorm.com">justin@justdorm.com</a>
+        <div class="footer-meta">
+            <a href="https://www.instagram.com/justdorm/">Instagram</a>
+            <a href="index.html">Home</a>
+            <span>© 2026 Justin Dormitzer</span>
+        </div>
+    </footer>
 
-
-
-    <!-- Import Map for Three.js -->
     <script type="importmap">
     {
         "imports": {
@@ -94,9 +129,7 @@
     }
     </script>
     <script type="module" src="homepage-scene.js"></script>
+    <script src="site.js" defer></script>
 </body>
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-<script src="about.js"></script>
 
 </html>

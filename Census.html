@@ -2,54 +2,122 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Justin Dormitzer Portfolio</title>
-  <link rel="icon" type="image/x-icon" href="imgs/fav.png">
-  <link rel="stylesheet" href="styles.css?v=4">
-  <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Census — Interactive Projection | Justdorm</title>
+    <meta name="description"
+        content="Census is an interactive projection that builds itself from its audience — a rotating pie chart that fills with a unique texture for every viewer. Premiered at the SVA Flatiron Gallery, 2025.">
+    <meta property="og:title" content="Census — Justin Dormitzer">
+    <meta property="og:description"
+        content="An interactive projection that builds itself from its audience.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://justdorm.com/Census.html">
+    <meta property="og:image" content="https://justdorm.com/imgs/web/census-thumb.jpg">
+    <link rel="icon" type="image/x-icon" href="imgs/fav.png">
+    <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <link rel="stylesheet" href="site.css">
 </head>
 
-<body>
-  
-  <canvas id="noise" class="noise"></canvas>
-  <header>
-    <div class="nav-links">
-      <a id="animMenu" href="/motion.html">Motion Design</a>
-      <a id="designMenu" href="/CreativeTechnology.html">Creative Technology</a>
-      <a id="abtbtn" href="/about.html">About</a>
-    </div>
-    <a id="logocont" href="https://justdorm.com/"><canvas class="jd-canvas logo-img" data-mode="header"></canvas></a>
-    <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
-  </header>
-  </div>
-  <div class="hero">
-    <h2>Census</h2>
-    <div id="stream-cont">
-      <div style="padding:50.25% 0 0 0;position:relative;"><iframe id="stream-reel"
-          src="https://player.vimeo.com/video/1150743293?h=db3ff67f71&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-          frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Census Documentation"></iframe></div>
-      <script src="https://player.vimeo.com/api/player.js"></script>
-    </div>
-    <p id="streampar">Census is an artwork that builds itself through its audience. At its center is a slowly
-      rotating pie chart, which begins as a blank canvas and gradually fills with unique textures, one for each
-      viewer. Over the course of the exhibition, this accumulation transforms the work into both an archive and a
-      portrait of the event itself. By its conclusion, “Census” captures the data of presence, recording
-      the community through the simple act of participation.</p>
-  </div>
-  <img class="UIimgSmall" src="/imgs/Census.png" alt="UI">
-  <p id="streampar">Census premiered at the SVA Flatiron Gallery for the Fall 2025 show "Technological Perseverance."
-    It was developed in TouchDesigner, using a depth camera to detect when a viewer is in front of the piece. A glow
-    indicates that their presence is being recorded. Behind the scenes, there is a table for data storage (how long
-    a viewer is present and the angle which the slice should originate from), and replicators which reference this
-    data for the pie chart slices themselves. A random texture from a texture library is chosen for each new viewer
-    and is blended with previous slices in case of overlap. <br> </p>
+<body class="theme-magenta">
 
+    <div class="grain" aria-hidden="true"></div>
 
-    <!-- Import Map for Three.js -->
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary">
+            <a class="nav-item nav-item--motion" href="motion.html">Motion Design</a>
+            <a class="nav-item nav-item--ct" href="CreativeTechnology.html">Creative Technology</a>
+            <a class="nav-item nav-item--about" href="about.html">About</a>
+        </nav>
+        <a class="logo-link" href="index.html" aria-label="Justdorm — home"><canvas class="jd-canvas"
+                data-mode="header"></canvas></a>
+        <a class="ig-link" href="https://www.instagram.com/justdorm/" aria-label="Instagram"><img
+                src="imgs/ig logo.png" alt=""></a>
+    </header>
+
+    <main class="case-study">
+        <header class="cs-hero">
+            <a class="kicker reveal" href="CreativeTechnology.html">Case study 02 — Creative Technology</a>
+            <h1 class="page-title ink-split">Census</h1>
+            <p class="cs-sub reveal">An interactive projection that builds itself from its audience, one viewer at a
+                time</p>
+            <dl class="cs-meta reveal">
+                <div>
+                    <dt>Role</dt>
+                    <dd>Artist &amp; developer</dd>
+                </div>
+                <div>
+                    <dt>Tools</dt>
+                    <dd>TouchDesigner · Depth camera</dd>
+                </div>
+                <div>
+                    <dt>Venue</dt>
+                    <dd>SVA Flatiron Gallery — Technological Perseverance</dd>
+                </div>
+                <div>
+                    <dt>Year</dt>
+                    <dd>2025</dd>
+                </div>
+            </dl>
+        </header>
+
+        <div class="cs-video reveal">
+            <div class="video-frame">
+                <iframe src="https://player.vimeo.com/video/1150743293?h=db3ff67f71&amp;badge=0&amp;autopause=0"
+                    loading="lazy" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen
+                    title="Census — documentation"></iframe>
+            </div>
+        </div>
+
+        <section class="cs-section reveal">
+            <h2>A portrait made of presence</h2>
+            <p>Census is an artwork that builds itself through its audience. At its center is a slowly rotating pie
+                chart, which begins as a blank canvas and gradually fills with unique textures — one for each viewer.
+                Over the course of the exhibition, this accumulation transforms the work into both an archive and a
+                portrait of the event itself.</p>
+            <blockquote class="pull-quote">By its conclusion, Census captures the data of presence — recording the
+                community through the simple act of participation.</blockquote>
+        </section>
+
+        <figure class="cs-figure is-narrow reveal">
+            <img class="rotate-slow" src="imgs/web/census.jpg"
+                alt="The Census pie chart, filled with a ring of distinct textures collected from viewers"
+                loading="lazy">
+            <figcaption>The chart at the end of the exhibition — every slice is one viewer</figcaption>
+        </figure>
+
+        <aside class="tech-panel reveal">
+            <h2>How it works</h2>
+            <p>Census premiered at the SVA Flatiron Gallery for the Fall 2025 show "Technological Perseverance." It was
+                developed in TouchDesigner, using a depth camera to detect when a viewer is standing in front of the
+                piece — a glow indicates that their presence is being recorded.</p>
+            <p>Behind the scenes, a data table stores how long each viewer is present and the angle their slice should
+                originate from, while replicators reference this data to generate the pie chart slices themselves. A
+                random texture from a texture library is chosen for each new viewer, blended with previous slices in
+                case of overlap.</p>
+        </aside>
+
+        <nav class="cs-pager" aria-label="More case studies">
+            <a class="pager-link prev" href="SpinXShift.html">
+                <span class="pager-label">← Previous</span>
+                <span class="pager-title">Spin X Shift</span>
+            </a>
+            <a class="pager-link next" href="StreamofConsciousness.html">
+                <span class="pager-label">Next →</span>
+                <span class="pager-title">Stream of Consciousness</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-kicker reveal">Let's make something</p>
+        <a class="footer-cta reveal" href="mailto:justin@justdorm.com">justin@justdorm.com</a>
+        <div class="footer-meta">
+            <a href="https://www.instagram.com/justdorm/">Instagram</a>
+            <a href="about.html">About</a>
+            <span>© 2026 Justin Dormitzer</span>
+        </div>
+    </footer>
+
     <script type="importmap">
     {
         "imports": {
@@ -59,12 +127,7 @@
     }
     </script>
     <script type="module" src="homepage-scene.js"></script>
+    <script src="site.js" defer></script>
 </body>
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
-
-<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-<script src="main.js"></script>
 
 </html>

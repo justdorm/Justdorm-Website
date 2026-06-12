@@ -3,56 +3,123 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Dormitzer Portfolio</title>
+    <title>Stream of Consciousness — Real-Time AI Installation | Justdorm</title>
+    <meta name="description"
+        content="Stream of Consciousness is a real-time AI installation built in TouchDesigner with StreamDiffusion — visitors physically interact with the image generation and become both the artist and the art.">
+    <meta property="og:title" content="Stream of Consciousness — Justin Dormitzer">
+    <meta property="og:description"
+        content="A real-time AI installation where the user becomes both the artist and the art.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://justdorm.com/StreamofConsciousness.html">
+    <meta property="og:image" content="https://justdorm.com/imgs/web/stream-thumb.jpg">
     <link rel="icon" type="image/x-icon" href="imgs/fav.png">
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <link rel="stylesheet" href="site.css">
 </head>
 
-<body>
-    
-    <canvas id="noise" class="noise"></canvas>
-    <header>
-        <div class="nav-links">
-            <a id="animMenu" href="/motion.html">Motion Design</a>
-            <a id="designMenu" href="/CreativeTechnology.html">Creative Technology</a>
-            <a id="abtbtn" href="/about.html">About</a>
-        </div>
-        <a id="logocont" href="https://justdorm.com/"><canvas class="jd-canvas logo-img" data-mode="header"></canvas></a>
-        <a href="https://www.instagram.com/justdorm/"><img class="ig-img" src="imgs/ig logo.png" alt="Logo"></a>
+<body class="theme-magenta">
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary">
+            <a class="nav-item nav-item--motion" href="motion.html">Motion Design</a>
+            <a class="nav-item nav-item--ct" href="CreativeTechnology.html">Creative Technology</a>
+            <a class="nav-item nav-item--about" href="about.html">About</a>
+        </nav>
+        <a class="logo-link" href="index.html" aria-label="Justdorm — home"><canvas class="jd-canvas"
+                data-mode="header"></canvas></a>
+        <a class="ig-link" href="https://www.instagram.com/justdorm/" aria-label="Instagram"><img
+                src="imgs/ig logo.png" alt=""></a>
     </header>
-    </div>
-    <div class="hero">
-        <h2>Stream of Consciousness</h2>
-        <div id="stream-cont">
-            <div style="padding:50.25% 0 0 0;position:relative;"><iframe id="stream-reel"
-                    src="https://player.vimeo.com/video/1061328008?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
-                    style="position:absolute;top:0;left:0;width:100%;height:100%;"
-                    title="StreamofConsciousness"></iframe>
+
+    <main class="case-study">
+        <header class="cs-hero">
+            <a class="kicker reveal" href="CreativeTechnology.html">Case study 03 — Creative Technology</a>
+            <h1 class="page-title ink-split">Stream of Consciousness</h1>
+            <p class="cs-sub reveal">A real-time AI installation where the user becomes both the artist and the art</p>
+            <dl class="cs-meta reveal">
+                <div>
+                    <dt>Role</dt>
+                    <dd>Artist &amp; developer</dd>
+                </div>
+                <div>
+                    <dt>Tools</dt>
+                    <dd>TouchDesigner · StreamDiffusion · SDTurbo</dd>
+                </div>
+                <div>
+                    <dt>Venue</dt>
+                    <dd>SVA MFA Computer Arts</dd>
+                </div>
+            </dl>
+        </header>
+
+        <div class="cs-video reveal">
+            <div class="video-frame">
+                <iframe src="https://player.vimeo.com/video/1061328008?badge=0&amp;autopause=0" loading="lazy"
+                    allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen
+                    title="Stream of Consciousness — documentation"></iframe>
             </div>
-            <script src="https://player.vimeo.com/api/player.js"></script>
         </div>
-        <p id="streampar">Stream of Consciousness is an interactive installation that maximizes user engagement and
-            customization with AI image generation. The system consists of a webcam where users can physically interact
-            with the AI process, and a bluetooth controller where they can change the installation settings to suit
-            their imagination. In Stream of Consciousness, the user becomes both the artist and the art.</p>
-    </div>
-    <img class="UIimg" src="/imgs/UI.png" alt="UI">
-    <img class="UIimg" src="/imgs/UI_Labeled.png" alt="UI">
-    <p id="streampar">Stream of Consciousness was developed in TouchDesigner using StreamDiffusion, a real-time
-        implementation of Stable Diffusion. The image generation model that this iteration is running is SDTurbo. For
-        the user silhouette isolation, I am using Nvidia Background Removal. The silhouette is composited with a
-        foreground and background noise and is then used as an image to image input. The system also includes both a
-        preset management system for an intuitive and curated experience, as well as in depth UI to fully customize the
-        prompt and generation settings for users who want full creative control.</p>
-    <img class="UIimg" src="/imgs/TDUI.png" alt="UI">
 
+        <section class="cs-section reveal">
+            <h2>Infinite variation, instantly rendered</h2>
+            <p>Stream of Consciousness is an interactive installation that maximizes user engagement and customization
+                with AI image generation. The system pairs a webcam — where users physically interact with the AI
+                process — with a Bluetooth controller that changes the installation's settings to suit their
+                imagination.</p>
+            <blockquote class="pull-quote">In Stream of Consciousness, the user becomes both the artist and the
+                art.</blockquote>
+        </section>
 
+        <figure class="cs-figure zoomable reveal">
+            <img src="imgs/web/ui.jpg" alt="The installation interface showing a live AI-generated scene" loading="lazy">
+            <figcaption>The live generation view</figcaption>
+        </figure>
 
-    <!-- Import Map for Three.js -->
+        <figure class="cs-figure zoomable reveal">
+            <img src="imgs/web/ui-labeled.jpg" alt="The interface with each control labeled" loading="lazy">
+            <figcaption>The controls, labeled — presets, prompt, and generation settings</figcaption>
+        </figure>
+
+        <aside class="tech-panel reveal">
+            <h2>How it works</h2>
+            <p>The installation was developed in TouchDesigner using StreamDiffusion, a real-time implementation of
+                Stable Diffusion, with SDTurbo as the generation model. Nvidia Background Removal isolates the user's
+                silhouette, which is composited with foreground and background noise and used as the image-to-image
+                input.</p>
+            <p>A preset management system keeps the experience intuitive and curated, while an in-depth UI exposes the
+                full prompt and generation settings for users who want complete creative control.</p>
+        </aside>
+
+        <figure class="cs-figure zoomable reveal">
+            <img src="imgs/TDUI.png" alt="The TouchDesigner network behind the installation" loading="lazy">
+            <figcaption>Behind the scenes — the TouchDesigner network</figcaption>
+        </figure>
+
+        <nav class="cs-pager" aria-label="More case studies">
+            <a class="pager-link prev" href="Census.html">
+                <span class="pager-label">← Previous</span>
+                <span class="pager-title">Census</span>
+            </a>
+            <a class="pager-link next" href="summer-explorations.html">
+                <span class="pager-label">Next →</span>
+                <span class="pager-title">Summer Explorations</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-kicker reveal">Let's make something</p>
+        <a class="footer-cta reveal" href="mailto:justin@justdorm.com">justin@justdorm.com</a>
+        <div class="footer-meta">
+            <a href="https://www.instagram.com/justdorm/">Instagram</a>
+            <a href="about.html">About</a>
+            <span>© 2026 Justin Dormitzer</span>
+        </div>
+    </footer>
+
     <script type="importmap">
     {
         "imports": {
@@ -62,12 +129,7 @@
     }
     </script>
     <script type="module" src="homepage-scene.js"></script>
+    <script src="site.js" defer></script>
 </body>
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
-
-<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
-<script src="main.js"></script>
 
 </html>
