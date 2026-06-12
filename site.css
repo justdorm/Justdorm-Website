@@ -699,7 +699,7 @@ body.lightbox-locked { overflow: hidden; }
 
 .about-intro h1 {
   white-space: nowrap;
-  font-size: clamp(1.4rem, 5.5vw, 3rem);
+  font-size: clamp(1.1rem, 5.5vw, 3rem);
 }
 
 .headshot {
