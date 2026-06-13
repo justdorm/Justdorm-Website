@@ -791,13 +791,17 @@ const requestGyro = () => {
   document.body.removeEventListener('click', requestGyro);
   document.body.removeEventListener('touchend', requestGyro);
 };
-window.addEventListener('click', requestGyro);
-window.addEventListener('touchend', requestGyro);
-document.body.addEventListener('click', requestGyro);
-document.body.addEventListener('touchend', requestGyro);
-canvas.addEventListener('click', requestGyro);
-canvas.addEventListener('touchend', requestGyro);
-canvas.style.cursor = 'pointer';
+// Homepage only: on interior pages this first-tap permission request can
+// pop the iOS motion dialog on top of a nav tap, eating the navigation.
+if (!isHeader) {
+  window.addEventListener('click', requestGyro);
+  window.addEventListener('touchend', requestGyro);
+  document.body.addEventListener('click', requestGyro);
+  document.body.addEventListener('touchend', requestGyro);
+  canvas.addEventListener('click', requestGyro);
+  canvas.addEventListener('touchend', requestGyro);
+  canvas.style.cursor = 'pointer';
+}
 
 // ─── Party Mode (raycast hover over logo) ───
 let partyMode = false;
