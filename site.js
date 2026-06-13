@@ -248,4 +248,28 @@
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
     });
   });
+
+  // ── Dynamic Favicon Color Cycling ──
+  var favLink = document.querySelector('link[rel="icon"]');
+  if (favLink) {
+    var favCanvas = document.createElement('canvas');
+    var favCtx = favCanvas.getContext('2d');
+    var favImg = new Image();
+    var favHue = 0;
+    
+    favImg.onload = function() {
+      favCanvas.width = favImg.width;
+      favCanvas.height = favImg.height;
+    };
+    favImg.src = favLink.href;
+    
+    window.addEventListener('click', function() {
+      if (!favImg.complete || !favCanvas.width) return;
+      favHue = (favHue + 60) % 360;
+      favCtx.clearRect(0, 0, favCanvas.width, favCanvas.height);
+      favCtx.filter = 'hue-rotate(' + favHue + 'deg)';
+      favCtx.drawImage(favImg, 0, 0);
+      favLink.href = favCanvas.toDataURL('image/png');
+    });
+  }
 })();
