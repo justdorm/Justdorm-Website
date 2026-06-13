@@ -248,37 +248,4 @@
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
     });
   });
-
-  // ── Dynamic Favicon Color Cycling ──
-  var favLink = document.querySelector('link[rel="icon"]');
-  if (favLink) {
-    var favCanvas = document.createElement('canvas');
-    var favCtx = favCanvas.getContext('2d');
-    var favImg = new Image();
-    var favColors = ['#00ffff', '#ff00ff', '#ffe600'];
-    var favPhase = 0;
-    
-    favImg.onload = function() {
-      favCanvas.width = favImg.width;
-      favCanvas.height = favImg.height;
-    };
-    favImg.src = favLink.href;
-    
-    window.addEventListener('click', function() {
-      if (!favImg.complete || !favCanvas.width) return;
-      favPhase = (favPhase + 1) % 3;
-      
-      // Clear canvas and draw original shape
-      favCtx.clearRect(0, 0, favCanvas.width, favCanvas.height);
-      favCtx.globalCompositeOperation = 'source-over';
-      favCtx.drawImage(favImg, 0, 0);
-      
-      // Tint the shape with the exact solid color
-      favCtx.globalCompositeOperation = 'source-in';
-      favCtx.fillStyle = favColors[favPhase];
-      favCtx.fillRect(0, 0, favCanvas.width, favCanvas.height);
-      
-      favLink.href = favCanvas.toDataURL('image/png');
-    });
-  }
 })();
