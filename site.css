@@ -186,7 +186,7 @@ a, button { touch-action: manipulation; }
 }
 
 .logo-link { justify-self: center; line-height: 0; }
-.logo-link .jd-canvas { width: 45px; height: 45px; transition: filter 3s ease; }
+.logo-link .jd-canvas { width: 45px; height: 45px; transition: filter 0.4s ease; }
 .logo-link:hover .jd-canvas { filter: hue-rotate(-120deg); }
 
 .ig-link { justify-self: end; line-height: 0; opacity: 0.55; transition: opacity 0.3s ease; }
