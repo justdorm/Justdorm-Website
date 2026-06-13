@@ -799,6 +799,17 @@ body.lightbox-locked { overflow: hidden; }
   white-space: nowrap;
 }
 
+@media (min-width: 769px) {
+  .cred-strip {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 0.8rem clamp(0.5rem, 2vw, 2.5rem);
+  }
+  .cred-strip li {
+    font-size: clamp(0.75rem, 1.2vw, 1.05rem);
+  }
+}
+
 .contact-row {
   display: flex;
   flex-wrap: wrap;
