@@ -265,7 +265,7 @@
     
     window.addEventListener('click', function() {
       if (!favImg.complete || !favCanvas.width) return;
-      favHue = (favHue + 60) % 360;
+      favHue = (favHue + 120) % 360;
       favCtx.clearRect(0, 0, favCanvas.width, favCanvas.height);
       favCtx.filter = 'hue-rotate(' + favHue + 'deg)';
       favCtx.drawImage(favImg, 0, 0);
