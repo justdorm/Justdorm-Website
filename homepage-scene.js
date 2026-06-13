@@ -892,7 +892,7 @@ function animate() {
 
     // Party mode: rapidly cycle colors while hovering over logo
     if (partyMode) {
-      colorPhaseTarget += 0.06;
+      colorPhaseTarget += isHeader ? 0.015 : 0.06;
     } else if (wasParty) {
       // Snap to nearest clean CMY color on exit
       colorPhaseTarget = Math.round(colorPhaseTarget);
