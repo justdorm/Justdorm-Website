@@ -779,7 +779,7 @@ body.lightbox-locked { overflow: hidden; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: baseline;
+  align-items: center;
   gap: 0.8rem clamp(1.2rem, 3vw, 2.5rem);
   list-style: none;
 }
