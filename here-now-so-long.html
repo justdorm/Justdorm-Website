@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Here NOW so Long — Live Video Effects for Dance | Justdorm</title>
+    <meta name="description"
+        content="Live video effects for White Wave Dance Company's Here NOW so Long at New York Live Arts — four camera feeds and twelve scenes of real-time effects performed in TouchDesigner.">
+    <meta property="og:title" content="Here NOW so Long — Justin Dormitzer">
+    <meta property="og:description"
+        content="Live, real-time video effects for dance — four cameras and twelve scenes performed in TouchDesigner.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://justdorm.com/here-now-so-long.html">
+    <meta property="og:image" content="https://justdorm.com/imgs/web/here-now-thumb.jpg">
+    <link rel="icon" type="image/x-icon" href="imgs/fav.png">
+    <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <link rel="stylesheet" href="site.css">
+</head>
+
+<body class="theme-magenta">
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary">
+            <a class="nav-item nav-item--motion" href="motion.html">Motion Design</a>
+            <a class="nav-item nav-item--ct" href="CreativeTechnology.html">Creative Technology</a>
+            <a class="nav-item nav-item--about" href="about.html">About</a>
+        </nav>
+        <a class="logo-link" href="index.html" aria-label="Justdorm — home"><canvas class="jd-canvas"
+                data-mode="header"></canvas></a>
+        <a class="ig-link" href="https://www.instagram.com/justdorm/" aria-label="Instagram"><img
+                src="imgs/ig logo.png" alt=""></a>
+    </header>
+
+    <main class="case-study">
+        <header class="cs-hero">
+            <a class="kicker reveal" href="CreativeTechnology.html">Case study 02 — Creative Technology</a>
+            <h1 class="page-title ink-split">Here NOW so Long</h1>
+            <p class="cs-sub reveal">Live video effects for dance, run in real time across four cameras and twelve
+                scenes</p>
+            <dl class="cs-meta reveal">
+                <div>
+                    <dt>Role</dt>
+                    <dd>Video designer &amp; live operator</dd>
+                </div>
+                <div>
+                    <dt>Tools</dt>
+                    <dd>TouchDesigner · MIDI · SDI cameras · Camcorder</dd>
+                </div>
+                <div>
+                    <dt>Venue</dt>
+                    <dd>White Wave Dance Company — New York Live Arts</dd>
+                </div>
+            </dl>
+        </header>
+
+        <div class="cs-video reveal">
+            <div class="video-frame">
+                <iframe src="https://player.vimeo.com/video/1203954109?badge=0&amp;autopause=0" loading="lazy"
+                    allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen
+                    title="Here NOW so Long — documentation"></iframe>
+            </div>
+        </div>
+
+        <section class="cs-section reveal">
+            <h2>Four cameras, twelve scenes</h2>
+            <p>I programmed and ran live video effects for White Wave Dance Company's piece <em>Here NOW so Long</em> at
+                New York Live Arts. We had four camera feeds: a front camera mounted on the booth, a side camera in the
+                wing, an overhead camera mounted to the grid, and a camcorder hand-operated by the dancers throughout the
+                piece.</p>
+            <p>There were twelve scenes, each with different video effects, ranging from motion detection and feedback
+                effects to freeze-framed mosaics and digital backgrounds.</p>
+        </section>
+
+        <aside class="tech-panel reveal">
+            <h2>How it works</h2>
+            <p>Three fixed cameras and a camcorder are run via SDI cables from the stage to my PC in the tech booth.
+                All of the video effects were created in TouchDesigner, using a MIDI controller to switch cameras and
+                dial in the effects for each scene. Additionally, using the TouchOSC iPad app I could digitally zoom and
+                place the static cameras, allowing me to get close-up shots of the dancers even from the fixed
+                cameras.</p>
+        </aside>
+
+        <nav class="cs-pager" aria-label="More case studies">
+            <a class="pager-link prev" href="SpinXShift.html">
+                <span class="pager-label">← Previous</span>
+                <span class="pager-title">Spin X Shift</span>
+            </a>
+            <a class="pager-link next" href="nyc-pride-lighting.html">
+                <span class="pager-label">Next →</span>
+                <span class="pager-title">NYC Pride Open House Lighting Installation</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-kicker reveal">Let's make something</p>
+        <a class="footer-cta reveal" href="mailto:justin@justdorm.com">justin@justdorm.com</a>
+        <div class="footer-meta">
+            <a href="https://www.instagram.com/justdorm/">Instagram</a>
+            <a href="about.html">About</a>
+            <span>© 2026 Justin Dormitzer</span>
+        </div>
+    </footer>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="homepage-scene.js"></script>
+    <script type="module" src="starfield.js"></script>
+    <script src="site.js" defer></script>
+</body>
+
+</html>

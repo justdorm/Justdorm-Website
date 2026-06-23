@@ -83,6 +83,8 @@ a, button { touch-action: manipulation; }
 .vt-cs-03 { view-transition-name: cs-title-03; }
 .vt-cs-04 { view-transition-name: cs-title-04; }
 .vt-cs-05 { view-transition-name: cs-title-05; }
+.vt-cs-06 { view-transition-name: cs-title-06; }
+.vt-cs-07 { view-transition-name: cs-title-07; }
 
 /* ---------- Scroll progress hairline (element added by site.js) ---------- */
 .scroll-progress {

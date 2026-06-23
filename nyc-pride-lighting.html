@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYC Pride Open House Lighting Installation — Justin Dormitzer | Justdorm</title>
+    <meta name="description"
+        content="A DMX lighting installation for the NYC AIDS Memorial Pride Open House — 15 mapped fixtures driven by pixel animations in TouchDesigner, wrapping the entire memorial as one cohesive, art-directable light show.">
+    <meta property="og:title" content="NYC Pride Open House Lighting Installation — Justin Dormitzer">
+    <meta property="og:description"
+        content="A DMX lighting installation at the NYC AIDS Memorial — 15 mapped fixtures driven by TouchDesigner pixel animations.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://justdorm.com/nyc-pride-lighting.html">
+    <meta property="og:image" content="https://justdorm.com/imgs/web/lighting-thumb.jpg">
+    <link rel="icon" type="image/x-icon" href="imgs/fav.png">
+    <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <link rel="stylesheet" href="site.css">
+</head>
+
+<body class="theme-magenta">
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary">
+            <a class="nav-item nav-item--motion" href="motion.html">Motion Design</a>
+            <a class="nav-item nav-item--ct" href="CreativeTechnology.html">Creative Technology</a>
+            <a class="nav-item nav-item--about" href="about.html">About</a>
+        </nav>
+        <a class="logo-link" href="index.html" aria-label="Justdorm — home"><canvas class="jd-canvas"
+                data-mode="header"></canvas></a>
+        <a class="ig-link" href="https://www.instagram.com/justdorm/" aria-label="Instagram"><img
+                src="imgs/ig logo.png" alt=""></a>
+    </header>
+
+    <main class="case-study">
+        <header class="cs-hero">
+            <a class="kicker reveal" href="CreativeTechnology.html">Case study 03 — Creative Technology</a>
+            <h1 class="page-title ink-split">NYC Pride Open House Lighting Installation</h1>
+            <p class="cs-sub reveal">A lighting installation that wraps the NYC AIDS Memorial in pixel-mapped
+                animation, turning the whole structure into one cohesive, art-directable light show</p>
+            <dl class="cs-meta reveal">
+                <div>
+                    <dt>Role</dt>
+                    <dd>Lighting designer &amp; programmer</dd>
+                </div>
+                <div>
+                    <dt>Tools</dt>
+                    <dd>TouchDesigner · DMX · MIDI</dd>
+                </div>
+                <div>
+                    <dt>Venue</dt>
+                    <dd>NYC AIDS Memorial — Pride Open House</dd>
+                </div>
+            </dl>
+        </header>
+
+        <div class="cs-video reveal">
+            <div class="video-frame">
+                <iframe src="https://player.vimeo.com/video/1203912950?badge=0&amp;autopause=0" loading="lazy"
+                    allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen
+                    title="NYC Pride Open House Lighting Installation — documentation"></iframe>
+            </div>
+        </div>
+
+        <section class="cs-section reveal">
+            <h2>The memorial as a canvas</h2>
+            <p>I was the lighting designer and programmer for the NYC AIDS Memorial Pride Open House. Fifteen
+                DMX-controlled lights hit every beam of the Memorial, all mapped and controlled with pixel animations in
+                TouchDesigner so the whole memorial lit up as one piece.</p>
+            <p>I treated the whole memorial as one canvas and ran different Pride-inspired animations across it.</p>
+        </section>
+
+        <aside class="tech-panel reveal">
+            <h2>How it works</h2>
+            <p>Every light was pixel-mapped to its real position around the Memorial. By assigning each fixture an angle
+                and sampling a source animation from 0° (left) to 360° (right), TouchDesigner could drive all fifteen
+                lights from one continuous image — so a single animation sweeps around the entire structure instead of
+                being programmed light by light. Each fixture's sampled slice was converted into the DMX channel data the
+                lights could read directly.</p>
+            <p>Working from presets kept the show flexible. I could swap, blend, and retime animations live while
+                keeping every beam in sync.</p>
+        </aside>
+
+        <figure class="cs-figure zoomable reveal">
+            <img src="imgs/web/lighting-td.jpg" alt="The TouchDesigner network driving the DMX lighting installation"
+                loading="lazy">
+            <figcaption>Behind the scenes — the TouchDesigner network mapping each fixture by angle</figcaption>
+        </figure>
+
+        <nav class="cs-pager" aria-label="More case studies">
+            <a class="pager-link prev" href="here-now-so-long.html">
+                <span class="pager-label">← Previous</span>
+                <span class="pager-title">Here NOW so Long</span>
+            </a>
+            <a class="pager-link next" href="Census.html">
+                <span class="pager-label">Next →</span>
+                <span class="pager-title">Census</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-kicker reveal">Let's make something</p>
+        <a class="footer-cta reveal" href="mailto:justin@justdorm.com">justin@justdorm.com</a>
+        <div class="footer-meta">
+            <a href="https://www.instagram.com/justdorm/">Instagram</a>
+            <a href="about.html">About</a>
+            <span>© 2026 Justin Dormitzer</span>
+        </div>
+    </footer>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="homepage-scene.js"></script>
+    <script type="module" src="starfield.js"></script>
+    <script src="site.js" defer></script>
+</body>
+
+</html>
