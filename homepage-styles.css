@@ -170,8 +170,14 @@ canvas.noise {
   50% { opacity: 0.8; }
 }
 
-/* --- Responsive --- */
-@media screen and (max-width: 768px) {
+/* --- Responsive ---
+   Stack the nav at the top for phones, all iPad sizes, and any window that
+   isn't comfortably wide. The centered 3D logo is sized by viewport HEIGHT
+   (fixed-FOV camera), so tall/squarish screens render a wide logo that would
+   collide with the vertically-centered side links. Real laptops/desktops are
+   >= 16/10; every iPad (portrait and landscape) is <= 3/2, so the aspect-ratio
+   clause catches landscape tablets that exceed the width cutoff. */
+@media screen and (max-width: 1024px), screen and (max-aspect-ratio: 3 / 2) {
   .nav-overlay {
     flex-direction: row;
     justify-content: center;
