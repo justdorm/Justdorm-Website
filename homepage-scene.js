@@ -822,7 +822,9 @@ window.addEventListener('resize', () => {
   const pr = Math.min(window.devicePixelRatio, 2);
   const maskPR = mob ? pr : (pr * 2);
   dMaskTarget.setSize(w * maskPR, h * maskPR);
-  if (globalJMat) globalJMat.uniforms.resolution.value.set(w * maskPR, h * maskPR);
+  // resolution maps gl_FragCoord (main framebuffer, sized at PR) to the mask UV,
+  // so it must use PR — not maskPR, which would halve the UV and black out the J.
+  if (globalJMat) globalJMat.uniforms.resolution.value.set(w * PR, h * PR);
   if (globalMobileGlowMesh) globalMobileGlowMesh.visible = mob;
   if (globalParticleMat) {
     globalParticleMat.uniforms.aspectRatio.value = w / h;
