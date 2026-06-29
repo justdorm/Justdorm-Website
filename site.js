@@ -111,8 +111,8 @@
       el.addEventListener('mouseleave', function () { el.style.transform = ''; });
     });
 
-    // Cursor spotlight: feed pointer position into the .case-media glow.
-    document.querySelectorAll('.case-media').forEach(function (el) {
+    // Cursor spotlight: feed pointer position into the .case-media / .film-poster glow.
+    document.querySelectorAll('.case-media, .film-poster').forEach(function (el) {
       el.addEventListener('pointermove', function (e) {
         var r = el.getBoundingClientRect();
         el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');

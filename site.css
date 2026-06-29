@@ -336,16 +336,23 @@ main { display: block; }
   opacity: 0.92;
 }
 
-.film-poster:hover img, .reel-poster:hover img { transform: scale(1.045); opacity: 1; }
-
-.film-poster:hover, .reel-poster:hover,
+/* Keyboard focus always rings; hover effects are gated to real pointers so a
+   mobile tap opens the video on the first touch instead of just showing hover. */
 .film-poster:focus-visible, .reel-poster:focus-visible {
   box-shadow: 0 0 0 1px var(--accent), 0 0 32px var(--accent-glow), 0 0 90px var(--accent-glow);
+}
+
+@media (hover: hover) {
+  .film-poster:hover img, .reel-poster:hover img { transform: scale(1.045); opacity: 1; }
+  .film-poster:hover, .reel-poster:hover {
+    box-shadow: 0 0 0 1px var(--accent), 0 0 32px var(--accent-glow), 0 0 90px var(--accent-glow);
+  }
 }
 
 .play-glyph {
   position: absolute;
   inset: 0;
+  z-index: 2;
   margin: auto;
   width: clamp(54px, 8vw, 76px);
   height: clamp(54px, 8vw, 76px);
@@ -369,11 +376,30 @@ main { display: block; }
   font-size: clamp(12px, 1.4vw, 16px);
 }
 
-.film-poster:hover .play-glyph, .reel-poster:hover .play-glyph {
-  transform: scale(1.12);
-  background: rgba(0, 0, 0, 0.6);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .film-poster:hover .play-glyph, .reel-poster:hover .play-glyph {
+    transform: scale(1.12);
+    background: rgba(0, 0, 0, 0.6);
+    border-color: var(--accent);
+  }
 }
+
+/* Cursor spotlight on the film thumbnails — desaturated blue, pointer only,
+   matching the case-media glow. JS feeds --mx/--my (site.js). */
+.film-poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle 200px at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, rgba(20, 180, 255, 0.55), rgba(255, 255, 255, 0.18) 70%), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+@media (hover: hover) { .film-poster:hover::after { opacity: 1; } }
 
 .video-frame {
   position: relative;
