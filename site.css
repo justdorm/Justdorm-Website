@@ -189,25 +189,27 @@ a, button { touch-action: manipulation; }
   transition: right 0.35s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-.nav-item:hover::after,
+/* Active-page state always applies; hover is gated to real pointers so a
+   mobile tap navigates on the first touch instead of just showing hover. */
 .nav-item[aria-current="page"]::after { right: 0; }
 
-.nav-item--motion:hover, .nav-item--motion[aria-current="page"] {
-  color: var(--ink-c); text-shadow: 0 0 14px rgba(0, 255, 255, 0.45);
-}
-.nav-item--ct:hover, .nav-item--ct[aria-current="page"] {
-  color: var(--ink-m); text-shadow: 0 0 14px rgba(255, 0, 255, 0.45);
-}
-.nav-item--about:hover, .nav-item--about[aria-current="page"] {
-  color: var(--ink-y); text-shadow: 0 0 14px rgba(255, 230, 0, 0.45);
+.nav-item--motion[aria-current="page"] { color: var(--ink-c); text-shadow: 0 0 14px rgba(0, 255, 255, 0.45); }
+.nav-item--ct[aria-current="page"]     { color: var(--ink-m); text-shadow: 0 0 14px rgba(255, 0, 255, 0.45); }
+.nav-item--about[aria-current="page"]  { color: var(--ink-y); text-shadow: 0 0 14px rgba(255, 230, 0, 0.45); }
+
+@media (hover: hover) {
+  .nav-item:hover::after { right: 0; }
+  .nav-item--motion:hover { color: var(--ink-c); text-shadow: 0 0 14px rgba(0, 255, 255, 0.45); }
+  .nav-item--ct:hover     { color: var(--ink-m); text-shadow: 0 0 14px rgba(255, 0, 255, 0.45); }
+  .nav-item--about:hover  { color: var(--ink-y); text-shadow: 0 0 14px rgba(255, 230, 0, 0.45); }
 }
 
 .logo-link { justify-self: center; line-height: 0; }
 .logo-link .jd-canvas { width: 45px; height: 45px; transition: filter 0.4s ease; }
-.logo-link:hover .jd-canvas { filter: hue-rotate(-120deg); }
+@media (hover: hover) { .logo-link:hover .jd-canvas { filter: hue-rotate(-120deg); } }
 
 .ig-link { justify-self: end; line-height: 0; opacity: 0.55; transition: opacity 0.3s ease; }
-.ig-link:hover { opacity: 1; }
+@media (hover: hover) { .ig-link:hover { opacity: 1; } }
 .ig-link img { width: 20px; height: 20px; }
 
 @media (max-width: 640px) {
@@ -223,7 +225,8 @@ a, button { touch-action: manipulation; }
   /* keep the type small but give fingers a ~44px target */
   .nav-item { font-size: 0.68rem; letter-spacing: 0.1em; padding: 0.9em 0.35em; }
   .nav-item::after { left: 0.35em; }
-  .nav-item:hover::after, .nav-item[aria-current="page"]::after { right: 0.35em; }
+  .nav-item[aria-current="page"]::after { right: 0.35em; }
+  @media (hover: hover) { .nav-item:hover::after { right: 0.35em; } }
 }
 
 /* ---------- Page scaffold ---------- */
@@ -806,7 +809,7 @@ body.lightbox-locked { overflow: hidden; }
   transition: background 0.35s ease;
 }
 
-.pager-link:hover { background: rgba(255, 255, 255, 0.035); }
+@media (hover: hover) { .pager-link:hover { background: rgba(255, 255, 255, 0.035); } }
 
 .pager-link.next { text-align: right; }
 
@@ -827,8 +830,10 @@ body.lightbox-locked { overflow: hidden; }
   transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.pager-link:hover .pager-label { color: var(--accent); }
-.pager-link:hover .pager-title { color: var(--accent); text-shadow: 0 0 16px var(--accent-glow); }
+@media (hover: hover) {
+  .pager-link:hover .pager-label { color: var(--accent); }
+  .pager-link:hover .pager-title { color: var(--accent); text-shadow: 0 0 16px var(--accent-glow); }
+}
 
 /* ---------- About page ---------- */
 .about-hero {
