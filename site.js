@@ -7,20 +7,8 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ── View-transition morph targets ──
-  // The shared-element morph (listing thumbnail/title → case-study hero) only
-  // works if the destination elements are painted when Chrome captures the
-  // incoming snapshot. Our scroll-reveal leaves them at opacity:0 until the
-  // IntersectionObserver runs (after capture), so the morph has nothing to land
-  // on. pagereveal fires before the snapshot — paint the targets there, but
-  // only when actually arriving via a view transition.
-  window.addEventListener('pagereveal', function (e) {
-    if (!e || !e.viewTransition) return;
-    document.querySelectorAll('.page-title, .case-title, .case-media, .cs-hero-frame').forEach(function (el) {
-      el.classList.add('vt-shown');
-      var wrap = el.closest('.reveal');
-      if (wrap) wrap.classList.add('vt-shown');
-    });
-  });
+  // Moved to an inline <script> in each page's <head> so it registers before
+  // pagereveal fires (deferred scripts miss it on cold loads).
 
   // ── Random grain jitter (JS so it never loops) ──
   var grain = document.querySelector('.grain');

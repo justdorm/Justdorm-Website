@@ -18,6 +18,18 @@
     <link rel="preload" href="webFonts/PreciousSansTwoDemiBoldItalic/font.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
     <link rel="stylesheet" href="site.css">
+    <script>
+    // Ensure view-transition morph targets are visible before Chrome's snapshot
+    // (must be inline - deferred scripts miss pagereveal on cold loads)
+    window.addEventListener('pagereveal', function(e) {
+      if (!e || !e.viewTransition) return;
+      document.querySelectorAll('.page-title,.case-title,.case-media,.cs-hero-frame').forEach(function(el) {
+        el.classList.add('vt-shown');
+        var w = el.closest('.reveal');
+        if (w) w.classList.add('vt-shown');
+      });
+    });
+    </script>
 </head>
 
 <body class="theme-yellow">
