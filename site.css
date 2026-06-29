@@ -96,6 +96,11 @@ a, button { touch-action: manipulation; }
 .vt-media-here-now   { view-transition-name: media-here-now; }
 .vt-media-rave       { view-transition-name: media-rave; }
 
+/* Force morph targets to their final, painted state when arriving via a view
+   transition (set by site.js on pagereveal), so the snapshot captures them
+   visible instead of mid scroll-reveal. */
+.vt-shown { opacity: 1 !important; transform: none !important; transition: none !important; animation: none !important; }
+
 /* ---------- Scroll progress hairline (element added by site.js) ---------- */
 .scroll-progress {
   position: fixed;
