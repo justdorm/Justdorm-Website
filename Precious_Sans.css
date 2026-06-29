@@ -51,37 +51,46 @@
 @font-face {
   font-family: "PreciousSansTwoLightItalic";
   src: url('webFonts/PreciousSansTwoLightItalic/font.woff2') format('woff2'), url('webFonts/PreciousSansTwoLightItalic/font.woff') format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: "PreciousSansTwoMediumItalic";
   src: url('webFonts/PreciousSansTwoMediumItalic/font.woff2') format('woff2'), url('webFonts/PreciousSansTwoMediumItalic/font.woff') format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: "PreciousSansTwoDemiBoldItalic";
   src: url('webFonts/PreciousSansTwoDemiBoldItalic/font.woff2') format('woff2'), url('webFonts/PreciousSansTwoDemiBoldItalic/font.woff') format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: "PreciousSansTwoDemiBold";
   src: url('webFonts/PreciousSansTwoDemiBold/font.woff2') format('woff2'), url('webFonts/PreciousSansTwoDemiBold/font.woff') format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: "PreciousSansTwoMedium";
   src: url('webFonts/PreciousSansTwoMedium/font.woff2') format('woff2'), url('webFonts/PreciousSansTwoMedium/font.woff') format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: "PreciousSansTwoBoldItalic";
   src: url('webFonts/PreciousSansTwoBoldItalic/font.woff2') format('woff2'), url('webFonts/PreciousSansTwoBoldItalic/font.woff') format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: "PreciousSansTwoBlack";
   src: url('webFonts/PreciousSansTwoBlack/font.woff2') format('woff2'), url('webFonts/PreciousSansTwoBlack/font.woff') format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: "PreciousSansTwoBlackItalic";
   src: url('webFonts/PreciousSansTwoBlackItalic/font.woff2') format('woff2'), url('webFonts/PreciousSansTwoBlackItalic/font.woff') format('woff');
+  font-display: swap;
 }
 @font-face {
   font-family: "PreciousSansTwoLight";
   src: url('webFonts/PreciousSansTwoLight/font.woff2') format('woff2'), url('webFonts/PreciousSansTwoLight/font.woff') format('woff');
+  font-display: swap;
 }
 
