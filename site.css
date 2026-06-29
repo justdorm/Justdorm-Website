@@ -75,16 +75,17 @@ a, button { touch-action: manipulation; }
 @keyframes vt-out { to { opacity: 0; } }
 @keyframes vt-in  { from { opacity: 0; transform: translateY(10px); } }
 
-/* Title morph: a case row title on the index and the matching case study
+/* Title morph: a case row title on the listing and the matching case study
    hero title share a view-transition-name, so the browser morphs one into
-   the other during navigation. */
-.vt-cs-01 { view-transition-name: cs-title-01; }
-.vt-cs-02 { view-transition-name: cs-title-02; }
-.vt-cs-03 { view-transition-name: cs-title-03; }
-.vt-cs-04 { view-transition-name: cs-title-04; }
-.vt-cs-05 { view-transition-name: cs-title-05; }
-.vt-cs-06 { view-transition-name: cs-title-06; }
-.vt-cs-07 { view-transition-name: cs-title-07; }
+   the other during navigation. Names are keyed to the case identity (not its
+   position) so reordering the listing can't break the pairing. */
+.vt-spinxshift { view-transition-name: cs-spinxshift; }
+.vt-nyc-pride  { view-transition-name: cs-nyc-pride; }
+.vt-summer     { view-transition-name: cs-summer; }
+.vt-stream     { view-transition-name: cs-stream; }
+.vt-census     { view-transition-name: cs-census; }
+.vt-here-now   { view-transition-name: cs-here-now; }
+.vt-rave       { view-transition-name: cs-rave; }
 
 /* ---------- Scroll progress hairline (element added by site.js) ---------- */
 .scroll-progress {

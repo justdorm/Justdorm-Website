@@ -96,6 +96,28 @@
     });
   }
 
+  // ── Speculative prefetch on intent ──
+  // Warm the cache for an internal page the moment the user signals intent
+  // (hover, focus, or touch), so the view-transition navigation feels instant.
+  (function () {
+    var seen = {};
+    function prefetch(url) {
+      if (!url || seen[url]) return;
+      seen[url] = true;
+      var l = document.createElement('link');
+      l.rel = 'prefetch';
+      l.href = url;
+      document.head.appendChild(l);
+    }
+    document.querySelectorAll('a[href$=".html"]').forEach(function (a) {
+      if (a.origin !== location.origin || a.href === location.href) return;
+      var warm = function () { prefetch(a.href); };
+      a.addEventListener('pointerenter', warm);
+      a.addEventListener('focus', warm, true);
+      a.addEventListener('touchstart', warm, { passive: true });
+    });
+  })();
+
   // ── For the curious ──
   try {
     console.log(
