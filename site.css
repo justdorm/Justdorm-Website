@@ -87,6 +87,15 @@ a, button { touch-action: manipulation; }
 .vt-here-now   { view-transition-name: cs-here-now; }
 .vt-rave       { view-transition-name: cs-rave; }
 
+/* Media morph: the listing thumbnail flies into the case-study hero video. */
+.vt-media-spinxshift { view-transition-name: media-spinxshift; }
+.vt-media-nyc-pride  { view-transition-name: media-nyc-pride; }
+.vt-media-summer     { view-transition-name: media-summer; }
+.vt-media-stream     { view-transition-name: media-stream; }
+.vt-media-census     { view-transition-name: media-census; }
+.vt-media-here-now   { view-transition-name: media-here-now; }
+.vt-media-rave       { view-transition-name: media-rave; }
+
 /* ---------- Scroll progress hairline (element added by site.js) ---------- */
 .scroll-progress {
   position: fixed;
@@ -372,6 +381,14 @@ main { display: block; }
   border: 0;
 }
 
+/* Case-study hero: poster shows behind the player while it loads, and gives
+   the thumbnail→hero view transition a matching image to morph into. */
+.cs-hero-frame {
+  background-image: var(--poster);
+  background-size: cover;
+  background-position: center;
+}
+
 .lightbox {
   position: fixed;
   inset: 0;
@@ -563,10 +580,26 @@ body.lightbox-locked { overflow: hidden; }
 
 .case-media {
   display: block;
+  position: relative;
   overflow: hidden;
   background: #0a0a0a;
   aspect-ratio: 16 / 10;
 }
+
+/* Cursor spotlight: an accent glow tracks the pointer across the thumbnail. */
+.case-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle 180px at var(--mx, 50%) var(--my, 50%), var(--accent-glow), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.case-row:hover .case-media::after { opacity: 1; }
 
 .case-media img {
   width: 100%;
