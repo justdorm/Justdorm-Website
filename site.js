@@ -165,6 +165,20 @@
       next.addEventListener('click', function (e) { e.stopPropagation(); nav(1); });
       box.appendChild(prev);
       box.appendChild(next);
+
+      // Touch swipe: left → next, right → prev.
+      var tsx = 0, tsy = 0;
+      box.addEventListener('touchstart', function (e) {
+        if (e.touches.length !== 1) return;
+        tsx = e.touches[0].clientX;
+        tsy = e.touches[0].clientY;
+      }, { passive: true });
+      box.addEventListener('touchend', function (e) {
+        if (!lightboxNav) return;
+        var t = e.changedTouches[0];
+        var dx = t.clientX - tsx, dy = t.clientY - tsy;
+        if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) nav(dx < 0 ? 1 : -1);
+      }, { passive: true });
     }
 
     box.addEventListener('click', function (e) { if (e.target === box) closeLightbox(); });
@@ -181,6 +195,16 @@
     if (e.key === 'Escape') closeLightbox();
     else if (lightboxNav && e.key === 'ArrowLeft') { e.preventDefault(); lightboxNav(-1); }
     else if (lightboxNav && e.key === 'ArrowRight') { e.preventDefault(); lightboxNav(1); }
+    else if (e.key === 'Tab') {
+      // Keep focus inside the dialog.
+      var sel = 'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])';
+      var f = Array.prototype.slice.call(lightbox.querySelectorAll(sel));
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (!lightbox.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
   });
 
   function videoFrame(src, title) {
@@ -284,12 +308,14 @@
       if (d.img) { var p = new Image(); p.src = d.img.currentSrc || d.img.src; }
     }
 
-    function paint() {
+    function paint(dir) {
       var d = slideData(group[index]);
       contentEl.innerHTML = '';
       var big = document.createElement('img');
       big.src = d.img.currentSrc || d.img.src;
       big.alt = d.img.alt || d.title;
+      if (dir > 0) big.classList.add('lb-from-right');
+      else if (dir < 0) big.classList.add('lb-from-left');
       contentEl.appendChild(big);
       if (d.title) {
         var caption = document.createElement('p');
@@ -309,7 +335,7 @@
 
     function go(delta) {
       index = (index + delta + group.length) % group.length;
-      paint();
+      paint(delta);
     }
 
     openLightbox(function (content) {

@@ -473,9 +473,13 @@ main { display: block; }
   margin-top: 0.5rem;
 }
 
-/* Each slide fades in as you navigate */
+/* Each slide animates in; gallery nav slides in the direction of travel */
 @keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lb-from-right { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+@keyframes lb-from-left { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: none; } }
 .lightbox-content img { animation: lb-fade 0.4s ease; }
+.lightbox-content img.lb-from-right { animation: lb-from-right 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+.lightbox-content img.lb-from-left { animation: lb-from-left 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
 
 @media (max-width: 600px) {
   .lightbox-nav { width: 44px; height: 44px; }
