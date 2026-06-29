@@ -878,6 +878,7 @@ body.lightbox-locked { overflow: hidden; }
 .headshot {
   width: clamp(180px, 26vw, 300px);
   border-radius: 50%;
+  border: 1px solid #fff;
   box-shadow:
     0 0 10px 2px rgba(255, 255, 255, 0.9),
     0 0 15px 5px rgb(255, 230, 0),
