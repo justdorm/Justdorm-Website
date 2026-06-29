@@ -429,6 +429,59 @@ main { display: block; }
 
 .lightbox-close:hover { border-color: var(--accent); color: var(--accent); transform: rotate(90deg); }
 
+/* Gallery navigation arrows */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--paper);
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lightbox-prev { left: clamp(0.6rem, 3vw, 2rem); transform: translateY(-50%); }
+.lightbox-next { right: clamp(0.6rem, 3vw, 2rem); transform: translateY(-50%); }
+
+.lightbox-nav svg { width: 22px; height: 22px; display: block; }
+
+.lightbox-nav:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+.lightbox-prev:hover { transform: translateY(-50%) translateX(-3px); }
+.lightbox-next:hover { transform: translateY(-50%) translateX(3px); }
+
+.lightbox-count {
+  text-align: center;
+  font-family: var(--font-heading-up);
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+  margin-top: 0.5rem;
+}
+
+/* Each slide fades in as you navigate */
+@keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
+.lightbox-content img { animation: lb-fade 0.4s ease; }
+
+@media (max-width: 600px) {
+  .lightbox-nav { width: 44px; height: 44px; }
+  .lightbox-nav svg { width: 18px; height: 18px; }
+}
+
 body.lightbox-locked { overflow: hidden; }
 
 /* ---------- Motion Design page ---------- */

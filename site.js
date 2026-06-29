@@ -108,19 +108,33 @@
 
   // ── Lightbox ──
   var lightbox = null;
+  var lightboxNav = null;
   var lastFocus = null;
 
   function closeLightbox() {
     if (!lightbox) return;
     var box = lightbox;
     lightbox = null;
+    lightboxNav = null;
     box.classList.remove('open');
     document.body.classList.remove('lightbox-locked');
     setTimeout(function () { box.remove(); }, 320);
     if (lastFocus) { lastFocus.focus(); lastFocus = null; }
   }
 
-  function openLightbox(buildContent, label) {
+  // Chevron arrow button for gallery navigation.
+  function navButton(dir) {
+    var btn = document.createElement('button');
+    btn.className = 'lightbox-nav lightbox-' + (dir < 0 ? 'prev' : 'next');
+    btn.setAttribute('aria-label', dir < 0 ? 'Previous' : 'Next');
+    var pts = dir < 0 ? '15 5 8 12 15 19' : '9 5 16 12 9 19';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">' +
+      '<polyline points="' + pts + '" fill="none" stroke="currentColor" ' +
+      'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    return btn;
+  }
+
+  function openLightbox(buildContent, label, nav) {
     closeLightbox();
     lastFocus = document.activeElement;
 
@@ -142,6 +156,17 @@
 
     box.appendChild(content);
     box.appendChild(close);
+
+    if (nav) {
+      lightboxNav = nav;
+      var prev = navButton(-1);
+      var next = navButton(1);
+      prev.addEventListener('click', function (e) { e.stopPropagation(); nav(-1); });
+      next.addEventListener('click', function (e) { e.stopPropagation(); nav(1); });
+      box.appendChild(prev);
+      box.appendChild(next);
+    }
+
     box.addEventListener('click', function (e) { if (e.target === box) closeLightbox(); });
 
     document.body.appendChild(box);
@@ -152,7 +177,10 @@
   }
 
   document.addEventListener('keydown', function (e) {
+    if (!lightbox) return;
     if (e.key === 'Escape') closeLightbox();
+    else if (lightboxNav && e.key === 'ArrowLeft') { e.preventDefault(); lightboxNav(-1); }
+    else if (lightboxNav && e.key === 'ArrowRight') { e.preventDefault(); lightboxNav(1); }
   });
 
   function videoFrame(src, title) {
@@ -208,39 +236,36 @@
       .catch(function () { /* poster stays dark; play button still works */ });
   });
 
-  // ── Image lightbox (about gallery, case study figures) ──
-  document.querySelectorAll('.art-item, .zoomable').forEach(function (item) {
+  // ── Image lightbox + gallery navigation (about gallery, case study figures) ──
+  // Pull title/caption metadata off a figure (or bare img).
+  function slideData(item) {
     var img = item.tagName === 'IMG' ? item : item.querySelector('img');
-    if (!img) return;
-    item.setAttribute('tabindex', '0');
-    item.setAttribute('role', 'button');
-
-    var title = '';
-    var meta = '';
-    var cap = item.querySelector('figcaption');
+    var title = '', meta = '';
+    var cap = item.querySelector ? item.querySelector('figcaption') : null;
     if (cap) {
       var strong = cap.querySelector('strong');
       var span = cap.querySelector('span');
       title = strong ? strong.textContent : cap.textContent;
       meta = span ? span.textContent : '';
-    } else {
+    } else if (img) {
       title = img.alt || '';
     }
-    item.setAttribute('aria-label', 'Enlarge ' + (title || 'image'));
+    return { img: img, title: title, meta: meta };
+  }
 
+  document.querySelectorAll('.art-item, .zoomable').forEach(function (item) {
+    var img = item.tagName === 'IMG' ? item : item.querySelector('img');
+    if (!img) return;
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('role', 'button');
+    item.setAttribute('aria-label', 'Enlarge ' + (slideData(item).title || 'image'));
+
+    // art-items in the same grid form one navigable gallery; lone figures stand alone.
     function open() {
-      openLightbox(function (content) {
-        var big = document.createElement('img');
-        big.src = img.currentSrc || img.src;
-        big.alt = img.alt || title;
-        content.appendChild(big);
-        if (title) {
-          var caption = document.createElement('p');
-          caption.className = 'lightbox-caption';
-          caption.textContent = meta ? title + ' — ' + meta : title;
-          content.appendChild(caption);
-        }
-      }, title || 'Image');
+      var group = (item.classList.contains('art-item') && item.parentElement)
+        ? Array.prototype.slice.call(item.parentElement.querySelectorAll('.art-item'))
+        : [item];
+      openGallery(group, group.indexOf(item));
     }
 
     item.addEventListener('click', open);
@@ -248,4 +273,48 @@
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
     });
   });
+
+  function openGallery(group, startIndex) {
+    var index = startIndex;
+    var multi = group.length > 1;
+    var contentEl = null;
+
+    function preload(i) {
+      var d = slideData(group[(i + group.length) % group.length]);
+      if (d.img) { var p = new Image(); p.src = d.img.currentSrc || d.img.src; }
+    }
+
+    function paint() {
+      var d = slideData(group[index]);
+      contentEl.innerHTML = '';
+      var big = document.createElement('img');
+      big.src = d.img.currentSrc || d.img.src;
+      big.alt = d.img.alt || d.title;
+      contentEl.appendChild(big);
+      if (d.title) {
+        var caption = document.createElement('p');
+        caption.className = 'lightbox-caption';
+        caption.textContent = d.meta ? d.title + ' — ' + d.meta : d.title;
+        contentEl.appendChild(caption);
+      }
+      if (multi) {
+        var count = document.createElement('p');
+        count.className = 'lightbox-count';
+        count.textContent = (index + 1) + ' / ' + group.length;
+        contentEl.appendChild(count);
+        preload(index + 1);
+        preload(index - 1);
+      }
+    }
+
+    function go(delta) {
+      index = (index + delta + group.length) % group.length;
+      paint();
+    }
+
+    openLightbox(function (content) {
+      contentEl = content;
+      paint();
+    }, slideData(group[index]).title || 'Image', multi ? go : null);
+  }
 })();
