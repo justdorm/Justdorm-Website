@@ -586,14 +586,17 @@ body.lightbox-locked { overflow: hidden; }
   aspect-ratio: 16 / 10;
 }
 
-/* Cursor spotlight: an accent glow tracks the pointer across the thumbnail. */
+/* Cursor spotlight: a soft glow tracks the pointer across the thumbnail.
+   The accent is pulled toward white so it reads as light with a hint of
+   theme colour rather than a saturated wash. */
 .case-media::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(circle 180px at var(--mx, 50%) var(--my, 50%), var(--accent-glow), transparent 60%);
+  background: radial-gradient(circle 180px at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent-glow), rgba(255, 255, 255, 0.18) 70%), transparent 60%);
   mix-blend-mode: screen;
   opacity: 0;
   transition: opacity 0.4s ease;
