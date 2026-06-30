@@ -711,6 +711,32 @@ body.lightbox-locked { overflow: hidden; }
 
 .cs-hero .page-title { text-align: left; }
 
+/* Subtle back affordance — returns to the listing (and triggers the reverse
+   view-transition morph). Sits above the kicker at the top-left of the hero. */
+.cs-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 1.3rem;
+  font-family: var(--font-heading-up);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper-faint);
+  transition: color 0.3s ease;
+}
+
+.cs-back .cs-back-arrow {
+  font-size: 1.15em;
+  line-height: 1;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  .cs-back:hover { color: var(--accent); }
+  .cs-back:hover .cs-back-arrow { transform: translateX(-0.3em); }
+}
+
 .cs-sub {
   font-family: var(--font-caption);
   font-size: var(--fs-h3);
