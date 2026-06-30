@@ -1016,9 +1016,28 @@ body.lightbox-locked { overflow: hidden; }
   .art-item:hover img { transform: scale(1.04); opacity: 1; }
 }
 
+/* Cursor spotlight on the art thumbnails — desaturated yellow, pointer only,
+   matching the case-media / film-poster glow but turned down: the gallery is
+   dense and the artworks themselves are the focus. JS feeds --mx/--my (site.js). */
+.art-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle 140px at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, rgba(255, 230, 0, 0.35), rgba(255, 255, 255, 0.18) 92%), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+@media (hover: hover) { .art-item:hover::after { opacity: 0.6; } }
+
 .art-item figcaption {
   position: absolute;
   inset: auto 0 0 0;
+  z-index: 2;
   padding: 2.2rem 1rem 0.9rem;
   background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
   opacity: 0;
