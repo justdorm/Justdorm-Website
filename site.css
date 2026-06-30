@@ -205,7 +205,8 @@ a, button { touch-action: manipulation; }
 }
 
 .logo-link { justify-self: center; line-height: 0; }
-.logo-link .jd-canvas { width: 45px; height: 45px; transition: filter 0.4s ease; }
+/* Pairs with the homepage #jd-scene so the logo morphs between home and interior. */
+.logo-link .jd-canvas { width: 45px; height: 45px; transition: filter 0.4s ease; view-transition-name: jd-logo; }
 @media (hover: hover) { .logo-link:hover .jd-canvas { filter: hue-rotate(-120deg); } }
 
 .ig-link { justify-self: end; line-height: 0; opacity: 0.55; transition: opacity 0.3s ease; }

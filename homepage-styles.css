@@ -17,6 +17,14 @@ html, body {
   font-family: PreciousSansTwoMedium;
 }
 
+/* Cross-document view transitions: cross-fade with the interior pages, and
+   morph the big JD logo into (and out of) the small interior header logo. */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: vt-out 0.28s ease both; }
+::view-transition-new(root) { animation: vt-in 0.34s ease both; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in  { from { opacity: 0; } }
+
 /* --- Three.js Canvas --- */
 #jd-scene {
   position: fixed;
@@ -25,6 +33,7 @@ html, body {
   width: 100%;
   height: 100%;
   z-index: 1;
+  view-transition-name: jd-logo;
 }
 
 /* --- Noise Grain Overlay --- */
