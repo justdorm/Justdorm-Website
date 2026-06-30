@@ -128,6 +128,22 @@
     });
   });
 
+  // ── Arrow-key navigation between case studies ──
+  (function () {
+    var pager = document.querySelector('.case-study .cs-pager');
+    if (!pager) return;
+    var prev = pager.querySelector('.pager-link.prev');
+    var next = pager.querySelector('.pager-link.next');
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      if (document.querySelector('.lightbox')) return; // the lightbox owns the arrows while open
+      var t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      if (e.key === 'ArrowLeft' && prev) { e.preventDefault(); location.href = prev.href; }
+      else if (e.key === 'ArrowRight' && next) { e.preventDefault(); location.href = next.href; }
+    });
+  })();
+
   // ── Speculative prefetch on intent ──
   // Warm the cache for an internal page the moment the user signals intent
   // (hover, focus, or touch), so the view-transition navigation feels instant.

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <title>Page not found — Justdorm</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/x-icon" href="imgs/fav.png">
+    <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
+    <link rel="stylesheet" href="site.css">
+    <script>
+    // Ensure view-transition morph targets are visible before Chrome's snapshot
+    // (must be inline - deferred scripts miss pagereveal on cold loads)
+    window.addEventListener('pagereveal', function(e) {
+      if (!e || !e.viewTransition) return;
+      document.querySelectorAll('.page-title,.case-title,.case-media,.cs-hero-frame').forEach(function(el) {
+        el.classList.add('vt-shown');
+        var w = el.closest('.reveal');
+        if (w) w.classList.add('vt-shown');
+      });
+    });
+    </script>
+</head>
+
+<body class="theme-cyan">
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <nav class="site-nav" aria-label="Primary">
+            <a class="nav-item nav-item--motion" href="motion.html">Motion Design</a>
+            <a class="nav-item nav-item--ct" href="CreativeTechnology.html">Creative Technology</a>
+            <a class="nav-item nav-item--about" href="about.html">About</a>
+        </nav>
+        <a class="logo-link" href="index.html" aria-label="Justdorm — home"><canvas class="jd-canvas"
+                data-mode="header"></canvas></a>
+        <a class="ig-link" href="https://www.instagram.com/justdorm/" aria-label="Instagram"><img
+                src="imgs/ig logo.png" alt=""></a>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <p class="kicker reveal">Error 404</p>
+            <h1 class="page-title ink-split">Lost in space</h1>
+            <p class="page-sub reveal">This page drifted off into another dimension. Let's get you back to something
+                real.</p>
+            <p class="error-actions reveal">
+                <a class="btn-ghost" href="index.html">Back to home</a>
+                <a class="btn-ghost" href="CreativeTechnology.html">See the work</a>
+            </p>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p class="footer-kicker reveal">Let's make something</p>
+        <a class="footer-cta reveal" href="mailto:justin@justdorm.com">justin@justdorm.com</a>
+        <div class="footer-meta">
+            <a href="https://www.instagram.com/justdorm/">Instagram</a>
+            <a href="about.html">About</a>
+            <span>© 2026 Justin Dormitzer</span>
+        </div>
+    </footer>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.164.1/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.164.1/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="homepage-scene.js"></script>
+    <script type="module" src="starfield.js"></script>
+    <script src="site.js" defer></script>
+</body>
+
+</html>

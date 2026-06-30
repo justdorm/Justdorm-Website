@@ -1005,11 +1005,15 @@ body.lightbox-locked { overflow: hidden; }
   transition: border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-ghost:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  box-shadow: 0 0 22px var(--accent-glow);
+@media (hover: hover) {
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 22px var(--accent-glow);
+  }
 }
+
+.error-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
 
 .gallery-head { text-align: center; margin: var(--space-section) auto 2.5rem; padding: 0 var(--gutter); }
 
