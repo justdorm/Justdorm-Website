@@ -265,7 +265,7 @@ const jOverlapShader = {
 let sceneReady = false;
 const loader = new FontLoader();
 loader.load(
-  'https://unpkg.com/three@0.164.1/examples/fonts/helvetiker_bold.typeface.json',
+  './vendor/three/fonts/helvetiker_bold.typeface.json',
   (font) => {
 
     // Helper to extend the top of the J upwards
