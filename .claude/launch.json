@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:99a7fbb24727126087dca02036cc8ba19104e56a7eb0fde2bc721ce227d43010
-size 201
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "static-site",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8123"],
+      "port": 8123
+    }
+  ]
+}

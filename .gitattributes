@@ -1,5 +1,0 @@
-*.mp4 filter=lfs diff=lfs merge=lfs -text
-*.json filter=lfs diff=lfs merge=lfs -text
-
-# Vendored third-party assets are stored directly in git, not Netlify LFS
-vendor/** -filter -diff -merge
