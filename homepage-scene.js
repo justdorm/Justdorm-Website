@@ -753,15 +753,25 @@ window.addEventListener('deviceorientation', e => {
 });
 
 // ─── Color Cycle on Click ───
-let colorPhaseTarget = 0;
-let colorPhaseCurrent = 0;
+// The colour combo is persisted in sessionStorage so it carries from page to
+// page (and stays matched across the cross-page logo morph) instead of
+// resetting to the default combo on every fresh navigation.
+let storedPhase = 0;
+try { storedPhase = parseFloat(sessionStorage.getItem('jdColorPhase')) || 0; } catch (e) { /* private mode */ }
+let colorPhaseTarget = storedPhase;
+let colorPhaseCurrent = storedPhase;
 let particlePulse = 0;
 let hoverPulseVal = 0;
 let globalSwirlAngle = 0;
 
+function persistColorPhase() {
+  try { sessionStorage.setItem('jdColorPhase', String(colorPhaseTarget)); } catch (e) { /* private mode */ }
+}
+
 window.addEventListener('click', () => {
   colorPhaseTarget += 1;
   particlePulse = 1.0;
+  persistColorPhase();
 });
 
 // Request gyroscope permission for iOS devices on first interaction anywhere
@@ -898,6 +908,7 @@ function animate() {
     } else if (wasParty) {
       // Snap to nearest clean CMY color on exit
       colorPhaseTarget = Math.round(colorPhaseTarget);
+      persistColorPhase();
     }
 
     // Smoothly animate color phase toward target
