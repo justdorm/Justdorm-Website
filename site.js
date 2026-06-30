@@ -109,6 +109,25 @@
     });
   }
 
+  // ── Back button: history-aware ──
+  // When we arrived from the listing, go back through history rather than doing
+  // a fresh forward navigation. That restores the listing's scroll position so
+  // the reverse view-transition morph lands on the row you left from (a fresh
+  // load would jump to the top and the morph target would be off-screen).
+  document.querySelectorAll('.cs-back').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (history.length <= 1 || !document.referrer) return;
+      var ref, dest;
+      try { ref = new URL(document.referrer); dest = new URL(a.href); }
+      catch (err) { return; }
+      if (ref.origin === location.origin && ref.pathname === dest.pathname) {
+        e.preventDefault();
+        history.back();
+      }
+    });
+  });
+
   // ── Speculative prefetch on intent ──
   // Warm the cache for an internal page the moment the user signals intent
   // (hover, focus, or touch), so the view-transition navigation feels instant.
