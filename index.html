@@ -54,13 +54,16 @@
         src = 'imgs/logo-phase-0.png';
       }
 
-      // After snapshot is captured: ungate rendering + show pre-rendered bg
+      // Apply the pre-rendered background BEFORE the browser captures the
+      // incoming snapshot — the morph target needs a crisp full-res logo.
+      cv.style.backgroundImage = 'url(' + src + ')';
+      cv.style.backgroundSize = 'cover';
+      cv.style.backgroundRepeat = 'no-repeat';
+      cv.style.backgroundPosition = 'center';
+
+      // Ungate WebGL rendering after the snapshot is captured
       e.viewTransition.ready.then(function() {
         window.__jdVtActive = false;
-        cv.style.backgroundImage = 'url(' + src + ')';
-        cv.style.backgroundSize = 'cover';
-        cv.style.backgroundRepeat = 'no-repeat';
-        cv.style.backgroundPosition = 'center';
       });
     });
 

@@ -75,6 +75,18 @@ a, button { touch-action: manipulation; }
 @keyframes vt-out { to { opacity: 0; } }
 @keyframes vt-in  { from { opacity: 0; transform: translateY(10px); } }
 
+/* Logo morph: the old 45×45 header capture stays at natural size (no blurry
+   stretching) while the group bounds grow to full viewport. */
+::view-transition-group(jd-logo) { animation-duration: 0.28s; }
+::view-transition-old(jd-logo) {
+  animation: vt-logo-out 0.15s ease-out both;
+  object-fit: none;
+}
+::view-transition-new(jd-logo) {
+  animation: vt-logo-in 0.28s ease both;
+}
+@keyframes vt-logo-out { to { opacity: 0; } }
+@keyframes vt-logo-in  { from { opacity: 0; } }
 
 /* Title morph: a case row title on the listing and the matching case study
    hero title share a view-transition-name, so the browser morphs one into
@@ -207,9 +219,7 @@ a, button { touch-action: manipulation; }
 }
 
 .logo-link { justify-self: center; line-height: 0; }
-/* Pairs with the homepage #jd-scene — no view-transition-name so the root
-   cross-fade handles both directions cleanly (no blurry 45→viewport morph). */
-.logo-link .jd-canvas { width: 45px; height: 45px; transition: filter 0.4s ease; }
+.logo-link .jd-canvas { width: 45px; height: 45px; transition: filter 0.4s ease; view-transition-name: jd-logo; }
 @media (hover: hover) { .logo-link:hover .jd-canvas { filter: hue-rotate(-120deg); } }
 
 .ig-link { justify-self: end; line-height: 0; opacity: 0.55; transition: opacity 0.3s ease; }
