@@ -30,31 +30,36 @@ renderer.toneMappingExposure = 1.2;
 renderer.autoClear = false;
 
 // ─── Incoming snapshot bridge ───
-// The inline <script> in index.html paints the snapshot background on
-// pagereveal (before the view-transition snapshot is captured).  This module
-// just picks up the flag — or applies the snapshot itself for non-VT loads
-// (e.g. direct navigation) — and cleans it up after the first real frame.
+// The inline <script> in index.html creates a centred snapshot <img> overlay
+// on pagereveal (before the view-transition captures the incoming snapshot).
+// This module detects it, hides "Loading", and removes the overlay after the
+// first real WebGL frame.
 let snapshotActive = false;
-if (canvas.style.backgroundImage) {
-  // Already painted by the inline pagereveal handler
+const snapOverlay = document.getElementById('jd-snapshot-overlay');
+if (snapOverlay) {
   snapshotActive = true;
 } else {
+  // Fallback for non-VT navigations (e.g. direct link)
   try {
     const snap = sessionStorage.getItem('jdLogoSnapshot');
     if (snap) {
-      canvas.style.backgroundImage = `url(${snap})`;
-      canvas.style.backgroundSize = 'contain';
-      canvas.style.backgroundRepeat = 'no-repeat';
-      canvas.style.backgroundPosition = 'center';
+      const img = document.createElement('img');
+      img.id = 'jd-snapshot-overlay';
+      img.src = snap;
+      Object.assign(img.style, {
+        position: 'fixed', top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: '2', pointerEvents: 'none',
+        maxWidth: '40vmin', maxHeight: '40vmin'
+      });
+      document.body.appendChild(img);
       snapshotActive = true;
     }
   } catch (e) { /* private mode */ }
 }
 if (snapshotActive) {
-  // The snapshot already shows the logo — suppress the "Loading" text
   const loadEl = document.getElementById('loading-text');
   if (loadEl) loadEl.style.display = 'none';
-  // One-shot: clear it so a hard reload doesn't re-show a stale frame
   try { sessionStorage.removeItem('jdLogoSnapshot'); } catch (e) {}
 }
 
@@ -1019,12 +1024,10 @@ function animate() {
   renderer.clear(true, true, false);
   renderer.render(scene, camera);
 
-  // Once the real logo has rendered, remove the snapshot background bridge
+  // Once the real logo has rendered, remove the snapshot overlay
   if (snapshotActive && sceneReady) {
-    canvas.style.backgroundImage = '';
-    canvas.style.backgroundSize = '';
-    canvas.style.backgroundRepeat = '';
-    canvas.style.backgroundPosition = '';
+    const ov = document.getElementById('jd-snapshot-overlay');
+    if (ov) ov.remove();
     snapshotActive = false;
   }
 }
@@ -1032,30 +1035,9 @@ animate();
 
 // ─── Outgoing snapshot bridge ───
 // On navigation away, capture the live canvas so the destination page can
-// use it as a morph-target background while its own WebGL boots.
+// show a coloured logo placeholder while its own WebGL boots.
 window.addEventListener('pageswap', () => {
   try {
-    // Header canvases are tiny (45×45 CSS px). Bump the pixel ratio so the
-    // internal buffer is larger (e.g. 720×720) for a crisper capture.
-    // CSS size, aspect ratio, camera, and uniforms stay identical.
-    if (isHeader && sceneReady) {
-      const cw = canvas.clientWidth || 45;
-      const ch = canvas.clientHeight || 45;
-      const hiPR = 16;
-      renderer.setPixelRatio(hiPR);
-      renderer.setSize(cw, ch);
-      const hiMaskPR = hiPR * 2;
-      dMaskTarget.setSize(cw * hiMaskPR, ch * hiMaskPR);
-      if (globalJMat) globalJMat.uniforms.resolution.value.set(cw * hiPR, ch * hiPR);
-      // Full render pass: mask then main
-      renderer.setRenderTarget(dMaskTarget);
-      renderer.setClearColor(0x000000, 0);
-      renderer.clear();
-      renderer.render(dDepthScene, camera);
-      renderer.setRenderTarget(null);
-      renderer.clear(true, true, false);
-      renderer.render(scene, camera);
-    }
     const dataURL = canvas.toDataURL('image/png');
     sessionStorage.setItem('jdLogoSnapshot', dataURL);
   } catch (e) { /* security / private mode */ }
