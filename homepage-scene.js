@@ -1054,37 +1054,6 @@ if (!isHeader) {
       sessionStorage.setItem('jdLogoSnapshot', dataURL);
     } catch (e) { /* security / private mode */ }
   });
-} else {
-  // Interior → homepage: swap the tiny header canvas for a full-viewport
-  // overlay showing the high-res pre-rendered phase image. This gives the
-  // view transition a full-res "old" snapshot so the morph stays crisp.
-  // Preload all three phase images so they're ready instantly.
-  for (let i = 0; i < 3; i++) {
-    const link = document.createElement('link');
-    link.rel = 'preload';
-    link.as = 'image';
-    link.href = `imgs/logo-phase-${i}.png`;
-    document.head.appendChild(link);
-  }
-
-  window.addEventListener('pageswap', (e) => {
-    if (!e.viewTransition) return;
-
-    const phase = Math.round(colorPhaseCurrent);
-    const idx = ((phase % 3) + 3) % 3;
-    const src = `imgs/logo-phase-${idx}.png`;
-
-    // Create a full-viewport overlay with the high-res pre-rendered image
-    const overlay = document.createElement('div');
-    overlay.style.cssText =
-      'position:fixed;inset:0;width:100vw;height:100vh;z-index:99999;' +
-      'background:url(' + src + ') center/cover no-repeat;' +
-      'view-transition-name:jd-logo;';
-    document.body.appendChild(overlay);
-
-    // Remove VT name from the header canvas so only the overlay participates
-    canvas.style.viewTransitionName = 'none';
-  });
 }
 
 // ─── Snapshot capture utility ───
