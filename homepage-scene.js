@@ -1052,6 +1052,11 @@ if (!isHeader) {
 
       const dataURL = canvas.toDataURL('image/png');
       sessionStorage.setItem('jdLogoSnapshot', dataURL);
+
+      // Restore particles so bfcache restore still has them visible
+      scene.children.forEach(child => {
+        if (child.isPoints) child.visible = true;
+      });
     } catch (e) { /* security / private mode */ }
   });
 }
