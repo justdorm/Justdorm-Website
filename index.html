@@ -18,24 +18,22 @@
     <link rel="stylesheet" type="text/css" href="Precious_Sans.css">
     <link rel="stylesheet" href="homepage-styles.css">
     <script>
-    // Snapshot bridge: show a pre-rendered logo image (or a runtime capture)
-    // as the canvas background BEFORE the view-transition captures the
-    // incoming snapshot.  Must be inline — module scripts miss the window.
-    //
-    // Pre-rendered images:  imgs/logo-phase-0.png  (cyan combo)
-    //                       imgs/logo-phase-1.png  (magenta combo)
-    //                       imgs/logo-phase-2.png  (yellow combo)
-    window.addEventListener('pagereveal', function(e) {
-      if (!e || !e.viewTransition) return;
+    // Block WebGL rendering immediately — set BEFORE module scripts execute
+    // so the animate loop never paints particles into the VT snapshot.
+    // Cleared by pagereveal (or by a safety timeout for direct loads).
+    window.__jdVtActive = true;
 
-      // Gate WebGL rendering until the VT snapshot is captured — this
-      // prevents particles from appearing in the morph and scaling up.
-      window.__jdVtActive = true;
+    window.addEventListener('pagereveal', function(e) {
+      if (!e || !e.viewTransition) {
+        // No view transition — ungate rendering immediately
+        window.__jdVtActive = false;
+        return;
+      }
 
       var cv = document.getElementById('jd-scene');
-      if (!cv) return;
+      if (!cv) { window.__jdVtActive = false; return; }
 
-      // Hide "Loading" immediately so the morph snapshot is a clean black canvas
+      // Hide "Loading" so the morph snapshot is a clean black canvas
       var ld = document.getElementById('loading-text');
       if (ld) ld.style.display = 'none';
 
@@ -56,8 +54,7 @@
         src = 'imgs/logo-phase-0.png';
       }
 
-      // After the snapshot is captured, ungate rendering and show the
-      // pre-rendered background for the gap between morph end and WebGL boot.
+      // After snapshot is captured: ungate rendering + show pre-rendered bg
       e.viewTransition.ready.then(function() {
         window.__jdVtActive = false;
         cv.style.backgroundImage = 'url(' + src + ')';
@@ -66,6 +63,10 @@
         cv.style.backgroundPosition = 'center';
       });
     });
+
+    // Safety: if pagereveal never fires (e.g. first load, old browser),
+    // ungate after a short delay so rendering isn't blocked forever.
+    setTimeout(function() { window.__jdVtActive = false; }, 1500);
     </script>
 </head>
 
