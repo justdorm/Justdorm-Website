@@ -30,16 +30,11 @@ renderer.toneMappingExposure = 1.2;
 renderer.autoClear = false;
 
 // ─── Incoming snapshot bridge ───
-// On the homepage, the inline <script> sets a pre-rendered logo image as the
-// CSS background (keyed to the saved CMY phase) so the view-transition morph
-// target is fully painted before WebGL boots.
-// This module detects it and hides "Loading", then clears the background
-// after the first real WebGL frame.
-let snapshotActive = false;
+// The inline <script> sets a pre-rendered logo image as the CSS background
+// so the view-transition morph target is painted before WebGL boots.
+// This module hides "Loading" if a background is present; the background
+// itself is cleared each frame once sceneReady is true (in the animate loop).
 if (canvas.style.backgroundImage) {
-  snapshotActive = true;
-}
-if (snapshotActive) {
   const loadEl = document.getElementById('loading-text');
   if (loadEl) loadEl.style.display = 'none';
 }
@@ -783,7 +778,11 @@ function persistColorPhase() {
   try { sessionStorage.setItem('jdColorPhase', String(Math.round(colorPhaseTarget))); } catch (e) { /* private mode */ }
 }
 
-window.addEventListener('click', () => {
+window.addEventListener('click', (e) => {
+  // Don't cycle or pulse if clicking a navigation link — let navigation
+  // happen cleanly without changing the canvas state for the VT snapshot.
+  if (e.target.closest('a[href]')) return;
+
   colorPhaseTarget += 1;
   if (isHeader) {
     // Snap to new color instantly so the VT snapshot captures a clean
@@ -1018,13 +1017,14 @@ function animate() {
   renderer.clear(true, true, false);
   renderer.render(scene, camera);
 
-  // Once the real logo has rendered, clear the snapshot background
-  if (snapshotActive && sceneReady) {
+  // Once the real scene has rendered, clear any snapshot CSS background.
+  // Uses a direct check instead of a flag so it works reliably after
+  // bfcache restores (where the old snapshotActive flag would be stale).
+  if (sceneReady && canvas.style.backgroundImage) {
     canvas.style.backgroundImage = '';
     canvas.style.backgroundSize = '';
     canvas.style.backgroundRepeat = '';
     canvas.style.backgroundPosition = '';
-    snapshotActive = false;
   }
 }
 animate();
@@ -1035,6 +1035,22 @@ animate();
 if (!isHeader) {
   window.addEventListener('pageswap', () => {
     try {
+      // Hide particles and reset pulse for a clean logo-only snapshot
+      scene.children.forEach(child => {
+        if (child.isPoints) child.visible = false;
+      });
+      particlePulse = 0;
+      if (globalParticleMat) globalParticleMat.uniforms.pulse.value = 0;
+
+      // Render a clean frame
+      renderer.setRenderTarget(dMaskTarget);
+      renderer.setClearColor(0x000000, 0);
+      renderer.clear();
+      renderer.render(dDepthScene, camera);
+      renderer.setRenderTarget(null);
+      renderer.clear(true, true, false);
+      renderer.render(scene, camera);
+
       const dataURL = canvas.toDataURL('image/png');
       sessionStorage.setItem('jdLogoSnapshot', dataURL);
     } catch (e) { /* security / private mode */ }
