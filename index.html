@@ -30,6 +30,10 @@
       var cv = document.getElementById('jd-scene');
       if (!cv) return;
 
+      // Hide "Loading" immediately so the morph snapshot is a clean black canvas
+      var ld = document.getElementById('loading-text');
+      if (ld) ld.style.display = 'none';
+
       // Pick the image source: runtime capture (homepage→homepage) or
       // pre-rendered phase image (interior→homepage).
       var src = '';
@@ -43,17 +47,19 @@
           var idx = ((phase % 3) + 3) % 3;
           src = 'imgs/logo-phase-' + idx + '.png';
         }
-      } catch (e) {
+      } catch (err) {
         src = 'imgs/logo-phase-0.png';
       }
 
-      cv.style.backgroundImage = 'url(' + src + ')';
-      cv.style.backgroundSize = 'cover';
-      cv.style.backgroundRepeat = 'no-repeat';
-      cv.style.backgroundPosition = 'center';
-
-      var ld = document.getElementById('loading-text');
-      if (ld) ld.style.display = 'none';
+      // Defer the background until AFTER the view-transition pseudo-elements
+      // are created — this keeps the morph snapshot clean (no rectangle flash)
+      // and shows the image only in the gap between morph end and WebGL boot.
+      e.viewTransition.ready.then(function() {
+        cv.style.backgroundImage = 'url(' + src + ')';
+        cv.style.backgroundSize = 'cover';
+        cv.style.backgroundRepeat = 'no-repeat';
+        cv.style.backgroundPosition = 'center';
+      });
     });
     </script>
 </head>
