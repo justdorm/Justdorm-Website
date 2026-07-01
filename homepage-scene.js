@@ -29,15 +29,6 @@ renderer.toneMapping = isHeader ? THREE.NoToneMapping : THREE.ACESFilmicToneMapp
 renderer.toneMappingExposure = 1.2;
 renderer.autoClear = false;
 
-// ─── Incoming snapshot bridge ───
-// The inline <script> sets a pre-rendered logo image as the CSS background
-// so the view-transition morph target is painted before WebGL boots.
-// This module hides "Loading" if a background is present; the background
-// itself is cleared each frame once sceneReady is true (in the animate loop).
-if (canvas.style.backgroundImage) {
-  const loadEl = document.getElementById('loading-text');
-  if (loadEl) loadEl.style.display = 'none';
-}
 
 const PR = Math.min(window.devicePixelRatio, 2);
 
@@ -1002,10 +993,6 @@ function animate() {
   }
   pGeo.attributes.position.needsUpdate = true;
 
-  // Skip rendering while a view transition is capturing the incoming snapshot
-  // — prevents particles from appearing in the morph and scaling up.
-  if (window.__jdVtActive) return;
-
   // Render the D into the mask texture (anti-aliased)
   renderer.setRenderTarget(dMaskTarget);
   renderer.setClearColor(0x000000, 0);
@@ -1016,50 +1003,9 @@ function animate() {
   renderer.setRenderTarget(null);
   renderer.clear(true, true, false);
   renderer.render(scene, camera);
-
-  // Once the real scene has rendered, clear any snapshot CSS background.
-  // Uses a direct check instead of a flag so it works reliably after
-  // bfcache restores (where the old snapshotActive flag would be stale).
-  if (sceneReady && canvas.style.backgroundImage) {
-    canvas.style.backgroundImage = '';
-    canvas.style.backgroundSize = '';
-    canvas.style.backgroundRepeat = '';
-    canvas.style.backgroundPosition = '';
-  }
 }
 animate();
 
-// ─── Outgoing snapshot bridge ───
-if (!isHeader) {
-  // Homepage → interior: capture a clean logo-only snapshot for the morph.
-  window.addEventListener('pageswap', () => {
-    try {
-      // Hide particles and reset pulse for a clean logo-only snapshot
-      scene.children.forEach(child => {
-        if (child.isPoints) child.visible = false;
-      });
-      particlePulse = 0;
-      if (globalParticleMat) globalParticleMat.uniforms.pulse.value = 0;
-
-      // Render a clean frame
-      renderer.setRenderTarget(dMaskTarget);
-      renderer.setClearColor(0x000000, 0);
-      renderer.clear();
-      renderer.render(dDepthScene, camera);
-      renderer.setRenderTarget(null);
-      renderer.clear(true, true, false);
-      renderer.render(scene, camera);
-
-      const dataURL = canvas.toDataURL('image/png');
-      sessionStorage.setItem('jdLogoSnapshot', dataURL);
-
-      // Restore particles so bfcache restore still has them visible
-      scene.children.forEach(child => {
-        if (child.isPoints) child.visible = true;
-      });
-    } catch (e) { /* security / private mode */ }
-  });
-}
 
 // ─── Snapshot capture utility ───
 // Open the homepage with ?captureSnaps to render and download all three CMY
