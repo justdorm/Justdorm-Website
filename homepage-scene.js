@@ -783,11 +783,13 @@ function persistColorPhase() {
   try { sessionStorage.setItem('jdColorPhase', String(Math.round(colorPhaseTarget))); } catch (e) { /* private mode */ }
 }
 
-window.addEventListener('click', () => {
-  colorPhaseTarget += 1;
-  particlePulse = 1.0;
-  persistColorPhase();
-});
+if (!isHeader) {
+  window.addEventListener('click', () => {
+    colorPhaseTarget += 1;
+    particlePulse = 1.0;
+    persistColorPhase();
+  });
+}
 
 // Request gyroscope permission for iOS devices on first interaction anywhere
 let gyroRequested = false;
