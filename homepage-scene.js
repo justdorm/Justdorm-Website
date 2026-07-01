@@ -30,29 +30,23 @@ renderer.toneMappingExposure = 1.2;
 renderer.autoClear = false;
 
 // ─── Incoming snapshot bridge ───
-// The inline <script> in index.html creates a centred snapshot <img> overlay
-// on pagereveal (before the view-transition captures the incoming snapshot).
-// This module detects it, hides "Loading", and removes the overlay after the
-// first real WebGL frame.
+// The inline <script> in index.html paints the snapshot as a CSS background
+// on #jd-scene during pagereveal (before the view-transition snapshot is
+// captured). This module detects it, hides "Loading", and clears the
+// background after the first real WebGL frame.
 let snapshotActive = false;
-const snapOverlay = document.getElementById('jd-snapshot-overlay');
-if (snapOverlay) {
+if (canvas.style.backgroundImage) {
+  // Already painted by the inline pagereveal handler
   snapshotActive = true;
 } else {
   // Fallback for non-VT navigations (e.g. direct link)
   try {
     const snap = sessionStorage.getItem('jdLogoSnapshot');
     if (snap) {
-      const img = document.createElement('img');
-      img.id = 'jd-snapshot-overlay';
-      img.src = snap;
-      Object.assign(img.style, {
-        position: 'fixed', top: '50%', left: '50%',
-        transform: 'translate(-50%, -50%)',
-        zIndex: '2', pointerEvents: 'none',
-        maxWidth: '40vmin', maxHeight: '40vmin'
-      });
-      document.body.appendChild(img);
+      canvas.style.backgroundImage = `url(${snap})`;
+      canvas.style.backgroundSize = 'contain';
+      canvas.style.backgroundRepeat = 'no-repeat';
+      canvas.style.backgroundPosition = 'center';
       snapshotActive = true;
     }
   } catch (e) { /* private mode */ }
@@ -1024,10 +1018,12 @@ function animate() {
   renderer.clear(true, true, false);
   renderer.render(scene, camera);
 
-  // Once the real logo has rendered, remove the snapshot overlay
+  // Once the real logo has rendered, clear the snapshot background
   if (snapshotActive && sceneReady) {
-    const ov = document.getElementById('jd-snapshot-overlay');
-    if (ov) ov.remove();
+    canvas.style.backgroundImage = '';
+    canvas.style.backgroundSize = '';
+    canvas.style.backgroundRepeat = '';
+    canvas.style.backgroundPosition = '';
     snapshotActive = false;
   }
 }
