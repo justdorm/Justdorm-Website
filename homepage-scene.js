@@ -1035,6 +1035,28 @@ animate();
 // use it as a morph-target background while its own WebGL boots.
 window.addEventListener('pageswap', () => {
   try {
+    // Header canvases are tiny (45×45 CSS px). Upscale to viewport size for a
+    // crisp snapshot — the page is unloading so mutating state is fine.
+    if (isHeader && sceneReady) {
+      const sw = window.innerWidth;
+      const sh = window.innerHeight;
+      const spr = Math.min(window.devicePixelRatio, 2);
+      renderer.setSize(sw, sh);
+      renderer.setPixelRatio(spr);
+      camera.aspect = sw / sh;
+      camera.updateProjectionMatrix();
+      const smpr = spr * 2;
+      dMaskTarget.setSize(sw * smpr, sh * smpr);
+      if (globalJMat) globalJMat.uniforms.resolution.value.set(sw * spr, sh * spr);
+      // Full render pass: mask then main
+      renderer.setRenderTarget(dMaskTarget);
+      renderer.setClearColor(0x000000, 0);
+      renderer.clear();
+      renderer.render(dDepthScene, camera);
+      renderer.setRenderTarget(null);
+      renderer.clear(true, true, false);
+      renderer.render(scene, camera);
+    }
     const dataURL = canvas.toDataURL('image/png');
     sessionStorage.setItem('jdLogoSnapshot', dataURL);
   } catch (e) { /* security / private mode */ }
