@@ -68,33 +68,33 @@ a, button { touch-action: manipulation; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 
-/* Cross-document view transitions (progressive enhancement) */
+/* Cross-document view transitions (progressive enhancement).
+   TV channel-change: the old page squashes into a bright scanline with a quick
+   negative-image flash, then the new page blooms open from that line with a
+   horizontal tracking jitter — like flipping channels on an old CRT. Runs on
+   the whole page (no per-element morph), so it fires reliably regardless of
+   what has finished rendering. */
 @view-transition { navigation: auto; }
-::view-transition-old(root) { animation: vt-out 0.22s ease both; }
-::view-transition-new(root) { animation: vt-in 0.32s ease both; }
-@keyframes vt-out { to { opacity: 0; } }
-@keyframes vt-in  { from { opacity: 0; transform: translateY(10px); } }
 
-/* Title morph: a case row title on the listing and the matching case study
-   hero title share a view-transition-name, so the browser morphs one into
-   the other during navigation. Names are keyed to the case identity (not its
-   position) so reordering the listing can't break the pairing. */
-.vt-spinxshift { view-transition-name: cs-spinxshift; }
-.vt-nyc-pride  { view-transition-name: cs-nyc-pride; }
-.vt-summer     { view-transition-name: cs-summer; }
-.vt-stream     { view-transition-name: cs-stream; }
-.vt-census     { view-transition-name: cs-census; }
-.vt-here-now   { view-transition-name: cs-here-now; }
-.vt-rave       { view-transition-name: cs-rave; }
+::view-transition-old(root) { animation: tv-off 0.26s ease-in both; transform-origin: center; }
+::view-transition-new(root) { animation: tv-on 0.5s cubic-bezier(0.2, 0.75, 0.2, 1) 0.2s both; transform-origin: center; }
 
-/* Media morph: the listing thumbnail flies into the case-study hero video. */
-.vt-media-spinxshift { view-transition-name: media-spinxshift; }
-.vt-media-nyc-pride  { view-transition-name: media-nyc-pride; }
-.vt-media-summer     { view-transition-name: media-summer; }
-.vt-media-stream     { view-transition-name: media-stream; }
-.vt-media-census     { view-transition-name: media-census; }
-.vt-media-here-now   { view-transition-name: media-here-now; }
-.vt-media-rave       { view-transition-name: media-rave; }
+@keyframes tv-off {
+  0%   { transform: scaleY(1) scaleX(1);       filter: none; opacity: 1; }
+  60%  { transform: scaleY(1) scaleX(1.03);    filter: invert(0.2) brightness(1.5) contrast(1.3); }
+  100% { transform: scaleY(0.006) scaleX(1.4); filter: invert(0.9) brightness(2.2) contrast(1.4); opacity: 1; }
+}
+
+@keyframes tv-on {
+  0%   { transform: scaleY(0.006) scaleX(1.4); filter: invert(0.9) brightness(2.2); opacity: 0; }
+  6%   { transform: scaleY(0.006) scaleX(1.4); filter: invert(0.9) brightness(2.2); opacity: 1; }
+  32%  { transform: scaleY(0.06) scaleX(1.06); filter: invert(0.35) brightness(1.6) contrast(1.2); opacity: 1; }
+  54%  { transform: scaleY(1) scaleX(1);       filter: invert(0) brightness(1.5) saturate(1.5) contrast(1.2); }
+  68%  { transform: translateX(-1.5%); }
+  80%  { transform: translateX(1.6%); }
+  90%  { transform: translateX(-0.6%); }
+  100% { transform: none; filter: none; opacity: 1; }
+}
 
 /* Force morph targets to their final, painted state when arriving via a view
    transition (set by site.js on pagereveal), so the snapshot captures them
