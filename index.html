@@ -27,6 +27,11 @@
     //                       imgs/logo-phase-2.png  (yellow combo)
     window.addEventListener('pagereveal', function(e) {
       if (!e || !e.viewTransition) return;
+
+      // Gate WebGL rendering until the VT snapshot is captured — this
+      // prevents particles from appearing in the morph and scaling up.
+      window.__jdVtActive = true;
+
       var cv = document.getElementById('jd-scene');
       if (!cv) return;
 
@@ -51,10 +56,10 @@
         src = 'imgs/logo-phase-0.png';
       }
 
-      // Defer the background until AFTER the view-transition pseudo-elements
-      // are created — this keeps the morph snapshot clean (no rectangle flash)
-      // and shows the image only in the gap between morph end and WebGL boot.
+      // After the snapshot is captured, ungate rendering and show the
+      // pre-rendered background for the gap between morph end and WebGL boot.
       e.viewTransition.ready.then(function() {
+        window.__jdVtActive = false;
         cv.style.backgroundImage = 'url(' + src + ')';
         cv.style.backgroundSize = 'cover';
         cv.style.backgroundRepeat = 'no-repeat';

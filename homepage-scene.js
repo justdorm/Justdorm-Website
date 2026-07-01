@@ -994,6 +994,10 @@ function animate() {
   }
   pGeo.attributes.position.needsUpdate = true;
 
+  // Skip rendering while a view transition is capturing the incoming snapshot
+  // — prevents particles from appearing in the morph and scaling up.
+  if (window.__jdVtActive) return;
+
   // Render the D into the mask texture (anti-aliased)
   renderer.setRenderTarget(dMaskTarget);
   renderer.setClearColor(0x000000, 0);
