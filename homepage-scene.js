@@ -1035,19 +1035,18 @@ animate();
 // use it as a morph-target background while its own WebGL boots.
 window.addEventListener('pageswap', () => {
   try {
-    // Header canvases are tiny (45×45 CSS px). Upscale to viewport size for a
-    // crisp snapshot — the page is unloading so mutating state is fine.
+    // Header canvases are tiny (45×45 CSS px). Bump the pixel ratio so the
+    // internal buffer is larger (e.g. 720×720) for a crisper capture.
+    // CSS size, aspect ratio, camera, and uniforms stay identical.
     if (isHeader && sceneReady) {
-      const sw = window.innerWidth;
-      const sh = window.innerHeight;
-      const spr = Math.min(window.devicePixelRatio, 2);
-      renderer.setSize(sw, sh);
-      renderer.setPixelRatio(spr);
-      camera.aspect = sw / sh;
-      camera.updateProjectionMatrix();
-      const smpr = spr * 2;
-      dMaskTarget.setSize(sw * smpr, sh * smpr);
-      if (globalJMat) globalJMat.uniforms.resolution.value.set(sw * spr, sh * spr);
+      const cw = canvas.clientWidth || 45;
+      const ch = canvas.clientHeight || 45;
+      const hiPR = 16;
+      renderer.setPixelRatio(hiPR);
+      renderer.setSize(cw, ch);
+      const hiMaskPR = hiPR * 2;
+      dMaskTarget.setSize(cw * hiMaskPR, ch * hiMaskPR);
+      if (globalJMat) globalJMat.uniforms.resolution.value.set(cw * hiPR, ch * hiPR);
       // Full render pass: mask then main
       renderer.setRenderTarget(dMaskTarget);
       renderer.setClearColor(0x000000, 0);
