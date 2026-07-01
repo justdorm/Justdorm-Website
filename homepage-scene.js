@@ -769,22 +769,9 @@ function persistColorPhase() {
   try { sessionStorage.setItem('jdColorPhase', String(Math.round(colorPhaseTarget))); } catch (e) { /* private mode */ }
 }
 
-window.addEventListener('click', (e) => {
-  // Don't cycle or pulse if clicking a navigation link — let navigation
-  // happen cleanly without changing the canvas state for the VT snapshot.
-  if (e.target.closest('a[href]')) return;
-
+window.addEventListener('click', () => {
   colorPhaseTarget += 1;
-  if (isHeader) {
-    // Snap to new color instantly so the VT snapshot captures a clean
-    // CMY state instead of a mid-blend "colorful" frame.
-    colorPhaseCurrent = Math.round(colorPhaseTarget);
-    colorPhaseTarget = colorPhaseCurrent;
-    dSplitShader.uniforms.colorPhase.value = colorPhaseCurrent;
-    jOverlapShader.uniforms.colorPhase.value = colorPhaseCurrent;
-  } else {
-    particlePulse = 1.0;
-  }
+  particlePulse = 1.0;
   persistColorPhase();
 });
 
