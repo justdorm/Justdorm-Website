@@ -785,7 +785,16 @@ function persistColorPhase() {
 
 window.addEventListener('click', () => {
   colorPhaseTarget += 1;
-  if (!isHeader) particlePulse = 1.0;
+  if (isHeader) {
+    // Snap to new color instantly so the VT snapshot captures a clean
+    // CMY state instead of a mid-blend "colorful" frame.
+    colorPhaseCurrent = Math.round(colorPhaseTarget);
+    colorPhaseTarget = colorPhaseCurrent;
+    dSplitShader.uniforms.colorPhase.value = colorPhaseCurrent;
+    jOverlapShader.uniforms.colorPhase.value = colorPhaseCurrent;
+  } else {
+    particlePulse = 1.0;
+  }
   persistColorPhase();
 });
 
