@@ -757,7 +757,7 @@ window.addEventListener('deviceorientation', e => {
 // page (and stays matched across the cross-page logo morph) instead of
 // resetting to the default combo on every fresh navigation.
 let storedPhase = 0;
-try { storedPhase = parseFloat(sessionStorage.getItem('jdColorPhase')) || 0; } catch (e) { /* private mode */ }
+try { storedPhase = Math.round(parseFloat(sessionStorage.getItem('jdColorPhase')) || 0); } catch (e) { /* private mode */ }
 let colorPhaseTarget = storedPhase;
 let colorPhaseCurrent = storedPhase;
 let particlePulse = 0;
@@ -765,7 +765,7 @@ let hoverPulseVal = 0;
 let globalSwirlAngle = 0;
 
 function persistColorPhase() {
-  try { sessionStorage.setItem('jdColorPhase', String(colorPhaseTarget)); } catch (e) { /* private mode */ }
+  try { sessionStorage.setItem('jdColorPhase', String(Math.round(colorPhaseTarget))); } catch (e) { /* private mode */ }
 }
 
 window.addEventListener('click', () => {
