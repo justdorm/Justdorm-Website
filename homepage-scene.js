@@ -30,31 +30,18 @@ renderer.toneMappingExposure = 1.2;
 renderer.autoClear = false;
 
 // ─── Incoming snapshot bridge ───
-// The inline <script> in index.html paints the snapshot as a CSS background
-// on #jd-scene during pagereveal (before the view-transition snapshot is
-// captured). This module detects it, hides "Loading", and clears the
-// background after the first real WebGL frame.
+// On the homepage, the inline <script> sets a pre-rendered logo image as the
+// CSS background (keyed to the saved CMY phase) so the view-transition morph
+// target is fully painted before WebGL boots.
+// This module detects it and hides "Loading", then clears the background
+// after the first real WebGL frame.
 let snapshotActive = false;
 if (canvas.style.backgroundImage) {
-  // Already painted by the inline pagereveal handler
   snapshotActive = true;
-} else {
-  // Fallback for non-VT navigations (e.g. direct link)
-  try {
-    const snap = sessionStorage.getItem('jdLogoSnapshot');
-    if (snap) {
-      canvas.style.backgroundImage = `url(${snap})`;
-      canvas.style.backgroundSize = 'contain';
-      canvas.style.backgroundRepeat = 'no-repeat';
-      canvas.style.backgroundPosition = 'center';
-      snapshotActive = true;
-    }
-  } catch (e) { /* private mode */ }
 }
 if (snapshotActive) {
   const loadEl = document.getElementById('loading-text');
   if (loadEl) loadEl.style.display = 'none';
-  try { sessionStorage.removeItem('jdLogoSnapshot'); } catch (e) {}
 }
 
 const PR = Math.min(window.devicePixelRatio, 2);
@@ -1030,11 +1017,58 @@ function animate() {
 animate();
 
 // ─── Outgoing snapshot bridge ───
-// On navigation away, capture the live canvas so the destination page can
-// show a coloured logo placeholder while its own WebGL boots.
-window.addEventListener('pageswap', () => {
-  try {
-    const dataURL = canvas.toDataURL('image/png');
-    sessionStorage.setItem('jdLogoSnapshot', dataURL);
-  } catch (e) { /* security / private mode */ }
-});
+// Only capture from the homepage (full-res canvas). Header canvases are too
+// small; interior→homepage uses the pre-rendered phase images instead.
+if (!isHeader) {
+  window.addEventListener('pageswap', () => {
+    try {
+      const dataURL = canvas.toDataURL('image/png');
+      sessionStorage.setItem('jdLogoSnapshot', dataURL);
+    } catch (e) { /* security / private mode */ }
+  });
+}
+
+// ─── Snapshot capture utility ───
+// Open the homepage with ?captureSnaps to render and download all three CMY
+// phase images.  Save the downloaded PNGs into imgs/ as:
+//   logo-phase-0.png, logo-phase-1.png, logo-phase-2.png
+if (!isHeader && new URLSearchParams(location.search).has('captureSnaps')) {
+  const waitReady = setInterval(() => {
+    if (!sceneReady) return;
+    clearInterval(waitReady);
+
+    let phase = 0;
+    function capturePhase() {
+      // Set the color phase and update all shader uniforms
+      colorPhaseTarget = phase;
+      colorPhaseCurrent = phase;
+      dSplitShader.uniforms.colorPhase.value = phase;
+      jOverlapShader.uniforms.colorPhase.value = phase;
+      if (globalMobileGlowMat) globalMobileGlowMat.uniforms.colorPhase.value = phase;
+
+      // Full render pass
+      renderer.setRenderTarget(dMaskTarget);
+      renderer.setClearColor(0x000000, 0);
+      renderer.clear();
+      renderer.render(dDepthScene, camera);
+      renderer.setRenderTarget(null);
+      renderer.clear(true, true, false);
+      renderer.render(scene, camera);
+
+      // Download the frame
+      const link = document.createElement('a');
+      link.download = `logo-phase-${phase}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      phase++;
+      if (phase < 3) {
+        requestAnimationFrame(capturePhase);
+      } else {
+        console.log('All 3 phase snapshots captured! Move them to imgs/');
+      }
+    }
+    // Small delay so the scene is fully settled
+    setTimeout(capturePhase, 500);
+  }, 100);
+}
