@@ -42,6 +42,9 @@ try {
     canvas.style.backgroundRepeat = 'no-repeat';
     canvas.style.backgroundPosition = 'center';
     snapshotActive = true;
+    // The snapshot already shows the logo — suppress the "Loading" text
+    const loadEl = document.getElementById('loading-text');
+    if (loadEl) loadEl.style.display = 'none';
     // One-shot: clear it so a hard reload doesn't re-show a stale frame
     sessionStorage.removeItem('jdLogoSnapshot');
   }
