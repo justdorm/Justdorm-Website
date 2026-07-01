@@ -30,25 +30,33 @@ renderer.toneMappingExposure = 1.2;
 renderer.autoClear = false;
 
 // ─── Incoming snapshot bridge ───
-// If a previous page captured the logo canvas into sessionStorage, paint it
-// as the CSS background of this canvas so the view-transition morph target
-// shows a fully-coloured logo while WebGL boots (font loading, etc.).
+// The inline <script> in index.html paints the snapshot background on
+// pagereveal (before the view-transition snapshot is captured).  This module
+// just picks up the flag — or applies the snapshot itself for non-VT loads
+// (e.g. direct navigation) — and cleans it up after the first real frame.
 let snapshotActive = false;
-try {
-  const snap = sessionStorage.getItem('jdLogoSnapshot');
-  if (snap) {
-    canvas.style.backgroundImage = `url(${snap})`;
-    canvas.style.backgroundSize = 'contain';
-    canvas.style.backgroundRepeat = 'no-repeat';
-    canvas.style.backgroundPosition = 'center';
-    snapshotActive = true;
-    // The snapshot already shows the logo — suppress the "Loading" text
-    const loadEl = document.getElementById('loading-text');
-    if (loadEl) loadEl.style.display = 'none';
-    // One-shot: clear it so a hard reload doesn't re-show a stale frame
-    sessionStorage.removeItem('jdLogoSnapshot');
-  }
-} catch (e) { /* private mode */ }
+if (canvas.style.backgroundImage) {
+  // Already painted by the inline pagereveal handler
+  snapshotActive = true;
+} else {
+  try {
+    const snap = sessionStorage.getItem('jdLogoSnapshot');
+    if (snap) {
+      canvas.style.backgroundImage = `url(${snap})`;
+      canvas.style.backgroundSize = 'contain';
+      canvas.style.backgroundRepeat = 'no-repeat';
+      canvas.style.backgroundPosition = 'center';
+      snapshotActive = true;
+    }
+  } catch (e) { /* private mode */ }
+}
+if (snapshotActive) {
+  // The snapshot already shows the logo — suppress the "Loading" text
+  const loadEl = document.getElementById('loading-text');
+  if (loadEl) loadEl.style.display = 'none';
+  // One-shot: clear it so a hard reload doesn't re-show a stale frame
+  try { sessionStorage.removeItem('jdLogoSnapshot'); } catch (e) {}
+}
 
 const PR = Math.min(window.devicePixelRatio, 2);
 
