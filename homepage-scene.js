@@ -10,7 +10,7 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 const canvas = document.querySelector('.jd-canvas') || document.getElementById('jd-scene');
 const isHeader = canvas.dataset.mode === 'header';
 
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
 
 let W, H;
 if (isHeader) {
@@ -28,6 +28,24 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.toneMapping = isHeader ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
 renderer.autoClear = false;
+
+// ─── Incoming snapshot bridge ───
+// If a previous page captured the logo canvas into sessionStorage, paint it
+// as the CSS background of this canvas so the view-transition morph target
+// shows a fully-coloured logo while WebGL boots (font loading, etc.).
+let snapshotActive = false;
+try {
+  const snap = sessionStorage.getItem('jdLogoSnapshot');
+  if (snap) {
+    canvas.style.backgroundImage = `url(${snap})`;
+    canvas.style.backgroundSize = 'contain';
+    canvas.style.backgroundRepeat = 'no-repeat';
+    canvas.style.backgroundPosition = 'center';
+    snapshotActive = true;
+    // One-shot: clear it so a hard reload doesn't re-show a stale frame
+    sessionStorage.removeItem('jdLogoSnapshot');
+  }
+} catch (e) { /* private mode */ }
 
 const PR = Math.min(window.devicePixelRatio, 2);
 
@@ -989,5 +1007,24 @@ function animate() {
   renderer.setRenderTarget(null);
   renderer.clear(true, true, false);
   renderer.render(scene, camera);
+
+  // Once the real logo has rendered, remove the snapshot background bridge
+  if (snapshotActive && sceneReady) {
+    canvas.style.backgroundImage = '';
+    canvas.style.backgroundSize = '';
+    canvas.style.backgroundRepeat = '';
+    canvas.style.backgroundPosition = '';
+    snapshotActive = false;
+  }
 }
 animate();
+
+// ─── Outgoing snapshot bridge ───
+// On navigation away, capture the live canvas so the destination page can
+// use it as a morph-target background while its own WebGL boots.
+window.addEventListener('pageswap', () => {
+  try {
+    const dataURL = canvas.toDataURL('image/png');
+    sessionStorage.setItem('jdLogoSnapshot', dataURL);
+  } catch (e) { /* security / private mode */ }
+});
