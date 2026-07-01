@@ -75,16 +75,12 @@ a, button { touch-action: manipulation; }
 @keyframes vt-out { to { opacity: 0; } }
 @keyframes vt-in  { from { opacity: 0; transform: translateY(10px); } }
 
-/* Logo morph: the old 45×45 header capture stays at natural size (no blurry
-   stretching) while the group bounds grow to full viewport. */
-::view-transition-group(jd-logo) { animation-duration: 0.28s; }
-::view-transition-old(jd-logo) {
-  animation: vt-logo-out 0.15s ease-out both;
-  object-fit: none;
-}
-::view-transition-new(jd-logo) {
-  animation: vt-logo-in 0.28s ease both;
-}
+/* Logo morph: both old and new snapshots are full-viewport high-res images
+   (old = pre-rendered overlay injected in pageswap, new = pre-rendered bg
+   on the homepage canvas). Cross-fade smoothly between them. */
+::view-transition-group(jd-logo) { animation-duration: 0.3s; }
+::view-transition-old(jd-logo) { animation: vt-logo-out 0.2s ease-out both; }
+::view-transition-new(jd-logo) { animation: vt-logo-in 0.3s ease both; }
 @keyframes vt-logo-out { to { opacity: 0; } }
 @keyframes vt-logo-in  { from { opacity: 0; } }
 
