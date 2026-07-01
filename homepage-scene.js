@@ -1038,6 +1038,13 @@ if (!isHeader && new URLSearchParams(location.search).has('captureSnaps')) {
     clearInterval(waitReady);
 
     let phase = 0;
+
+    // Hide particles and CSS glow so snapshots contain only the clean logo
+    scene.children.forEach(child => {
+      if (child.isPoints) child.visible = false;
+    });
+    canvas.style.filter = 'none';
+
     function capturePhase() {
       // Set the color phase and update all shader uniforms
       colorPhaseTarget = phase;
