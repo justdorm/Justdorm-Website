@@ -116,7 +116,24 @@
                             (@shiftingrealities.art)</a></div>
                 </blockquote>
             </div>
-            <script async src="//www.instagram.com/embed.js"></script>
+            <script>
+              // Load Instagram's embed SDK only when the post nears the viewport, so
+              // its heavy main-thread processing doesn't block taps on page load.
+              (function () {
+                var q = document.querySelector('.instagram-media');
+                function load() {
+                  var s = document.createElement('script');
+                  s.async = true;
+                  s.src = 'https://www.instagram.com/embed.js';
+                  document.body.appendChild(s);
+                }
+                if (!q || !('IntersectionObserver' in window)) { load(); return; }
+                var io = new IntersectionObserver(function (entries) {
+                  if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); load(); }
+                }, { rootMargin: '400px' });
+                io.observe(q);
+              })();
+            </script>
         </section>
 
         <nav class="cs-pager" aria-label="More case studies">
@@ -149,8 +166,17 @@
         }
     }
     </script>
-    <script type="module" src="homepage-scene.js"></script>
-    <script type="module" src="starfield.js"></script>
+    <script>
+      // Defer the decorative header logo + starfield until the browser is idle,
+      // so their Three.js init doesn't block the first tap right after navigation
+      // (was causing an occasional need to double-tap Back/links on arrival).
+      // The homepage loads its hero scene eagerly; this runs only on interior pages.
+      (function () {
+        function boot() { import("./homepage-scene.js"); import("./starfield.js"); }
+        if ("requestIdleCallback" in window) requestIdleCallback(boot, { timeout: 1500 });
+        else window.addEventListener("load", function () { setTimeout(boot, 200); });
+      })();
+    </script>
     <script src="site.js" defer></script>
 </body>
 
